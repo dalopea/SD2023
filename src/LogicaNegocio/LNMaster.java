@@ -7,7 +7,7 @@ import java.net.*;
 
 import ModeloDominio.*;
 
-public class LNMaster {
+public class LNMaster extends LNJugadorBase {
 
 	JugadorBase master;
 	ServerSocket servPartida;/*Esto deberia estar aqui o en master*/

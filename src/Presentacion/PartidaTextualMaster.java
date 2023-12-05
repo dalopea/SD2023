@@ -14,13 +14,17 @@ public class PartidaTextualMaster {
 	 * 
 	 * */
 	public PartidaTextualMaster(Partida p,LNMaster m) {
+		this.p=p;
 		this.lnm=m;
 	}
 	
 	
 	
-	public static void mostrarInterfaz() {
+	public  void mostrarInterfaz() {
 		
+		lnm.crearPartida();
+		
+		System.out.println("Bienvenido a la partida, esperando a que la partida sea iniciada(para ello diga iniciar).");
 		
 		
 		

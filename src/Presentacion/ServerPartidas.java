@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import ModeloDominio.ManejadorPartidas;
-
+//Comentario
 public class ServerPartidas {
 
 	public static void main(String[] args) {

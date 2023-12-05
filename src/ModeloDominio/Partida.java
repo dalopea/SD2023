@@ -1,7 +1,7 @@
 package ModeloDominio;
 
 import java.util.*;
-
+//Comentario
 public class Partida {
 
 	String nombrePartida;

@@ -1,6 +1,6 @@
 package ModeloDominio;
 
-
+//Comentario
 import java.io.*;
 import java.net.*;
 

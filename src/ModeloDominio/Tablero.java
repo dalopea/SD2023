@@ -1,7 +1,7 @@
 package ModeloDominio;
 
 import java.util.*;
-
+//Comentario
 public class Tablero {
 
 	List<Casilla> mapa=new ArrayList<>();

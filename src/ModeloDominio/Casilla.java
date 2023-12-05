@@ -1,5 +1,5 @@
 package ModeloDominio;
-
+//Comentario
 public class Casilla {
 
 	private int x;

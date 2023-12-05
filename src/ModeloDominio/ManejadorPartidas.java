@@ -1,5 +1,5 @@
 package ModeloDominio;
-
+//Comentario
 import java.util.HashMap;
 
 public class ManejadorPartidas {

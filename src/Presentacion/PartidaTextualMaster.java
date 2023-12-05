@@ -2,7 +2,7 @@ package Presentacion;
 
 import LogicaNegocio.*;
 import ModeloDominio.*;
-
+//Comentario
 public class PartidaTextualMaster {
 
 	Partida p;

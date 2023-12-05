@@ -6,7 +6,7 @@ import java.io.*;
 import java.net.*;
 
 import ModeloDominio.*;
-
+//Comentario
 public class LNMaster extends LNJugadorBase {
 
 	JugadorBase master;

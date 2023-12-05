@@ -4,7 +4,7 @@ import java.io.*;
 
 import LogicaNegocio.*;
 import ModeloDominio.*;
-
+//Comentario
 public class Principal {
 
 	public static void main(String[] args) {

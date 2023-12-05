@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.*;
 
 import ModeloDominio.ManejadorPartidas;
-
+//Comentario
 public class HiloServerPartidas extends Thread {
 
 	private Socket s;

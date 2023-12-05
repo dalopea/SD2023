@@ -27,6 +27,9 @@ public class LNMaster extends LNJugadorBase {
 			//Sería así? Enviar la partida y el puerto de este socket?
 			pw.println("Crear,"+partida+","+s.getLocalPort());
 			pw.flush();
+			/*
+			 * Esto me da error por que el puerto ya lo está usando para conectarse al server.
+			 * */
 			this.servPartida=new ServerSocket(s.getLocalPort());
 			
 		} catch (UnknownHostException e) {
@@ -38,6 +41,8 @@ public class LNMaster extends LNJugadorBase {
 		}
 		
 	}
+	
+	public void 
 	
 	
 }

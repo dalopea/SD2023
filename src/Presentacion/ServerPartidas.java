@@ -5,11 +5,13 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+import ModeloDominio.ManejadorPartidas;
+
 public class ServerPartidas {
 
 	public static void main(String[] args) {
 		
-		HashMap<String,Integer> partidas=new HashMap<String,Integer>();
+		ManejadorPartidas manejadorPartidas = new ManejadorPartidas();
 		ExecutorService pool=Executors.newCachedThreadPool();
 		
 		try(ServerSocket ss=new ServerSocket(55555)){
@@ -17,18 +19,9 @@ public class ServerPartidas {
 			while(true) {
 				
 				try{
-				
-					/*
-					 * Necesitare saber como hacermos para que los cambios del hilo se vean aquí, static igual?
-					 * */
 					Socket s=ss.accept();
-					HiloServerPartidas hsp=new HiloServerPartidas(s,partidas);
+					HiloServerPartidas hsp=new HiloServerPartidas(s,manejadorPartidas);
 					pool.execute(hsp);
-					
-					
-					
-					
-					
 				}catch(IOException e) {
 					e.printStackTrace();
 				}
@@ -38,7 +31,6 @@ public class ServerPartidas {
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			pool.shutdown();

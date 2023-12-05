@@ -4,23 +4,23 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import ModeloDominio.ManejadorPartidas;
+
 public class HiloServerPartidas extends Thread {
 
 	private Socket s;
+	ManejadorPartidas manejadorPartidas;
 	
 	
-	public HiloServerPartidas(Socket s,HashMap<String,Integer> partidas) {
+	public HiloServerPartidas(Socket s,ManejadorPartidas manejadorPartidas) {
 		this.s=s;
+		this.manejadorPartidas = manejadorPartidas;
 	}
 	
 	
 	public void run() {
-
-			try {
-				BufferedReader bf=new BufferedReader(new InputStreamReader(s.getInputStream()));
-				PrintWriter pw=new PrintWriter(s.getOutputStream());
-				
-				
+			try(BufferedReader bf=new BufferedReader(new InputStreamReader(s.getInputStream()));
+					PrintWriter pw=new PrintWriter(s.getOutputStream())){
 				String peticion=bf.readLine();
 				
 				
@@ -30,7 +30,6 @@ public class HiloServerPartidas extends Thread {
 				try {
 					s.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

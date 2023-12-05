@@ -5,7 +5,7 @@ public class Casilla {
 	private int x;
 	private int y;
 	
-	private boolean ocupada;//ocupada hace referncia a si hay alguien o algo en la casilla
+	private boolean ocupada;//ocupada hace referencia a si hay alguien o algo en la casilla
 	private boolean disponible;//disponible hace referencia a si se puede poner cualquier cosa
 	
 	
@@ -35,19 +35,21 @@ public class Casilla {
 	
 	public void cambiarDisponibilidad() {
 		
-		if(disponible) {
+		/*if(disponible) {
 			disponible=false;
 		}else {
 			disponible=true;
-		}
+		}*/
+		disponible = !disponible;
 	}
 	
 	public void cambiarOcupacion() {
-		if(ocupada) {
+		/*if(ocupada) {
 			ocupada=false;
 		}else {
 			ocupada=true;
-		}
+		}*/
+		ocupada = !ocupada;
 	}
 	
 	

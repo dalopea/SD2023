@@ -2,10 +2,10 @@ package ModeloDominio;
 
 public abstract class JugadorBase {
 
-	String usuario;
+	String nombreUsuario;
 
-	public JugadorBase(String n) {
-		this.usuario=n;
+	public JugadorBase(String nombreUsuario) {
+		this.nombreUsuario=nombreUsuario;
 	}
 	
 }

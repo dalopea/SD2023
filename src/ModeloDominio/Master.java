@@ -10,8 +10,8 @@ public class Master extends JugadorBase {
 	ServerSocket ss;
 	
 	
-	public Master(String nombre) {
-		super(nombre);
+	public Master(String nombreUsuario) {
+		super(nombreUsuario);
 	}
 	
 	

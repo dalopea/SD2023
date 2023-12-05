@@ -25,7 +25,7 @@ public class Principal {
 				ptm.mostrarInterfaz();
 				
 			}else if(dec.equalsIgnoreCase("unirse")) {
-				System.out.println();
+				System.out.println("Has seleccionado unirte a una partida");
 				
 			}
 			

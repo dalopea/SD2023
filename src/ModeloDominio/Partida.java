@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Partida {
 
+	String nombrePartida;
+	int puertoPartida;
 	Master master;
 	List<Jugador> jugadores;
 	Tablero tablero;
@@ -22,6 +24,22 @@ public class Partida {
 	
 	public void iniciar() {
 		this.iniciado=true;
+	}
+	
+	public String getNombrePartida() {
+		return this.nombrePartida;
+	}
+	
+	public void setNombrePartida(String nombrePartida) {
+		this.nombrePartida = nombrePartida;
+	}
+	
+	public int getPuertoPartida() {
+		return this.puertoPartida;
+	}
+	
+	public void setPuertoPartida(int puertoPartida) {
+		this.puertoPartida = puertoPartida;
 	}
 	
 	public Tablero getTablero() {

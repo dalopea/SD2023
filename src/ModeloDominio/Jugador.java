@@ -5,8 +5,8 @@ public abstract class Jugador extends JugadorBase {
 	
 	
 	
-	public Jugador(String n) {
-		super(n);
+	public Jugador(String nombreUsuario) {
+		super(nombreUsuario);
 	}
 
 	

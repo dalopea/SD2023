@@ -22,7 +22,6 @@ public class PartidaTextualMaster {
 	
 	public  void mostrarInterfaz() {
 		
-		lnm.crearPartida();
 		
 		System.out.println("Bienvenido a la partida, esperando a que la partida sea iniciada(para ello diga iniciar).");
 		

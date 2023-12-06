@@ -7,7 +7,8 @@ import java.util.HashMap;
 
 public class ManejadorPartidas {
 
-	HashMap<String,Integer> partidas;
+	HashMap<String,Integer> partidas;//VICTOR: al final no haremos una lista de objetos partida? Lo digo por que puede ser mejor, ya que la partida guarda el puerto y así
+									//puedo usarla para mostrarla en la interfaz gráfica.
 	
 	public ManejadorPartidas() {
 		this.partidas = new HashMap<String,Integer>();

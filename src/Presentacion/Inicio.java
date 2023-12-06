@@ -46,7 +46,7 @@ public class Inicio {
 		initialize();
 	}
 	
-	//Este metodo permite que las label se adapten al tamaño.
+	//Este metodo permite que las label se adapten al tamaño de la label.
 	public String StrToHtml(String texto) {
 		return "<html><p>"+texto+"</p></html>";
 	}

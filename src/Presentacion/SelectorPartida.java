@@ -59,7 +59,7 @@ public class SelectorPartida extends JFrame {
 	public String StrToHtml(String texto) {
 		return "<html><p>"+texto+"</p></html>";
 	}
-	//Comprueba si se ha seleccionado una partida para unirse, encaso contrario salta un mensaje de error
+	//Comprueba si se ha seleccionado una partida para unirse, encaso contrario salta un mensaje de error.
 	public void ManejadorUnirse() {
 		if(this.listPartidas.getSelectedIndex()==-1) {
 			Inicio.infoBox("No se pudo unir a ninguna partida ya que no se ha seleccionado ninguna", "Error de Selección");

@@ -13,7 +13,7 @@ import ModeloDominio.JugadorBase;
 public class LNJugador {
 
 	private JugadorBase jugador; //DAVID: Lo mismo que en lo de máster. Además, de ser necesarios... ¿no sería mejor que fuesen Jugador y Máster en vez de JugadorBase?
-	
+								//Respuesta David: Seguramente será mejor que sea de un tipo concreto. si. habrá que mirarlo
 	public LNJugador (JugadorBase jugador) {
 		this.jugador = jugador;
 	}

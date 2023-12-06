@@ -13,6 +13,7 @@ import ModeloDominio.*;
 public class LNMaster extends LNJugadorBase {
 
 	JugadorBase master; //VICTOR: ¿Es necesario que la lógica de negocio del máster tenga un objeto máster?
+						//Respuesta David: Sí, por que vamos a decir que quieres ver el nombre del master o que al master le añadimos algun dato extra, como sabes a que msater te refieres.
 	Partida partida;
 	
 	public LNMaster(JugadorBase m) {

@@ -31,8 +31,10 @@ public class HiloServerPartidas extends Thread {
 				while(!peticion.equals("Desconectar")) {
 					if (peticion.startsWith("Nueva")) {
 						peticion = ois.readLine();
+						String nombreMaster = peticion.split(":")[1];
+						peticion = ois.readLine();
 						String nombrePartida = peticion.split(":")[1];
-						exito = manejadorPartidas.aniadirPartida(nombrePartida,s.getPort());
+						exito = manejadorPartidas.aniadirPartida(nombreMaster,nombrePartida,s.getPort());
 						if (!exito) {
 							oos.writeBytes("ERROR: no se ha podido crear la partida\n");
 						}

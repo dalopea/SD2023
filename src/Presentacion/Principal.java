@@ -19,19 +19,20 @@ public class Principal {
 			String dec=bf.readLine();
 			
 			if(dec.equalsIgnoreCase("Crear")) {
-				JugadorBase master=new Master(nombre);
+				Master master=new Master(nombre);
 				LNMaster lnMaster=new LNMaster(master);
-				Partida p= lnMaster.crearPartida();
-				PartidaTextualMaster ptm=new PartidaTextualMaster(p, lnMaster);
-				ptm.mostrarInterfaz();
+				lnMaster.crearPartida();
+				lnMaster.iniciarPartida();
 				
 			}else if(dec.equalsIgnoreCase("Unir")) {
 				System.out.println("Has seleccionado unirte a una partida");
-				JugadorBase jugador = new Jugador(nombre);
+				Jugador jugador = new Jugador(nombre);
 				LNJugador lnJugador = new LNJugador(jugador);
 				HashMap<String, Integer> partidas = lnJugador.obtenerPartidas();
 				for (String s : partidas.keySet()) {
-					System.out.println("Nombre de partida " + s + " con puerto " + partidas.get(s));
+					System.out.println("-------Nueva Partida------");
+					System.out.println("Nombre de máster: " + s.split(":")[0]);
+					System.out.println("Nombre de partida: " + s.split(":")[1] + " con puerto " + partidas.get(s)); 
 				}
 				
 			}

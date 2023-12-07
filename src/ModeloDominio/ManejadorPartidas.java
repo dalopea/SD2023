@@ -9,6 +9,8 @@ public class ManejadorPartidas {
 
 	HashMap<String,Integer> partidas;//VICTOR: al final no haremos una lista de objetos partida? Lo digo por que puede ser mejor, ya que la partida guarda el puerto y así
 									//puedo usarla para mostrarla en la interfaz gráfica.
+									//Respuesta: Por ahora voy a hacer lo que dije, voy a añadir el nombre de máster tmb en el String.
+									//El orden será nombreMaster:nombrePartida.
 	
 	public ManejadorPartidas() {
 		this.partidas = new HashMap<String,Integer>();
@@ -21,19 +23,21 @@ public class ManejadorPartidas {
 		this.partidas = partidas;
 	}
 	
-	public synchronized boolean aniadirPartida(String nombrePartida, int puertoPartida) {
-		if (partidas.containsKey(nombrePartida)) {
+	public synchronized boolean aniadirPartida(String nombreMaster, String nombrePartida, int puertoPartida) {
+		String identificador = nombreMaster + ":" + nombrePartida;
+		if (partidas.containsKey(identificador)) {
 			return false;
 		}
 		else {
-			partidas.put(nombrePartida, puertoPartida);
+			partidas.put(identificador, puertoPartida);
 			return true;
 		}
 	}
 	
-	public synchronized boolean eliminarPartida(String nombrePartida) {
-		if (partidas.containsKey(nombrePartida)) {
-			partidas.remove(nombrePartida);
+	public synchronized boolean eliminarPartida(String nombreMaster, String nombrePartida) {
+		String identificador = nombreMaster + ":" + nombrePartida;
+		if (partidas.containsKey(identificador)) {
+			partidas.remove(identificador);
 			return true;
 		}
 		else {

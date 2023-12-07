@@ -12,9 +12,8 @@ import ModeloDominio.JugadorBase;
 //Comentario
 public class LNJugador {
 
-	private JugadorBase jugador; //DAVID: Lo mismo que en lo de máster. Además, de ser necesarios... ¿no sería mejor que fuesen Jugador y Máster en vez de JugadorBase?
-								//Respuesta David: Seguramente será mejor que sea de un tipo concreto. si. habrá que mirarlo
-	public LNJugador (JugadorBase jugador) {
+	private Jugador jugador; //DAVID: Pues lo paso a la clase concreta
+	public LNJugador (Jugador jugador) {
 		this.jugador = jugador;
 	}
 	public HashMap<String,Integer> obtenerPartidas(){
@@ -38,5 +37,17 @@ public class LNJugador {
 			e.printStackTrace();
 		}
 		return partidas;
+	}
+	
+	public void unirseAPartida(int numeroPuerto) {
+		try(Socket s = new Socket("localhost",numeroPuerto);
+				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
+				ObjectInputStream ois = new ObjectInputStream(s.getInputStream())){
+			
+			
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

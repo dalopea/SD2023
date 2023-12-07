@@ -3,6 +3,9 @@ package LogicaNegocio;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import ModeloDominio.*;
 
 /*
@@ -12,11 +15,10 @@ import ModeloDominio.*;
 
 public class LNMaster extends LNJugadorBase {
 
-	JugadorBase master; //VICTOR: ¿Es necesario que la lógica de negocio del máster tenga un objeto máster?
-						//Respuesta David: Sí, por que vamos a decir que quieres ver el nombre del master o que al master le añadimos algun dato extra, como sabes a que msater te refieres.
-	Partida partida;
+	private Master master; 
+	private Partida partida;
 	
-	public LNMaster(JugadorBase m) {
+	public LNMaster(Master m) {
 		this.master=m;
 	}
 	
@@ -41,6 +43,7 @@ public class LNMaster extends LNJugadorBase {
 					p.setNombrePartida(nombrePartida);
 					p.setPuertoPartida(s.getLocalPort());
 					oos.writeBytes("Nueva partida\n");
+					oos.writeBytes("Nombre:" + master.getNombreUsuario() + "\n");
 					oos.writeBytes("Nombre:" + nombrePartida+"\n");
 					oos.flush();
 					String respuesta = ois.readLine();
@@ -57,7 +60,29 @@ public class LNMaster extends LNJugadorBase {
 		}
 		
 		return p;
-		
+	}
+	
+	public void iniciarPartida() {
+		ExecutorService poolJugadores = Executors.newCachedThreadPool();
+		try(ServerSocket ss = new ServerSocket(partida.getPuertoPartida())){
+			while(true) {
+				try {
+					Socket s = ss.accept();
+					poolJugadores.execute(new HiloJugadorPartida(s,partida));
+				}
+				catch(IOException e) {
+					e.printStackTrace();
+				}
+				
+				
+			}
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			poolJugadores.shutdown();
+		}
 	}
 	
 	

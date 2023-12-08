@@ -92,16 +92,16 @@ public class Inicio {
 	//Metodo para crear infoBox de error, pero podrían ser de otra cosa
 	 public static void infoBox(String infoMessage, String titleBar)
 	    {
-	        JOptionPane.showMessageDialog(null, infoMessage, "Error: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+	        JOptionPane.showMessageDialog(null, infoMessage, "Notificaión: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
 	    }
 	
 	 //Comprueba que el nombre es valido, tras lo que creara el selector de partidas.
 	public void ManejadorNombre() {
 		if(this.txtNombre.getText().isEmpty() || this.txtNombre.getText().isBlank()) {
-			Inicio.infoBox("Nombre no valido", "Inicio de sesion");
+			Inicio.infoBox("Nombre no valido", "Error de Inicio de sesion");
 		}else {
-			SelectorPartida in=new SelectorPartida(this.txtNombre.getText());
-			in.setVisible(true);
+			//SelectorPartida in=new SelectorPartida(this.txtNombre.getText());
+			//in.setVisible(true);
 			window.frmRol.setVisible(false);
 		}
 	}

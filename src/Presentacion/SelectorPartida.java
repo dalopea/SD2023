@@ -1,29 +1,20 @@
 package Presentacion;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
-import javax.swing.JComboBox;
-import javax.swing.JTextPane;
-import javax.swing.JMenu;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JLabel;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.border.SoftBevelBorder;
+
+import ModeloDominio.Partida;
+
 import javax.swing.border.CompoundBorder;
-import javax.swing.JTextField;
 import java.awt.Font;
-import javax.swing.SwingConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.*;
+
+import java.net.*;
+import java.util.*;
+
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -35,7 +26,13 @@ public class SelectorPartida extends JFrame {
 	private JTextField txtNombrePartida;
 	private String nombre;
 	private JLabel lblGreet;
-	JList listPartidas = new JList();
+	DefaultListModel<String> model=new DefaultListModel<>();
+	JList listPartidas = new JList(model);
+	HashMap<String,Integer> partidas;
+	
+	private Socket s;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 	
 
 
@@ -56,17 +53,25 @@ public class SelectorPartida extends JFrame {
 	
 	//Comprueba que la partida a crear es valida
 	public void ManejadorCrear() {
+		
+		
+		
 		if(this.txtNombrePartida.getText().isEmpty() || this.txtNombrePartida.getText().isBlank()) {
-			Inicio.infoBox("Nombre de partida no valido", "Error de Creación");
-		}else if(false) {
-			//si existe la partida error
+			Inicio.infoBox("Error de Creación", "Nombre de partida no valido");
 		}else {
-			//crear la partida
+			crearPartida();
 		}
 	}
 	
+	public void ManejadorActualizar() {
+				this.partidas=obtenerPartidas();
+				this.model.removeAllElements();
+				model.addAll(partidas.keySet());
+
+	}
 	
-	public SelectorPartida(String nombre) {
+	
+	public SelectorPartida(String nombre,Socket s) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -108,15 +113,8 @@ public class SelectorPartida extends JFrame {
 		
 		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listPartidas.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		listPartidas.setModel(new AbstractListModel() {
-			String[] values = new String[] {"asd", "sd", "asd", "f"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		
+		
 		listPartidas.setBounds(80, 81, 364, 140);
 		contentPane.add(listPartidas);
 		
@@ -125,6 +123,11 @@ public class SelectorPartida extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("Actualizar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorActualizar();
+			}
+		});
 		btnNewButton.setBounds(304, 275, 104, 36);
 		contentPane.add(btnNewButton);
 		
@@ -144,4 +147,72 @@ public class SelectorPartida extends JFrame {
 		lblGreet.setBounds(54, 11, 418, 44);
 		contentPane.add(lblGreet);
 	}
+	
+	public HashMap<String,Integer> obtenerPartidas(){
+		HashMap<String,Integer> partidas = null;
+		try(Socket s = new Socket ("localhost", 55555);
+				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
+				ObjectInputStream ois = new ObjectInputStream (s.getInputStream())){
+			boolean obtenido = false;
+			
+			while(!obtenido){
+				oos.writeBytes("Obtener partidas\n");
+				oos.flush();
+				partidas = (HashMap<String,Integer>) ois.readObject();
+				oos.writeBytes("Desconectar\n");
+				oos.flush();
+				obtenido = true;
+			}
+			
+		}
+		catch(IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return partidas;
+	}
+	
+	
+	
+	
+	
+	/*
+	 * El método crearPartida() se conecta con el servidor de la aplicación para incluir una nueva partida (en un futuro, se 
+	 * podrá incluir una partida importada desde un documento xml). Tras dar los datos de la partida al servidor (nombre y número de puerto),
+	 * se desconecta del servidor y devuelve el objeto de tipo Partida creado.
+	 */
+	public Partida crearPartida() {
+		Partida p = null;
+		try(Socket s=new Socket("localhost",55555);
+			ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(s.getInputStream()); ) {
+			
+			//TODO: Aquí es donde debería dar la opción de importar partida desde un xml, creo yo
+			boolean creada = false;	
+			while(!creada) {
+					p = new Partida();
+					p.setNombrePartida(this.txtNombrePartida.getText());
+					p.setPuertoPartida(s.getLocalPort());
+					oos.writeBytes("Nueva partida\n");
+					oos.writeBytes("Nombre:" + this.nombre + "\n");
+					oos.writeBytes("Nombre:" + this.txtNombrePartida.getText()+"\n");
+					oos.flush();
+					String respuesta = ois.readLine();
+					if (!respuesta.startsWith("ERROR")) {
+						Inicio.infoBox("INFO", respuesta);
+						creada = true;
+						oos.writeBytes("Desconectar\n");
+						oos.flush();
+					}
+					Inicio.infoBox("INFO", respuesta);
+				}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return p;
+	}
+	
+	
+	
 }

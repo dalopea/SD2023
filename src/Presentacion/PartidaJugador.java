@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
 
 public class PartidaJugador extends JFrame {
 
@@ -59,6 +60,7 @@ public class PartidaJugador extends JFrame {
 		Mapa.setBounds(225, 25, 1200, 900);
 		contentPane.add(Mapa);
 		Mapa.setLayout(new GridLayout(1, 0, 0, 0));
+		getContentPane().add(new Canvas(Mapa,20));
 		
 		JPanel Chat = new JPanel();
 		Chat.setBounds(1450, 25, 300, 900);

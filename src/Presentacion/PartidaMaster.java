@@ -73,7 +73,7 @@ public class PartidaMaster extends JFrame {
 		Partida.setBounds(225, 25, 1200, 900);
 		contentPane.add(Partida);
 		Partida.setLayout(new GridLayout(1, 0, 0, 0));
-		Partida.add(new Canvas());
+		this.add(new Canvas(Partida,20));
 		
 		JPanel Chat = new JPanel();
 		Chat.setBounds(1450, 25, 300, 900);

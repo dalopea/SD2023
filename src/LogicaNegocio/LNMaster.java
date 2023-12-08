@@ -52,6 +52,19 @@ public class LNMaster extends LNJugadorBase{
 		}
 	}
 	
+	public void eliminarPartidaLista() {
+		try (Socket s = new Socket("localhost",55555);
+				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream())){
+			oos.writeBytes("Eliminar Partida\n");
+			oos.writeBytes(this.master.getNombreUsuario() + ":" + this.partida.getNombrePartida() + "\n");
+			oos.writeBytes("Desconectar\n");
+			oos.flush();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 	

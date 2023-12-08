@@ -34,8 +34,7 @@ public class ManejadorPartidas {
 		}
 	}
 	
-	public synchronized boolean eliminarPartida(String nombreMaster, String nombrePartida) {
-		String identificador = nombreMaster + ":" + nombrePartida;
+	public synchronized boolean eliminarPartida(String identificador) {
 		if (partidas.containsKey(identificador)) {
 			partidas.remove(identificador);
 			return true;

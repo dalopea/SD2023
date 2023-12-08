@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -100,9 +103,19 @@ public class Inicio {
 		if(this.txtNombre.getText().isEmpty() || this.txtNombre.getText().isBlank()) {
 			Inicio.infoBox("Nombre no valido", "Error de Inicio de sesion");
 		}else {
-			//SelectorPartida in=new SelectorPartida(this.txtNombre.getText());
-			//in.setVisible(true);
-			window.frmRol.setVisible(false);
+			SelectorPartida in;
+			try {
+				in = new SelectorPartida(this.txtNombre.getText(),new Socket("localhost",55555));
+				in.setVisible(true);
+				window.frmRol.setVisible(false);
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 

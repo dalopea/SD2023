@@ -3,15 +3,19 @@ package Presentacion;
 import java.io.*;
 import java.util.HashMap;
 
+import javax.swing.JFrame;
+
 import LogicaNegocio.*;
 import ModeloDominio.*;
 //Comentario
 public class Principal {
 
 	public static void main(String[] args) {
-		
+
 		Inicio.main(args);
 		
+//		PartidaMaster pm=new PartidaMaster(null);
+//		pm.setVisible(true);
 		
 		
 //		

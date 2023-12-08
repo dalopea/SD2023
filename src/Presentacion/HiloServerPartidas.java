@@ -46,6 +46,7 @@ public class HiloServerPartidas extends Thread {
 					else if (peticion.startsWith("Obtener")) {
 						oos.writeObject(manejadorPartidas.getPartidas());
 						oos.flush();
+						oos.reset();
 					}
 					peticion = ois.readLine();
 				}

@@ -4,7 +4,9 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import ModeloDominio.Partida;
+import ModeloDominio.*;
+
+import LogicaNegocio.*;
 
 import javax.swing.border.CompoundBorder;
 import java.awt.Font;
@@ -62,7 +64,21 @@ public class SelectorPartida extends JFrame {
 		if(this.listPartidas.getSelectedIndex()==-1) {
 			Inicio.infoBox("No se pudo unir a ninguna partida ya que no se ha seleccionado ninguna", "Error de Selección");
 		}else {
-			//unirse a partida
+			try {
+				Socket s=new Socket("localhost",partidas.get(this.listPartidas.getSelectedValue().toString()));
+				Jugador j=new Jugador(this.nombre);
+				LNJugadorBase ln=new LNJugador(j);
+				PartidaJugador pj=new PartidaJugador(s,ln);
+				pj.setVisible(true);
+				this.setVisible(false);
+				
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -73,7 +89,18 @@ public class SelectorPartida extends JFrame {
 		}else {
 			Partida p=crearPartida();
 			if(p!=null) {
-				//crear
+				try {
+					s.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Master m=new Master(this.nombre);
+				LNJugadorBase ln=new LNMaster(m,p);
+				PartidaMaster pm=new PartidaMaster(ln);
+				pm.setVisible(true);
+				this.setVisible(false);
+				
 			}
 		}
 	}
@@ -172,23 +199,15 @@ public class SelectorPartida extends JFrame {
 	
 	public HashMap<String,Integer> obtenerPartidas(){
 		HashMap<String,Integer> partidas = null;
-		try(Socket s = new Socket ("localhost", 55555);
-				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
-				ObjectInputStream ois = new ObjectInputStream (s.getInputStream())){
-			boolean obtenido = false;
-			
-			while(!obtenido){
+		try{
+				
 				oos.writeBytes("Obtener partidas\n");
 				oos.flush();
 				partidas = (HashMap<String,Integer>) ois.readObject();
-				oos.writeBytes("Desconectar\n");
-				oos.flush();
-				obtenido = true;
-			}
-			
+
 		}
 		catch(IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			cerrarTodo();
 		}
 		return partidas;
 	}
@@ -207,24 +226,25 @@ public class SelectorPartida extends JFrame {
 		try{
 			
 			//TODO: Aquí es donde debería dar la opción de importar partida desde un xml, creo yo
-			boolean creada = false;	
-			while(!creada) {
-					p = new Partida();
-					p.setNombrePartida(this.txtNombrePartida.getText());
-					p.setPuertoPartida(s.getLocalPort());
+			
+					
 					oos.writeBytes("Nueva partida\n");
 					oos.writeBytes("Nombre:" + this.nombre + "\n");
 					oos.writeBytes("Nombre:" + this.txtNombrePartida.getText()+"\n");
 					oos.flush();
 					String respuesta = ois.readLine();
+					
 					if (!respuesta.startsWith("ERROR")) {
-						Inicio.infoBox("INFO", respuesta);
-						creada = true;
+						p = new Partida();
+						p.setNombrePartida(this.txtNombrePartida.getText());
+						p.setPuertoPartida(s.getLocalPort());
+						System.out.println(s.getLocalPort());
 						oos.writeBytes("Desconectar\n");
 						oos.flush();
+						
 					}
-					Inicio.infoBox("INFO", respuesta);
-				}
+					Inicio.infoBox(respuesta,"INFO");
+				
 
 		} catch (IOException e) {
 			cerrarTodo();

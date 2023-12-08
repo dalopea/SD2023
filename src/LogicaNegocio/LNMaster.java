@@ -21,8 +21,9 @@ public class LNMaster extends LNJugadorBase {
 	private Partida partida;
 	private List<HiloJugadorPartida> hilosJugadores;
 	
-	public LNMaster(Master m) {
+	public LNMaster(Master m,Partida p) {
 		this.master=m;
+		this.partida=p;
 		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
 	}
 	

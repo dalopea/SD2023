@@ -11,7 +11,7 @@ import ModeloDominio.JugadorBase;
 import ModeloDominio.Partida;
 
 //Comentario
-public class LNJugador {
+public class LNJugador extends LNJugadorBase {
 
 	private Jugador jugador; //DAVID: Pues lo paso a la clase concreta
 	private Partida partida;
@@ -24,8 +24,8 @@ public class LNJugador {
 	}
 	
 	
-	public void unirseAPartida(int numeroPuerto) {
-		try(Socket s = new Socket("localhost",numeroPuerto)){
+	public void unirseAPartida(Socket s) {
+		try{
 			this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
 			this.hiloLectorJugador = new HiloLectorJugador(s,partida);
 			this.hiloEscritorJugador.start();
@@ -33,7 +33,7 @@ public class LNJugador {
 			this.hiloEscritorJugador.join();
 			this.hiloLectorJugador.join();	
 		}
-		catch(IOException | InterruptedException e) {
+		catch(InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

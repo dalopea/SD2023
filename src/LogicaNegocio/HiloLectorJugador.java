@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import ModeloDominio.Partida;
+import Presentacion.PartidaMaster;
 
 public class HiloLectorJugador extends Thread{
 
@@ -23,6 +24,7 @@ public class HiloLectorJugador extends Thread{
 			String linea;
 			Partida partida;
 			while((linea = ois.readLine())!= null) {
+				PartidaMaster.addText(linea);
 				System.out.println(linea);
 				if (linea.startsWith("Partida")) {
 					this.p = (Partida) ois.readObject();

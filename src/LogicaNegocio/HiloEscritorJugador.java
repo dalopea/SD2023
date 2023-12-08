@@ -6,13 +6,17 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class HiloEscritorJugador implements Runnable{
+import ModeloDominio.Partida;
+
+public class HiloEscritorJugador extends Thread{
 
 	private Socket s;
+	private Partida p;
 	
 	
-	public HiloEscritorJugador(Socket s) {
+	public HiloEscritorJugador(Socket s, Partida partida) {
 		this.s = s;
+		this.p = partida;
 	}
 	
 	

@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class HiloLectorJugador implements Runnable{
+import ModeloDominio.Partida;
+
+public class HiloLectorJugador extends Thread{
 
 	private Socket s;
+	private Partida p;
 	
-	public HiloLectorJugador(Socket s) {
+	public HiloLectorJugador(Socket s, Partida p) {
 		this.s = s;
+		this.p = p;
 	}
 	
 	
@@ -17,11 +21,16 @@ public class HiloLectorJugador implements Runnable{
 	public void run() {
 		try(ObjectInputStream ois = new ObjectInputStream(s.getInputStream())){
 			String linea;
+			Partida partida;
 			while((linea = ois.readLine())!= null) {
 				System.out.println(linea);
+				if (linea.startsWith("Partida")) {
+					this.p = (Partida) ois.readObject();
+					System.out.println(this.p.getNombrePartida());
+				}
 			}
 		}
-		catch(IOException e) {
+		catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		finally {

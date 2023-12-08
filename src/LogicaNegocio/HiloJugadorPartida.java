@@ -37,6 +37,9 @@ public class HiloJugadorPartida implements Runnable{
 	public void run() {
 		String mensaje;
 		try {
+			oos.writeBytes("Partida\n");
+			oos.writeObject(partida);
+			oos.flush();
 			mensaje = ois.readLine();
 			while (mensaje != null) {
 				mensajeBroadcast(mensaje);

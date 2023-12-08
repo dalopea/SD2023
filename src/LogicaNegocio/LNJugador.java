@@ -8,13 +8,19 @@ import java.util.HashMap;
 
 import ModeloDominio.Jugador;
 import ModeloDominio.JugadorBase;
+import ModeloDominio.Partida;
 
 //Comentario
 public class LNJugador {
 
 	private Jugador jugador; //DAVID: Pues lo paso a la clase concreta
+	private Partida partida;
+	private HiloEscritorJugador hiloEscritorJugador;
+	private HiloLectorJugador hiloLectorJugador;
+	
 	public LNJugador (Jugador jugador) {
 		this.jugador = jugador;
+		this.partida = new Partida();
 	}
 	public HashMap<String,Integer> obtenerPartidas(){
 		HashMap<String,Integer> partidas = null;
@@ -41,12 +47,12 @@ public class LNJugador {
 	
 	public void unirseAPartida(int numeroPuerto) {
 		try(Socket s = new Socket("localhost",numeroPuerto)){
-			Thread thEscritor = new Thread(new HiloEscritorJugador(s));
-			Thread thLector = new Thread(new HiloLectorJugador(s));
-			thEscritor.start();
-			thLector.start();
-			thEscritor.join();
-			thLector.join();	
+			this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
+			this.hiloLectorJugador = new HiloLectorJugador(s,partida);
+			this.hiloEscritorJugador.start();
+			this.hiloLectorJugador.start();
+			this.hiloEscritorJugador.join();
+			this.hiloLectorJugador.join();	
 		}
 		catch(IOException | InterruptedException e) {
 			e.printStackTrace();

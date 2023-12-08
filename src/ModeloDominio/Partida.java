@@ -1,8 +1,17 @@
 package ModeloDominio;
 
+import java.io.Serializable;
 import java.util.*;
-//Comentario
-public class Partida {
+
+/*
+ * La clase partida guarda la información relativa a la partida en curso:
+ * 	- Nombre de partida
+ * 	- Puerto de la partida
+ *  - Lista de jugadores
+ *  - Estado del tablero (y, por tanto, de cada una de las casillas)
+ *  - Iniciada o no iniciada
+ */
+public class Partida implements Serializable{
 
 	String nombrePartida;
 	int puertoPartida;
@@ -13,8 +22,9 @@ public class Partida {
 	
 	public Partida() {
 		
-		jugadores=new ArrayList<>();
-		iniciado=false;
+		this.jugadores=new ArrayList<Jugador>();
+		this.iniciado=false;
+		
 		
 	}
 	

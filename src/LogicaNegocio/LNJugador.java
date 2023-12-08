@@ -22,28 +22,7 @@ public class LNJugador {
 		this.jugador = jugador;
 		this.partida = new Partida();
 	}
-	public HashMap<String,Integer> obtenerPartidas(){
-		HashMap<String,Integer> partidas = null;
-		try(Socket s = new Socket ("localhost", 55555);
-				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
-				ObjectInputStream ois = new ObjectInputStream (s.getInputStream())){
-			boolean obtenido = false;
-			
-			while(!obtenido){
-				oos.writeBytes("Obtener partidas\n");
-				oos.flush();
-				partidas = (HashMap<String,Integer>) ois.readObject();
-				oos.writeBytes("Desconectar\n");
-				oos.flush();
-				obtenido = true;
-			}
-			
-		}
-		catch(IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return partidas;
-	}
+	
 	
 	public void unirseAPartida(int numeroPuerto) {
 		try(Socket s = new Socket("localhost",numeroPuerto)){

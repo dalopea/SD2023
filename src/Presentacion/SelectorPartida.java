@@ -35,13 +35,28 @@ public class SelectorPartida extends JFrame {
 	private ObjectInputStream ois;
 	
 
+	public void cerrarTodo() {
+		try {
+			if (ois != null) {
+				ois.close();
+			}
+			if (oos != null) {
+				oos.close();
+			}
+			if (s!= null) {
+				s.close();
+			}
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public String StrToHtml(String texto) {
 		return "<html><p>"+texto+"</p></html>";
 	}
+	
 	//Comprueba si se ha seleccionado una partida para unirse, encaso contrario salta un mensaje de error.
 	public void ManejadorUnirse() {
 		if(this.listPartidas.getSelectedIndex()==-1) {
@@ -53,13 +68,13 @@ public class SelectorPartida extends JFrame {
 	
 	//Comprueba que la partida a crear es valida
 	public void ManejadorCrear() {
-		
-		
-		
 		if(this.txtNombrePartida.getText().isEmpty() || this.txtNombrePartida.getText().isBlank()) {
 			Inicio.infoBox("Error de Creación", "Nombre de partida no valido");
 		}else {
-			crearPartida();
+			Partida p=crearPartida();
+			if(p!=null) {
+				//crear
+			}
 		}
 	}
 	
@@ -79,6 +94,13 @@ public class SelectorPartida extends JFrame {
 			}
 		});
 		this.nombre=nombre;
+		this.s=s;
+		try {
+			this.oos = new ObjectOutputStream(s.getOutputStream());
+			this.ois = new ObjectInputStream(s.getInputStream());
+		}catch(IOException e) {
+			cerrarTodo();
+		}
 		
 
 		setResizable(false);
@@ -182,9 +204,7 @@ public class SelectorPartida extends JFrame {
 	 */
 	public Partida crearPartida() {
 		Partida p = null;
-		try(Socket s=new Socket("localhost",55555);
-			ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
-			ObjectInputStream ois = new ObjectInputStream(s.getInputStream()); ) {
+		try{
 			
 			//TODO: Aquí es donde debería dar la opción de importar partida desde un xml, creo yo
 			boolean creada = false;	
@@ -207,7 +227,7 @@ public class SelectorPartida extends JFrame {
 				}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			cerrarTodo();
 		}
 		
 		return p;

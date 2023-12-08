@@ -40,13 +40,15 @@ public class LNJugador {
 	}
 	
 	public void unirseAPartida(int numeroPuerto) {
-		try(Socket s = new Socket("localhost",numeroPuerto);
-				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
-				ObjectInputStream ois = new ObjectInputStream(s.getInputStream())){
-			
-			
+		try(Socket s = new Socket("localhost",numeroPuerto)){
+			Thread thEscritor = new Thread(new HiloEscritorJugador(s));
+			Thread thLector = new Thread(new HiloLectorJugador(s));
+			thEscritor.start();
+			thLector.start();
+			thEscritor.join();
+			thLector.join();	
 		}
-		catch(IOException e) {
+		catch(IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

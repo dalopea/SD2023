@@ -34,13 +34,16 @@ public class Principal {
 					System.out.println("Nombre de máster: " + s.split(":")[0]);
 					System.out.println("Nombre de partida: " + s.split(":")[1] + " con puerto " + partidas.get(s)); 
 				}
+				System.out.println("Escoge una partida a la que conectarte (puerto)");
+				String puerto = bf.readLine();
+				int puertoEntero = Integer.parseInt(puerto);
+				lnJugador.unirseAPartida(puertoEntero);
 				
 			}
 			
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

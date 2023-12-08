@@ -3,6 +3,8 @@ package LogicaNegocio;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,9 +19,11 @@ public class LNMaster extends LNJugadorBase {
 
 	private Master master; 
 	private Partida partida;
+	private List<HiloJugadorPartida> hilosJugadores;
 	
 	public LNMaster(Master m) {
 		this.master=m;
+		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
 	}
 	
 	/*
@@ -27,7 +31,7 @@ public class LNMaster extends LNJugadorBase {
 	 * podrá incluir una partida importada desde un documento xml). Tras dar los datos de la partida al servidor (nombre y número de puerto),
 	 * se desconecta del servidor y devuelve el objeto de tipo Partida creado.
 	 */
-	public Partida crearPartida() {
+	public void crearPartida() {
 		Partida p = null;
 		try(Socket s=new Socket("localhost",55555);
 			ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream());
@@ -59,22 +63,25 @@ public class LNMaster extends LNJugadorBase {
 			e.printStackTrace();
 		}
 		
-		return p;
+		this.partida = p;
 	}
 	
+	/*
+	 * El método iniciarPartida crea el servidor, con el puerto que ha utilizado para conectarse al servidor de partidas. Permitirá la entrada de
+	 * los distintos jugadores y les asignará a cada uno un hilo distinto.
+	 * Todos los hilos comparten el mismo objeto Partida, que es el que tiene toda la información del estado del tablero.
+	 */
 	public void iniciarPartida() {
 		ExecutorService poolJugadores = Executors.newCachedThreadPool();
 		try(ServerSocket ss = new ServerSocket(partida.getPuertoPartida())){
 			while(true) {
 				try {
 					Socket s = ss.accept();
-					poolJugadores.execute(new HiloJugadorPartida(s,partida));
+					poolJugadores.execute(new HiloJugadorPartida(s,this.partida,this.hilosJugadores));
 				}
 				catch(IOException e) {
 					e.printStackTrace();
 				}
-				
-				
 			}
 		}
 		catch(IOException e) {

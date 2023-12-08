@@ -5,52 +5,39 @@ public class Casilla {
 	private int x;
 	private int y;
 	
-	private boolean ocupada;//ocupada hace referencia a si hay alguien o algo en la casilla
+	private Personaje personaje;
 	private boolean disponible;//disponible hace referencia a si se puede poner cualquier cosa
 	
 	
 	public Casilla(int x,int y) {
 		this.x=x;
 		this.y=y;
-		ocupada=false;
-		disponible=true;
+		this.personaje = null;
+		this.disponible=true;
 	}
 	
 	public int[] getCoordenadas() {
 		int[] coords=new int[2];
 		coords[0]=x;
-		coords[1]=x;
+		coords[1]=y;
 		return coords;
 	}
 	
 	
 	
-	public boolean isDisponible() {
+	public synchronized boolean isDisponible() {
 		return disponible;
 	}
 	
-	public boolean isOcupada() {
-		return ocupada;
-	}
-	
-	public void cambiarDisponibilidad() {
-		
-		/*if(disponible) {
-			disponible=false;
-		}else {
-			disponible=true;
-		}*/
+	public synchronized void cambiarDisponibilidad() {
 		disponible = !disponible;
 	}
 	
-	public void cambiarOcupacion() {
-		/*if(ocupada) {
-			ocupada=false;
-		}else {
-			ocupada=true;
-		}*/
-		ocupada = !ocupada;
+	public synchronized void setPersonaje(Personaje personaje) {
+		this.personaje = personaje;
 	}
+	
+	
 	
 	
 }

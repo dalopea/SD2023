@@ -20,11 +20,13 @@ public class LNMaster extends LNJugadorBase{
 	private Master master; 
 	private Partida partida;
 	private List<HiloJugadorPartida> hilosJugadores;
+	private List<Personaje> personajes;
 	
 	public LNMaster(Master m,Partida p) {
 		this.master=m;
 		this.partida=p;
 		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
+		this.personajes = new ArrayList<Personaje>();
 	}
 	
 	
@@ -63,6 +65,18 @@ public class LNMaster extends LNJugadorBase{
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void nuevoPersonaje(Personaje personaje) {
+		this.personajes.add(personaje);
+	}
+	
+	public void eliminarPersonaje(Personaje personaje) {
+		this.personajes.remove(personaje);
+	}
+	
+	public void personajeACasilla(Personaje personaje, int x, int y) {
+		this.partida.getTablero().getCasilla(x,y).setPersonaje(personaje);
 	}
 	
 	

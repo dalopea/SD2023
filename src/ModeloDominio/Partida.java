@@ -13,12 +13,13 @@ import java.util.*;
  */
 public class Partida implements Serializable{
 
-	String nombrePartida;
-	int puertoPartida;
-	Master master;
-	List<Jugador> jugadores;
-	Tablero tablero;
-	boolean iniciado;
+	private String nombrePartida;
+	private int puertoPartida;
+	private Master master;
+	private int numeroJugadores;
+	private List<Jugador> jugadores;
+	private Tablero tablero;
+	private boolean iniciado;
 	
 	public Partida() {
 		
@@ -70,6 +71,14 @@ public class Partida implements Serializable{
 	
 	public List<Jugador> getJugadores() {
 		return jugadores;
+	}
+	
+	public int getNumeroJugadores() {
+		return this.numeroJugadores;
+	}
+	
+	public void setNumeroJugadores(int numeroJugadores) {
+		this.numeroJugadores = numeroJugadores;
 	}
 	
 	

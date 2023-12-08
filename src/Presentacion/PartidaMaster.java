@@ -57,24 +57,22 @@ public class PartidaMaster extends JFrame {
 
 	
 	public PartidaMaster(LNJugadorBase ln) {
+		System.out.println("Entrando al constructor");
 		setResizable(false);
 		setSize(new Dimension(1800, 1000));
 		
-		
 		this.logica=(LNMaster) ln;
 		this.logica.iniciarPartida();
-		
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		
-		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		 Partida = new JPanel();
+		Partida = new JPanel();
 		Partida.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		Partida.setBounds(225, 25, 1200, 900);
 		contentPane.add(Partida);

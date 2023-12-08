@@ -15,7 +15,7 @@ import ModeloDominio.*;
  * alterar el campo, ver toda la información del tablero...
  */
 
-public class LNMaster extends LNJugadorBase {
+public class LNMaster extends LNJugadorBase{
 
 	private Master master; 
 	private Partida partida;
@@ -35,12 +35,12 @@ public class LNMaster extends LNJugadorBase {
 	 * Todos los hilos comparten el mismo objeto Partida, que es el que tiene toda la información del estado del tablero.
 	 */
 	public void iniciarPartida() {
-		ExecutorService poolJugadores = Executors.newCachedThreadPool();
 		try(ServerSocket ss = new ServerSocket(partida.getPuertoPartida())){
-			while(true) {
+			for (int i = 0; i<this.partida.getNumeroJugadores(); i++) {
 				try {
 					Socket s = ss.accept();
-					poolJugadores.execute(new HiloJugadorPartida(s,this.partida,this.hilosJugadores));
+					Thread thJugador = new Thread(new HiloJugadorPartida(s,this.partida,this.hilosJugadores));
+					thJugador.start();
 				}
 				catch(IOException e) {
 					e.printStackTrace();
@@ -49,9 +49,6 @@ public class LNMaster extends LNJugadorBase {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-		}
-		finally {
-			poolJugadores.shutdown();
 		}
 	}
 	

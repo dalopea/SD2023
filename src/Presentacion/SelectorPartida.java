@@ -92,7 +92,6 @@ public class SelectorPartida extends JFrame {
 				try {
 					s.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				Master m=new Master(this.nombre);
@@ -100,7 +99,6 @@ public class SelectorPartida extends JFrame {
 				PartidaMaster pm=new PartidaMaster(ln);
 				pm.setVisible(true);
 				this.setVisible(false);
-				
 			}
 		}
 	}

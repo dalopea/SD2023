@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 import ModeloDominio.Partida;
 
 public class HiloJugadorPartida implements Runnable{
@@ -16,6 +18,7 @@ public class HiloJugadorPartida implements Runnable{
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	private List<HiloJugadorPartida> hilosJugadores;
+	private JTextArea txtLeer;
 	
 	
 	public HiloJugadorPartida(Socket s, Partida partida, List<HiloJugadorPartida> hilosJugadores) {
@@ -32,7 +35,25 @@ public class HiloJugadorPartida implements Runnable{
 			cerrarTodo();
 		}
 		
+		
+		
 	}
+	public void setTxtArea(JTextArea txtLeer) {
+		this.txtLeer=txtLeer;
+	}
+	
+	
+	public void enviarAMi(String mensaje) {
+		try {
+			oos.writeBytes(mensaje+"\n");
+			oos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	@Override
 	public void run() {
 		String mensaje;
@@ -42,7 +63,7 @@ public class HiloJugadorPartida implements Runnable{
 			oos.flush();
 			mensaje = ois.readLine();
 			while (mensaje != null) {
-				mensajeBroadcast(mensaje);
+				mensajeBroadcast(mensaje+"\n");
 				mensaje = ois.readLine();
 			}
 		}
@@ -70,6 +91,11 @@ public class HiloJugadorPartida implements Runnable{
 			}
 			
 		}
+		
+		synchronized(this.txtLeer) {
+			this.txtLeer.append(mensaje);
+		}
+		
 	}
 	
 	public void eliminarHiloJugador() {

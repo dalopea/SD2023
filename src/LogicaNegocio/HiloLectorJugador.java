@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import javax.swing.JTextArea;
+
 import ModeloDominio.Partida;
 import Presentacion.PartidaMaster;
 
@@ -11,12 +13,16 @@ public class HiloLectorJugador extends Thread{
 
 	private Socket s;
 	private Partida p;
+	private JTextArea txtLeer;
 	
 	public HiloLectorJugador(Socket s, Partida p) {
 		this.s = s;
 		this.p = p;
 	}
 	
+	public void setTextArea( JTextArea txtLeer) {
+		this.txtLeer=txtLeer;
+	}
 	
 	@Override
 	public void run() {
@@ -24,12 +30,13 @@ public class HiloLectorJugador extends Thread{
 			String linea;
 			Partida partida;
 			while((linea = ois.readLine())!= null) {
-				PartidaMaster.addText(linea);
-				System.out.println(linea);
+
 				if (linea.startsWith("Partida")) {
 					this.p = (Partida) ois.readObject();
 					System.out.println(this.p.getNombrePartida());
+					continue;
 				}
+				this.txtLeer.append(linea+"\n");
 			}
 		}
 		catch(IOException | ClassNotFoundException e) {

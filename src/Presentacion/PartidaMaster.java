@@ -34,23 +34,19 @@ public class PartidaMaster extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private  JPanel contentPane;
-	private static JTextField ChatEscribir;
-	private static JTextArea ChatLeer;
+	private  JTextField ChatEscribir;
+	private  JTextArea ChatLeer;
 	private  LNMaster logica;
 	private JPanel Partida;
 	private JLabel lblNewLabel;
 
 
-	public static void addText(String m) {
-		ChatLeer.append(m);
-	}
 	
-	public static String getText() {
-		return ChatEscribir.getText();
-	}
 	
 	public void ManejadorChat() {
-		
+		this.ChatLeer.append(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText()+"\n");
+		this.logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
+		this.ChatEscribir.setText("");
 	}
 	
 	
@@ -62,7 +58,7 @@ public class PartidaMaster extends JFrame {
 		setSize(new Dimension(1800, 1000));
 		
 		this.logica=(LNMaster) ln;
-		this.logica.iniciarPartida();
+		
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
@@ -102,12 +98,13 @@ public class PartidaMaster extends JFrame {
 		ChatLeer.setLineWrap(true);
 		ChatLeer.setBounds(0, 0, 300, 870);
 		Chat.add(ChatLeer);
+		logica.addTXT(ChatLeer);
 		
 		lblNewLabel = new JLabel("Jugadores");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setBounds(26, 25, 129, 40);
 		contentPane.add(lblNewLabel);
 
-		
+		this.logica.iniciarPartida();
 	}
 }

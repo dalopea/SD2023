@@ -12,35 +12,45 @@ public class HiloEscritorJugador extends Thread{
 
 	private Socket s;
 	private Partida p;
+	private ObjectOutputStream oos;
 	
 	
 	public HiloEscritorJugador(Socket s, Partida partida) {
 		this.s = s;
 		this.p = partida;
+		abrirStream();
 	}
 	
 	
-	@Override
-	public void run() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in))){
-			String linea;
-			while (!(linea = br.readLine()).equals("Desconectar")) {
-				oos.writeBytes(linea + "\n");
-				oos.flush();
-			}
-		}
-		catch(IOException e) {
+	public void abrirStream() {
+		
+		try {
+			if(oos==null) {
+			oos=new ObjectOutputStream(s.getOutputStream());}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		finally {
+		
+	}
+	
+	public boolean streamAbierto() {
+		return !s.isClosed();
+	}
+	
+	public void enviarMensaje(String mensaje) {
+		if(streamAbierto()) {
 			try {
-				s.close();
-			}
-			catch(IOException e) {
-				
+				oos.writeBytes(mensaje+"\n");
+				oos.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
+	
+	
+	
 
 }

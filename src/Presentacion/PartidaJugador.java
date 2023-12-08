@@ -15,6 +15,8 @@ import java.net.*;
 
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PartidaJugador extends JFrame {
 
@@ -26,6 +28,13 @@ public class PartidaJugador extends JFrame {
 	private LNJugador logica;
 	
 	
+	public void ManejadorChat() {
+		this.txtLeer.append(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText()+"\n");
+		this.logica.hiloEscritorJugador.enviarMensaje(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText());
+		this.txtEscribir.setText("");
+	}
+	
+	
 	
 	
 	public PartidaJugador(Socket s,LNJugadorBase log) {
@@ -35,10 +44,10 @@ public class PartidaJugador extends JFrame {
 		logica.unirseAPartida(s);
 		
 		
-		setPreferredSize(new Dimension(1800, 1000));
+
 		setResizable(false);
 		setSize(new Dimension(1800, 1000));
-		setBounds(100, 100, 450, 300);
+	
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,8 +70,17 @@ public class PartidaJugador extends JFrame {
 		txtLeer.setEditable(false);
 		txtLeer.setBounds(0, 0, 300, 870);
 		Chat.add(txtLeer);
+		this.logica.setTxtArea(txtLeer);
 		
 		txtEscribir = new JTextField();
+		txtEscribir.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					ManejadorChat();
+					}
+			}
+		});
 		txtEscribir.setBounds(0, 870, 300, 30);
 		Chat.add(txtEscribir);
 		txtEscribir.setColumns(10);

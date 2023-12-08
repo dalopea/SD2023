@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.swing.JTextArea;
+
 import ModeloDominio.*;
 
 /*
@@ -21,6 +23,7 @@ public class LNMaster extends LNJugadorBase{
 	private Partida partida;
 	private List<HiloJugadorPartida> hilosJugadores;
 	private List<Personaje> personajes;
+	private JTextArea txtLeer;
 	
 	public LNMaster(Master m,Partida p) {
 		this.master=m;
@@ -29,7 +32,21 @@ public class LNMaster extends LNJugadorBase{
 		this.personajes = new ArrayList<Personaje>();
 	}
 	
+	public Master getMaster() {
+		return this.master;
+	}
 	
+	public void addTXT(JTextArea txtLeer) {
+		this.txtLeer=txtLeer;
+	}
+	
+	
+	public void broadcast(String mensaje) {
+		System.out.println(hilosJugadores.size());
+		for(HiloJugadorPartida hjp:hilosJugadores) {
+			hjp.enviarAMi(mensaje);
+		}
+	}
 	
 	/*
 	 * El método iniciarPartida crea el servidor, con el puerto que ha utilizado para conectarse al servidor de partidas. Permitirá la entrada de
@@ -38,10 +55,12 @@ public class LNMaster extends LNJugadorBase{
 	 */
 	public void iniciarPartida() {
 		try(ServerSocket ss = new ServerSocket(partida.getPuertoPartida())){
-			for (int i = 0; i<this.partida.getNumeroJugadores(); i++) {
+			for (int i = 0; i<1; i++) {
 				try {
 					Socket s = ss.accept();
-					Thread thJugador = new Thread(new HiloJugadorPartida(s,this.partida,this.hilosJugadores));
+					HiloJugadorPartida par=new HiloJugadorPartida(s,this.partida,this.hilosJugadores);
+					par.setTxtArea(txtLeer);
+					Thread thJugador = new Thread(par);
 					thJugador.start();
 				}
 				catch(IOException e) {

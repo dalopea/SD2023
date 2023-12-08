@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
+import javax.swing.JTextArea;
+
 import ModeloDominio.Jugador;
 import ModeloDominio.JugadorBase;
 import ModeloDominio.Partida;
@@ -15,7 +17,7 @@ public class LNJugador extends LNJugadorBase {
 
 	private Jugador jugador; //DAVID: Pues lo paso a la clase concreta
 	private Partida partida;
-	private HiloEscritorJugador hiloEscritorJugador;
+	public HiloEscritorJugador hiloEscritorJugador;
 	private HiloLectorJugador hiloLectorJugador;
 	
 	public LNJugador (Jugador jugador) {
@@ -23,18 +25,18 @@ public class LNJugador extends LNJugadorBase {
 		this.partida = new Partida();
 	}
 	
+	public Jugador getJugador() {
+		return this.jugador;
+	}
+	
+	public void setTxtArea( JTextArea txtLeer) {
+		this.hiloLectorJugador.setTextArea(txtLeer);
+	}
+	
 	
 	public void unirseAPartida(Socket s) {
-		try{
-			this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
-			this.hiloLectorJugador = new HiloLectorJugador(s,partida);
-			this.hiloEscritorJugador.start();
-			this.hiloLectorJugador.start();
-			this.hiloEscritorJugador.join();
-			this.hiloLectorJugador.join();	
-		}
-		catch(InterruptedException e) {
-			e.printStackTrace();
-		}
+		this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
+		this.hiloLectorJugador = new HiloLectorJugador(s,partida);
+		this.hiloLectorJugador.start();
 	}
 }

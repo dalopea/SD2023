@@ -59,7 +59,7 @@ public class LNMaster extends LNJugadorBase{
 	 */
 	public void iniciarPartida() {
 		try(ServerSocket ss = new ServerSocket(partida.getPuertoPartida())){
-			for (int i = 0; i<2; i++) {
+			for (int i = 0; i<1; i++) {
 				try {
 					Socket s = ss.accept();
 					HiloJugadorPartida par=new HiloJugadorPartida(s,this.partida,this.hilosJugadores);

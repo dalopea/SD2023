@@ -20,6 +20,7 @@ import javax.swing.border.MatteBorder;
 
 import LogicaNegocio.*;
 import ModeloDominio.Jugador;
+import ModeloDominio.Personaje;
 
 import java.awt.Color;
 import javax.swing.JScrollPane;
@@ -47,6 +48,9 @@ import java.awt.Component;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JSeparator;
 
 public class PartidaMaster extends JFrame {
 
@@ -59,8 +63,14 @@ public class PartidaMaster extends JFrame {
 	private JLabel lblNewLabel;
 	private JLabel show_Mapa;
 	private DefaultListModel<String> players=new DefaultListModel<>();
+	private DefaultListModel<Personaje> pers=new DefaultListModel<>();
 	private JLabel lblPersonajes;
 	private JList listPersonajes;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JButton btnMover;
 
 
 	
@@ -69,6 +79,16 @@ public class PartidaMaster extends JFrame {
 		this.ChatLeer.append(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText()+"\n");
 		this.logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
 		this.ChatEscribir.setText("");
+	}
+	
+	public void ManejadorCrearPersonaje() {
+		CrearPersonaje crea=new CrearPersonaje();
+		crea.setAlwaysOnTop(true);
+		crea.setVisible(true);
+		while(crea.isEnabled()) {}
+		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),"src/images/Players/Player.png");
+		this.logica.getPartida().nuevoPersonaje(p);
+		pers.add(pers.size(), p);
 	}
 	
 	
@@ -172,22 +192,61 @@ public class PartidaMaster extends JFrame {
 		lblPersonajes.setBounds(10, 267, 143, 37);
 		contentPane.add(lblPersonajes);
 		
-		listPersonajes = new JList();
+		listPersonajes = new JList(this.pers);
 		listPersonajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listPersonajes.setBounds(10, 307, 188, 400);
 		contentPane.add(listPersonajes);
 		
 		JButton btnCrear = new JButton("Crear");
+		btnCrear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorCrearPersonaje();
+			}
+		});
 		btnCrear.setBounds(5, 718, 89, 23);
 		contentPane.add(btnCrear);
 		
 		JButton btnAdd = new JButton("Añadir");
-		btnAdd.setBounds(109, 718, 89, 23);
+		btnAdd.setBounds(5, 748, 89, 23);
 		contentPane.add(btnAdd);
 		
 		JButton btnVer = new JButton("Ver");
-		btnVer.setBounds(5, 748, 89, 23);
+		btnVer.setBounds(109, 718, 89, 23);
 		contentPane.add(btnVer);
+		
+		textField = new JTextField();
+		textField.setBounds(150, 749, 50, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(150, 780, 50, 20);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		
+		lblNewLabel_1 = new JLabel("x:");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1.setBounds(104, 752, 46, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		lblNewLabel_2 = new JLabel("y:");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_2.setBounds(104, 783, 46, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		btnMover = new JButton("Mover");
+		btnMover.setBounds(5, 779, 89, 23);
+		contentPane.add(btnMover);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBackground(UIManager.getColor("Button.focus"));
+		separator.setBounds(10, 255, 200, 5);
+		contentPane.add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBackground(UIManager.getColor("Button.focus"));
+		separator_1.setBounds(10, 824, 200, 5);
+		contentPane.add(separator_1);
 		
 //		this.logica.iniciarPartida();
 	}

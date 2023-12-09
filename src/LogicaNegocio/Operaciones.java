@@ -172,7 +172,7 @@ public class Operaciones {
 		}
 	}
 	
-	public void atacarPersonaje(JugadorBase jugador, String nombrePersonajeAtacante, String nombrePersonajeDefensor) {
+	public void atacarPersonaje(JugadorBase jugador, String nombrePersonajeAtacante, String nombrePersonajeDefensor,int modificador) {
 		List<Personaje> personajes = jugador.getPartida().getPersonajes();
 		Personaje atacante = null;
 		Personaje defensor = null;
@@ -187,8 +187,8 @@ public class Operaciones {
 		
 		if (atacante != null && defensor != null) {
 			if(comprobarAdyacencia(atacante,defensor)) {
-				if (atacante.getPuntosAtaque() >= defensor.getPuntosDefensa()) {
-					modificarVidaPersonaje(jugador,nombrePersonajeDefensor,defensor.getPuntosVidaActuales()-(atacante.getPuntosAtaque() - defensor.getPuntosDefensa()));
+				if (atacante.getPuntosAtaque() + modificador >= defensor.getPuntosDefensa()) {
+					modificarVidaPersonaje(jugador,nombrePersonajeDefensor,defensor.getPuntosVidaActuales()-(atacante.getPuntosAtaque()+modificador - defensor.getPuntosDefensa()));
 				}
 			}
 		}

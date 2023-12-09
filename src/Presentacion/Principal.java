@@ -61,6 +61,8 @@ public class Principal {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
+		
+		Tablero tablero= new Tablero(4,7);
 
 	}
 

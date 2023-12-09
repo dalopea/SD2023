@@ -14,6 +14,30 @@ import ModeloDominio.Personaje;
  */
 public class Operaciones {
 
+	/*
+	 * El método colocarPersonaje coloca un personaje en una casilla, siempre que este personaje esté en la lista de personajes de la partida y la casilla esté desocupada y
+	 * disponible.
+	 */
+	public boolean colocarPersonaje(JugadorBase jugador, String nombrePersonaje, Casilla casilla) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		Personaje personaje = null;
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				personaje = p;
+			}
+		}
+		if (casilla.getPersonaje() == null && casilla.isDisponible() && personaje != null) {
+			casilla.setPersonaje(personaje);
+			personaje.setPosicion(casilla);
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	 * El método comprobarMovimiento devuelve true si la casilla destino está a menor o igual movimiento (en diagonal, horizontal o vertical) que la casilla origen para ese 
+	 * personaje.
+	 */
 	public boolean comprobarMovimiento(Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
 		int movimientoPersonaje = personaje.getMovimiento();
 		int[] coordenadasIniciales = casillaOrigen.getCoordenadas();
@@ -25,14 +49,23 @@ public class Operaciones {
 		return false;
 	}
 	
+	/*
+	 * El método mover mueve a un personaje a la casillaDestino desde la casillaOrigen. Esto implica cambiar el personaje de la casilla original a null, cambiar el personaje de
+	 * la casilla destino al personaje en cuestión y cambiar la posición del personaje a la casilla destino.
+	 */
 	public boolean moverPersonaje(JugadorBase jugador, Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
 		if (jugador.getPartida().getPersonajesManejables().contains(personaje)) {
-			if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
-				if (casillaOrigen.getPersonaje().equals(personaje)) {
-					casillaOrigen.setPersonaje(null);
-					casillaDestino.setPersonaje(personaje);
-					personaje.setPosicion(casillaDestino);
-					return true;
+			if (casillaDestino.getPersonaje() == null && casillaDestino.isDisponible()) {
+				if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
+					if (casillaOrigen.getPersonaje().equals(personaje)) {
+						casillaOrigen.setPersonaje(null);
+						casillaDestino.setPersonaje(personaje);
+						personaje.setPosicion(casillaDestino);
+						return true;
+					}
+					else {
+						return false;
+					}
 				}
 				else {
 					return false;
@@ -48,6 +81,10 @@ public class Operaciones {
 
 	}
 	
+	/*
+	 * Añade el personaje a la lista de personajes disponibles. Además, si el jugador es el propietario de la criatura o el máster, 
+	 * se le añadirá a la lista de personajes manejables.
+	 */
 	public void aniadirPersonaje(JugadorBase jugador,Personaje personaje) {
 		jugador.getPartida().getPersonajes().add(personaje);
 		if (personaje.getPropietario().equals(jugador) || jugador.getPartida().getMaster().equals(jugador)) {
@@ -55,11 +92,20 @@ public class Operaciones {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	public boolean nuevoPersonaje(JugadorBase jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
 		try{
-			Personaje personaje = new Personaje(jugador.getPartida().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
-			aniadirPersonaje(jugador, personaje);
-			return true;
+			if (!existePersonaje(jugador,nombre)){
+				Personaje personaje = new Personaje(jugador.getPartida().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
+				aniadirPersonaje(jugador, personaje);
+				return true;
+			}
+			else {
+				return false;
+			}
+			
 		}
 		catch(Exception e) {
 			return false;
@@ -117,12 +163,35 @@ public class Operaciones {
 	}
 	
 	
-	public void modificarImagenPersonaje(JugadorBase jugador, int posicionPersonaje, String path) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setImagen(path);
+	public void modificarImagenPersonaje(JugadorBase jugador, String nombrePersonaje, String path) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				p.setImagen(path);
+			}
+		}
 	}
 	
-	public void atacarPersonaje(JugadorBase jugador, int personajeAtacante, int personajeDefensor0) {
-		Personaje personajeAtacante = jugador.getPartida().getPersonajes()
+	public void atacarPersonaje(JugadorBase jugador, String nombrePersonajeAtacante, String nombrePersonajeDefensor) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		Personaje atacante = null;
+		Personaje defensor = null;
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonajeAtacante)) {
+				atacante = p;
+			}
+			else if (p.getNombrePersonaje().equals(nombrePersonajeDefensor)) {
+				defensor = p;
+			}
+		}
+		
+		if (atacante != null && defensor != null) {
+			if(comprobarAdyacencia(atacante,defensor)) {
+				if (atacante.getPuntosAtaque() >= defensor.getPuntosDefensa()) {
+					modificarVidaPersonaje(jugador,nombrePersonajeDefensor,defensor.getPuntosVidaActuales()-(atacante.getPuntosAtaque() - defensor.getPuntosDefensa()));
+				}
+			}
+		}
 	}
 	
 	public boolean existePersonaje (JugadorBase jugador, String nombrePersonaje) {
@@ -133,5 +202,17 @@ public class Operaciones {
 			}
 		}
 		return false;
+	}
+	
+	public boolean comprobarAdyacencia(Personaje personaje1, Personaje personaje2) {
+		Casilla casilla1 = personaje1.getPosicion();
+		Casilla casilla2 = personaje2.getPosicion();
+		if (casilla1.getCoordenadas()[0] < casilla2.getCoordenadas()[0] - 1 || casilla1.getCoordenadas()[0] > casilla2.getCoordenadas()[0]+1) {
+			return false;
+		}
+		else if (casilla1.getCoordenadas()[1] < casilla2.getCoordenadas()[1] - 1 || casilla1.getCoordenadas()[1] > casilla2.getCoordenadas()[1]+1){
+			return false;
+		}
+		return true;
 	}
 }

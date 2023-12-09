@@ -19,9 +19,10 @@ public class HiloJugadorPartida implements Runnable{
 	private ObjectOutputStream oos;
 	private List<HiloJugadorPartida> hilosJugadores;
 	private JTextArea txtLeer;
+	private LNMaster logicaM;
 	
 	
-	public HiloJugadorPartida(Socket s, Partida partida, List<HiloJugadorPartida> hilosJugadores) {
+	public HiloJugadorPartida(Socket s, Partida partida, List<HiloJugadorPartida> hilosJugadores,LNMaster l) {
 		
 		try{
 			this.s = s;
@@ -30,6 +31,7 @@ public class HiloJugadorPartida implements Runnable{
 			this.ois = new ObjectInputStream(s.getInputStream());
 			this.hilosJugadores = hilosJugadores;
 			hilosJugadores.add(this);
+			this.logicaM=l;
 		}
 		catch(IOException e) {
 			cerrarTodo();

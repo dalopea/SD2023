@@ -62,7 +62,7 @@ public class LNMaster extends LNJugadorBase{
 			for (int i = 0; i<1; i++) {
 				try {
 					Socket s = ss.accept();
-					HiloJugadorPartida par=new HiloJugadorPartida(s,this.partida,this.hilosJugadores);
+					HiloJugadorPartida par=new HiloJugadorPartida(s,this.partida,this.hilosJugadores,this);
 					par.setTxtArea(txtLeer);
 					Thread thJugador = new Thread(par);
 					thJugador.start();

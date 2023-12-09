@@ -229,8 +229,8 @@ public class PartidaMaster extends JFrame {
 		//enviarmensaje;
 	}
 	
-	public static void cambiaMapa() {
-		
+	public  void cambiaMapa() {
+		setFondoMapa((String) this.comboMapas.getSelectedItem());
 	}
 	
 	

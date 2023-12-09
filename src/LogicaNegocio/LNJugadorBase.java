@@ -1,10 +1,13 @@
 package LogicaNegocio;
 
+
+
 import ModeloDominio.Partida;
 
 //Comentario
-public class LNJugadorBase {
+public class LNJugadorBase  {
 
+	
 	private Partida partida;
 	
 	public LNJugadorBase() {

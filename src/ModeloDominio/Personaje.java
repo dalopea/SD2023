@@ -1,5 +1,7 @@
 package ModeloDominio;
 
+import java.io.Serializable;
+
 /*
  * La clase personaje representa a los personajes de los jugadores (PJs) y a los personajes no jugadores (PNJs), includos los monstruos.
  * Todo personaje está identificado por un nombre de personaje, un movimiento (número de casillas que puede moverse en total en un único movimiento), un ataque, una defensa
@@ -8,7 +10,11 @@ package ModeloDominio;
  * Cuando los puntos vitales están por debajo de 0, el personaje está muerto. Un personaje nunca puede tener más puntos de vida que su máximo de puntos de vida.
  */
 
-public class Personaje {
+public class Personaje implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombrePersonaje;
 	private int puntosAtaque;
 	private int puntosDefensa;

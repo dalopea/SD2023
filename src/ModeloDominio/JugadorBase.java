@@ -1,9 +1,16 @@
 package ModeloDominio;
+
+import java.io.Serializable;
+
 /*
  * La clase JugadorBase es una clase abstracta que se utiliza para representar los aspectos comunes de Master y Jugador.
  */
-public abstract class JugadorBase {
+public abstract class JugadorBase implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String nombreUsuario;
 	Partida partida;
 

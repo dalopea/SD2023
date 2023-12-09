@@ -30,6 +30,11 @@ public class LNMaster extends LNJugadorBase{
 		this.master=m;
 		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
 		this.numJugadores=n;
+		this.getP().setMaster(m);
+	}
+	
+	public int getnumJugadores() {
+		return this.numJugadores;
 	}
 	
 	public Master getMaster() {
@@ -58,8 +63,7 @@ public class LNMaster extends LNJugadorBase{
 	 * los distintos jugadores y les asignará a cada uno un hilo distinto.
 	 * Todos los hilos comparten el mismo objeto Partida, que es el que tiene toda la información del estado del tablero.
 	 */
-	public void iniciarPartida() {
-		CyclicBarrier barrera = new CyclicBarrier(this.numJugadores);
+	public void iniciarPartida(CyclicBarrier barrera) {
 		try(ServerSocket ss = new ServerSocket(this.getP().getPuertoPartida())){
 			for (int i = 0; i<this.numJugadores; i++) {
 				try {

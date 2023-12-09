@@ -16,6 +16,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -66,6 +69,7 @@ public class PartidaJugador extends JFrame {
 	private JTextField txtMovimientos;
 	private JLabel lblImage;
 	private JButton btnCrear;
+	private DefaultListModel<String> players=new DefaultListModel<>();
 	private JComboBox<String> comboImage = new JComboBox<>();
 	
 	
@@ -153,8 +157,12 @@ public class PartidaJugador extends JFrame {
 		this.s=s;
 		this.logica=(LNJugador) log;
 		logica.unirseAPartida(s);
-		
-		
+		while(logica.getP()==null) {
+			Thread.onSpinWait();
+		}
+		if(logica.getP()==null) {
+			System.out.println("Partida nula");
+		}
 
 		setResizable(false);
 		setSize(new Dimension(1800, 1000));
@@ -211,6 +219,17 @@ public class PartidaJugador extends JFrame {
 		
 		listPlayers = new JList();
 		listPlayers.setBounds(10, 70, 200, 170);
+		JList listaPlayers = new JList(this.players);
+		listaPlayers.setBounds(10, 70, 200, 170);
+		List<String> jugs= logica.getPartida().getJugadores();
+		List<String> noms=new ArrayList<>();
+		for(String j:jugs) {
+			noms.add("Jugador: "+j);
+		}
+//		noms.add("Master: "+logica.getP().getMaster().getNombreUsuario());
+
+		
+		this.players.addAll(noms);
 		contentPane.add(listPlayers);
 		
 		separator = new JSeparator();

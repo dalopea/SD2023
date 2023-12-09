@@ -13,6 +13,8 @@ import java.awt.Toolkit;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.awt.GridLayout;
 import java.awt.Image;
 
@@ -332,19 +334,8 @@ public class PartidaMaster extends JFrame {
 		
 		contentPane.add(show_Mapa);
 
-		
-		JList listaPlayers = new JList(this.players);
-		listaPlayers.setBounds(10, 70, 200, 170);
-		List<String> jugs= logica.getPartida().getJugadores();
-		List<String> noms=new ArrayList<>();
-		for(String j:jugs) {
-			noms.add(j);
-		}
-		noms.add(logica.getMaster().getNombreUsuario());
 
 		
-		this.players.addAll(noms);
-		contentPane.add(listaPlayers);
 		
 		lblPersonajes = new JLabel("Personajes");
 		lblPersonajes.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -469,7 +460,28 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(btnTerminar);
 		
 		
+		CyclicBarrier barrera=new CyclicBarrier(logica.getnumJugadores()+1);
+		this.logica.iniciarPartida(barrera);
+		try {
+			barrera.await();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (BrokenBarrierException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		JList listaPlayers = new JList(this.players);
+		listaPlayers.setBounds(10, 70, 200, 170);
+		List<String> jugs= logica.getPartida().getJugadores();
+		List<String> noms=new ArrayList<>();
+		for(String j:jugs) {
+			noms.add("Jugador: "+j);
+		}
+		noms.add("Master: "+logica.getMaster().getNombreUsuario());
+
 		
-		this.logica.iniciarPartida();
+		this.players.addAll(noms);
+		contentPane.add(listaPlayers);
 	}
 }

@@ -21,8 +21,8 @@ public class Principal {
 //		Casilla c = tablero.getCasilla(3, 4);
 //		System.out.println("[" +c.getCoordenadas()[0] + ","+ c.getCoordenadas()[1]+"]");
 		
-		PartidaMaster pm=new PartidaMaster(null);
-		pm.setVisible(true);
+//		PartidaMaster pm=new PartidaMaster(null);
+//		pm.setVisible(true);
 		
 		
 //		
@@ -61,6 +61,8 @@ public class Principal {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
+		
+		Tablero tablero= new Tablero(4,7);
 
 	}
 

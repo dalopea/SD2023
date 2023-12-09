@@ -14,6 +14,30 @@ import ModeloDominio.Personaje;
  */
 public class Operaciones {
 
+	/*
+	 * El método colocarPersonaje coloca un personaje en una casilla, siempre que este personaje esté en la lista de personajes de la partida y la casilla esté desocupada y
+	 * disponible.
+	 */
+	public boolean colocarPersonaje(JugadorBase jugador, String nombrePersonaje, Casilla casilla) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		Personaje personaje = null;
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				personaje = p;
+			}
+		}
+		if (casilla.getPersonaje() == null && casilla.isDisponible() && personaje != null) {
+			casilla.setPersonaje(personaje);
+			personaje.setPosicion(casilla);
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	 * El método comprobarMovimiento devuelve true si la casilla destino está a menor o igual movimiento (en diagonal, horizontal o vertical) que la casilla origen para ese 
+	 * personaje.
+	 */
 	public boolean comprobarMovimiento(Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
 		int movimientoPersonaje = personaje.getMovimiento();
 		int[] coordenadasIniciales = casillaOrigen.getCoordenadas();
@@ -25,9 +49,13 @@ public class Operaciones {
 		return false;
 	}
 	
+	/*
+	 * El método mover mueve a un personaje a la casillaDestino desde la casillaOrigen. Esto implica cambiar el personaje de la casilla original a null, cambiar el personaje de
+	 * la casilla destino al personaje en cuestión y cambiar la posición del personaje a la casilla destino.
+	 */
 	public boolean moverPersonaje(JugadorBase jugador, Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
 		if (jugador.getPartida().getPersonajesManejables().contains(personaje)) {
-			if (casillaDestino.getPersonaje() == null) {
+			if (casillaDestino.getPersonaje() == null && casillaDestino.isDisponible()) {
 				if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
 					if (casillaOrigen.getPersonaje().equals(personaje)) {
 						casillaOrigen.setPersonaje(null);
@@ -53,6 +81,10 @@ public class Operaciones {
 
 	}
 	
+	/*
+	 * Añade el personaje a la lista de personajes disponibles. Además, si el jugador es el propietario de la criatura o el máster, 
+	 * se le añadirá a la lista de personajes manejables.
+	 */
 	public void aniadirPersonaje(JugadorBase jugador,Personaje personaje) {
 		jugador.getPartida().getPersonajes().add(personaje);
 		if (personaje.getPropietario().equals(jugador) || jugador.getPartida().getMaster().equals(jugador)) {
@@ -60,6 +92,9 @@ public class Operaciones {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	public boolean nuevoPersonaje(JugadorBase jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
 		try{
 			if (!existePersonaje(jugador,nombre)){

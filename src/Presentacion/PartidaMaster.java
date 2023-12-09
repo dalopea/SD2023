@@ -162,8 +162,9 @@ public class PartidaMaster extends JFrame {
 			!this.txtCoordY.getText().isBlank()&&
 			!this.txtCoordY.getText().isEmpty() &&
 			this.listPersonajes.getSelectedIndex()!=-1) {
-			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
 			
+			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
+			//enviarmensafe /ROL21/Personaje=nombre&Coords=[x,y]
 			if(c.isDisponible()) {
 				List<Personaje> lp=logica.getPartida().getPersonajesManejables();
 				String img=null;

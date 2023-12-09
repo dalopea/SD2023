@@ -99,7 +99,7 @@ public class PartidaJugador extends JFrame {
 	
 	public static void CrearFicha(Personaje p) {
 		//operaciones crearpersonaje
-		addPersonaje(p);
+		//aqui se llama aoperaciones
 	}
 	
 	
@@ -125,10 +125,7 @@ public class PartidaJugador extends JFrame {
 		//enviarmensajecrear
 		
 	}
-	public static void addPersonaje(Personaje p) {
-		logica.getPartida().nuevoPersonaje(p);
-		logica.getPartida().nuevoPersonajeManejables(p);
-	}
+	
 	
 	
 	public void ManejadorChat() {

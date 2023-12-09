@@ -146,6 +146,11 @@ public class HiloLectorJugador extends Thread{
 							}
 						}
 						//Llamar a método correspondiente
+						
+						
+						//aqui se crea el personaje y se llamará a la funcion statica de partidajugador
+						
+						
 					}
 					else if (partesPeticion[0].equals("Eliminar")) {
 						String nombrePersonaje;

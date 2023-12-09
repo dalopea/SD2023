@@ -33,13 +33,7 @@ public class Partida implements Serializable{
 		
 		
 	}
-	public void nuevoPersonaje(Personaje personaje) {
-		this.personajes.add(personaje);
-	}
 	
-	public void eliminarPersonaje(Personaje personaje) {
-		this.personajes.remove(personaje);
-	}
 	
 	public boolean isIniciada() {
 		return iniciado;
@@ -106,12 +100,26 @@ public class Partida implements Serializable{
 	public void setPersonajesManejables(List<Personaje> personajesManejables) {
 		this.personajesManejables = personajesManejables;
 	}
+	public void nuevoPersonajeJugable(Personaje personaje) {
+		this.personajesManejables.add(personaje);
+	}
+	
+	public void eliminarPersonajeJugable(Personaje personaje) {
+		this.personajesManejables.remove(personaje);
+	}
 	
 	public List<Personaje> getPersonajes() {
 		return personajes;
 	}
 	public void setPersonajes(List<Personaje> personajes) {
 		this.personajes = personajes;
+	}
+	public void nuevoPersonaje(Personaje personaje) {
+		this.personajes.add(personaje);
+	}
+	
+	public void eliminarPersonaje(Personaje personaje) {
+		this.personajes.remove(personaje);
 	}
 	
 	

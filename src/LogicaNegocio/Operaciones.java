@@ -86,7 +86,7 @@ public class Operaciones {
 	 * Añade el personaje a la lista de personajes disponibles. Además, si el jugador es el propietario de la criatura o el máster, 
 	 * se le añadirá a la lista de personajes manejables.
 	 */
-	public void aniadirPersonaje(LNJugadorBase logica,Jugador jugador, Personaje personaje) {
+	public static void aniadirPersonaje(LNJugadorBase logica,JugadorBase jugador, Personaje personaje) {
 		logica.getP().getPersonajes().add(personaje);
 		if (personaje.getPropietario().equals(jugador) || logica.getP().getMaster().equals(jugador)) {
 			logica.getP().getPersonajesManejables().add(personaje);
@@ -96,7 +96,7 @@ public class Operaciones {
 	/*
 	 * 
 	 */
-	public boolean nuevoPersonaje(LNJugadorBase logica,Jugador jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
+	public static boolean nuevoPersonaje(LNJugadorBase logica,JugadorBase jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
 		try{
 			if (!existePersonaje(logica,nombre)){
 				Personaje personaje = new Personaje(logica.getP().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
@@ -195,7 +195,7 @@ public class Operaciones {
 		}
 	}
 	
-	public boolean existePersonaje (LNJugadorBase logica, String nombrePersonaje) {
+	public static boolean existePersonaje (LNJugadorBase logica, String nombrePersonaje) {
 		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {

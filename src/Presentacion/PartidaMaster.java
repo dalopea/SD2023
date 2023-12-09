@@ -63,7 +63,7 @@ public class PartidaMaster extends JFrame {
 	private JLabel lblNewLabel;
 	private JLabel show_Mapa;
 	private DefaultListModel<String> players=new DefaultListModel<>();
-	private DefaultListModel<Personaje> pers=new DefaultListModel<>();
+	private DefaultListModel<String> pers=new DefaultListModel<>();
 	private JLabel lblPersonajes;
 	private JList listPersonajes;
 	private JTextField textField;
@@ -72,6 +72,9 @@ public class PartidaMaster extends JFrame {
 	private JLabel lblNewLabel_2;
 	private JButton btnMover;
 
+	
+	
+	Personaje prueba=new Personaje("Ejemplo",5,6,4,3,"\"src/images/Players/Player.png\"");
 
 	
 	
@@ -82,13 +85,26 @@ public class PartidaMaster extends JFrame {
 	}
 	
 	public void ManejadorCrearPersonaje() {
-		CrearPersonaje crea=new CrearPersonaje();
-		crea.setAlwaysOnTop(true);
+		CreacionPersonaje crea=new CreacionPersonaje();
 		crea.setVisible(true);
-		while(crea.isEnabled()) {}
+		
+		
 		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),"src/images/Players/Player.png");
-		this.logica.getPartida().nuevoPersonaje(p);
-		pers.add(pers.size(), p);
+//		this.logica.getPartida().nuevoPersonaje(p);
+		//if lo añade nice, si no le envia mensaje de error
+		pers.add(pers.size(), p.getNombrePersonaje());
+	}
+	
+	private void ManejadorVer(){
+		List<Personaje> pers=logica.getPartida().
+		
+		CreacionPersonaje crea=new CreacionPersonaje();
+		crea.setATQ(prueba.getPuntosAtaque());
+		crea.setNOM(prueba.getNombrePersonaje());
+		crea.setDEF(prueba.getPuntosDefensa());
+		crea.settVIT(prueba.getMovimiento());
+		crea.setMOV(prueba.getMovimiento());
+		crea.setVisible(true);
 	}
 	
 	
@@ -211,6 +227,11 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(btnAdd);
 		
 		JButton btnVer = new JButton("Ver");
+		btnVer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorVer();
+			}
+		});
 		btnVer.setBounds(109, 718, 89, 23);
 		contentPane.add(btnVer);
 		
@@ -247,6 +268,9 @@ public class PartidaMaster extends JFrame {
 		separator_1.setBackground(UIManager.getColor("Button.focus"));
 		separator_1.setBounds(10, 824, 200, 5);
 		contentPane.add(separator_1);
+		
+		pers.add(pers.size(), prueba.getNombrePersonaje());
+		
 		
 //		this.logica.iniciarPartida();
 	}

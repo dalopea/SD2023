@@ -1,5 +1,7 @@
 package LogicaNegocio;
 
+import java.util.List;
+
 import ModeloDominio.Casilla;
 import ModeloDominio.JugadorBase;
 import ModeloDominio.Master;
@@ -64,25 +66,56 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarVidaPersonaje(JugadorBase jugador, int posicionPersonaje, int vidaActual) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setPuntosVidaActuales(vidaActual);
+	public void modificarVidaPersonaje(JugadorBase jugador, String nombrePersonaje, int vidaActual) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				p.setPuntosVidaActuales(vidaActual);
+			}
+		}
 	}
 	
-	public void modificarAtaquePersonaje(JugadorBase jugador, int posicionPersonaje, int puntosAtaque) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setPuntosAtaque(puntosAtaque);
+	public void modificarAtaquePersonaje(JugadorBase jugador, String nombrePersonaje, int puntosAtaque) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				p.setPuntosAtaque(puntosAtaque);
+			}
+		}
 	}
 	
-	public void modificarDefensaPersonaje(JugadorBase jugador, int posicionPersonaje, int puntosDefensa) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setPuntosDefensa(puntosDefensa);
+	public void modificarDefensaPersonaje(JugadorBase jugador, String nombrePersonaje, int puntosDefensa) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				p.setPuntosDefensa(puntosDefensa);
+			}
+		}
 	}
 	
-	public void modificarMovimientoPersonaje(JugadorBase jugador, int posicionPersonaje, int movimiento) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setMovimiento(movimiento);
+	public void modificarMovimientoPersonaje(JugadorBase jugador, String nombrePersonaje, int movimiento) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				p.setMovimiento(movimiento);
+			}
+		}
 	}
 	
-	public void modificarNombrePersonaje(JugadorBase jugador, int posicionPersonaje, String nombre) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setNombrePersonaje(nombre);
+	public void modificarNombrePersonaje(JugadorBase jugador, String nombrePersonaje, String nombre) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		boolean existe = existePersonaje(jugador,nombre);
+		
+		if (!existe) {
+			for (Personaje p : personajes) {
+				if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+					p.setNombrePersonaje(nombrePersonaje);
+				}
+			}
+		}
+
 	}
+	
 	
 	public void modificarImagenPersonaje(JugadorBase jugador, int posicionPersonaje, String path) {
 		jugador.getPartida().getPersonajes().get(posicionPersonaje).setImagen(path);
@@ -90,5 +123,15 @@ public class Operaciones {
 	
 	public void atacarPersonaje(JugadorBase jugador, int personajeAtacante, int personajeDefensor0) {
 		Personaje personajeAtacante = jugador.getPartida().getPersonajes()
+	}
+	
+	public boolean existePersonaje (JugadorBase jugador, String nombrePersonaje) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -145,11 +145,9 @@ public class HiloLectorJugador extends Thread{
 								imagen = nombreValor[1];
 							}
 						}
-						//Llamar a método correspondiente
 						
-						
-						//aqui se crea el personaje y se llamará a la funcion statica de partidajugador
-						
+						Personaje personaje = new Personaje(nombrePersonaje,puntosAtaque,puntosDefensa,puntosVida,movimiento,imagen);
+						PartidaJugador.CrearFicha(personaje);
 						
 					}
 					else if (partesPeticion[0].equals("Eliminar")) {

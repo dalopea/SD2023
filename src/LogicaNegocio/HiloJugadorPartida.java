@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 import javax.swing.JTextArea;
 
@@ -14,24 +16,24 @@ import ModeloDominio.Partida;
 public class HiloJugadorPartida implements Runnable{
 
 	private Socket s;
-	private Partida partida;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	private List<HiloJugadorPartida> hilosJugadores;
 	private JTextArea txtLeer;
 	private LNMaster logicaM;
+	private CyclicBarrier barrera;
 	
 	
-	public HiloJugadorPartida(Socket s, Partida partida, List<HiloJugadorPartida> hilosJugadores,LNMaster l) {
+	public HiloJugadorPartida(Socket s,List<HiloJugadorPartida> hilosJugadores,LNMaster l,CyclicBarrier barrera) {
 		
 		try{
 			this.s = s;
-			this.partida = partida;
 			this.oos = new ObjectOutputStream(s.getOutputStream());
 			this.ois = new ObjectInputStream(s.getInputStream());
 			this.hilosJugadores = hilosJugadores;
 			hilosJugadores.add(this);
 			this.logicaM=l;
+			this.barrera = barrera;
 		}
 		catch(IOException e) {
 			cerrarTodo();
@@ -47,11 +49,10 @@ public class HiloJugadorPartida implements Runnable{
 	
 	public void enviarATodos(String mensaje) {
 		try {
-			//check
+			//TODO: check
 			oos.writeBytes(mensaje+"\n");
 			oos.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -61,17 +62,21 @@ public class HiloJugadorPartida implements Runnable{
 	public void run() {
 		String mensaje;
 		try {
+			String nombreJugador = ois.readLine();
+			System.out.println(nombreJugador);
+			this.logicaM.getP().addPlayer(nombreJugador);
+			barrera.await();
 			oos.writeBytes("Partida\n");
-			oos.writeObject(partida);
+			oos.writeObject(logicaM.getP());
 			oos.flush();
 			mensaje = ois.readLine();
 			while (mensaje != null) {
-				//check
+				//TODO: check
 				mensajeBroadcast(mensaje+"\n");
 				mensaje = ois.readLine();
 			}
 		}
-		catch(IOException e) {
+		catch(IOException | InterruptedException | BrokenBarrierException e) {
 			
 		}
 		finally {

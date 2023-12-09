@@ -98,8 +98,7 @@ public class PartidaJugador extends JFrame {
 	}
 	
 	public static void CrearFicha(Personaje p) {
-		//operaciones crearpersonaje
-		//aqui se llama aoperaciones
+		Operaciones.nuevoPersonaje(logica, p);
 	}
 	
 	

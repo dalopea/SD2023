@@ -93,10 +93,9 @@ public class PartidaMaster extends JFrame {
 		crea.setVisible(true);
 		
 		
-		Personaje p=new Personaje(logica.getMaster(),crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
+		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
 		
 		this.logica.getPartida().nuevoPersonaje(p);
-		this.logica.getPartida().nuevoPersonajeManejables(p);
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
 	
@@ -104,7 +103,7 @@ public class PartidaMaster extends JFrame {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			
 		String nombre=(String) this.listPersonajes.getSelectedValue();
-		List<Personaje> pers=logica.getPartida().getPersonajesManejables();
+		List<Personaje> pers=logica.getPartida().getPersonajes();
 		Personaje p = null;
 		for(Personaje j:pers) {
 			if(j.getNombrePersonaje().equals(nombre)) {
@@ -192,7 +191,7 @@ public class PartidaMaster extends JFrame {
 	public void ManejadorEliminar() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			
-			List<Personaje> list=logica.getPartida().getPersonajesManejables();
+			List<Personaje> list=logica.getPartida().getPersonajes();
 			Casilla c=null;
 			String nombre=(String) this.listPersonajes.getSelectedValue();
 			for(Personaje p:list) {

@@ -55,7 +55,7 @@ public class Operaciones {
 	 * la casilla destino al personaje en cuestión y cambiar la posición del personaje a la casilla destino.
 	 */
 	public boolean moverPersonaje(LNJugadorBase logica, Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
-		if (logica.getP().getPersonajesManejables().contains(personaje)) {
+		if (logica.getP().getPersonajes().contains(personaje)) {
 			if (casillaDestino.getPersonaje() == null && casillaDestino.isDisponible()) {
 				if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
 					if (casillaOrigen.getPersonaje().equals(personaje)) {
@@ -83,24 +83,12 @@ public class Operaciones {
 	}
 	
 	/*
-	 * Añade el personaje a la lista de personajes disponibles. Además, si el jugador es el propietario de la criatura o el máster, 
-	 * se le añadirá a la lista de personajes manejables.
-	 */
-	public static void aniadirPersonaje(LNJugadorBase logica,JugadorBase jugador, Personaje personaje) {
-		logica.getP().getPersonajes().add(personaje);
-		if (personaje.getPropietario().equals(jugador) || logica.getP().getMaster().equals(jugador)) {
-			logica.getP().getPersonajesManejables().add(personaje);
-		}
-	}
-	
-	/*
 	 * 
 	 */
-	public static boolean nuevoPersonaje(LNJugadorBase logica,JugadorBase jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
+	public static boolean nuevoPersonaje(LNJugadorBase logica, Personaje p) {
 		try{
-			if (!existePersonaje(logica,nombre)){
-				Personaje personaje = new Personaje(logica.getP().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
-				aniadirPersonaje(logica, jugador, personaje);
+			if (!existePersonaje(logica,p.getNombrePersonaje())){
+				logica.getP().getPersonajes().add(p);
 				return true;
 			}
 			else {

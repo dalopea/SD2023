@@ -28,7 +28,6 @@ public class HiloEscritorJugador extends Thread{
 			if(oos==null) {
 			oos=new ObjectOutputStream(s.getOutputStream());}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

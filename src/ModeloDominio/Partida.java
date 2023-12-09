@@ -19,18 +19,16 @@ public class Partida implements Serializable{
 	private int puertoPartida;
 	private Master master;
 	private int numeroJugadores;
-	private List<Jugador> jugadores;
+	private List<String> jugadores;
 	private Tablero tablero;
 	private boolean iniciado;
 	private List<Personaje> personajes;
-	private List<Personaje> personajesManejables;
 	
 	public Partida() {
 		
-		this.jugadores=new ArrayList<Jugador>();
+		this.jugadores=new ArrayList<String>();
 		this.iniciado=false;
 		this.personajes = new ArrayList<Personaje>();
-		this.personajesManejables=new ArrayList<>();
 		this.tablero=new Tablero(20, 20);
 		
 		
@@ -69,15 +67,15 @@ public class Partida implements Serializable{
 		tablero=t;
 	}
 	
-	public void addPlayer(Jugador j) {
-		jugadores.add(j);
+	public void addPlayer(String nombre) {
+		jugadores.add(nombre);
 	}
 	
 	public void removePlayer(Jugador j) {
 		jugadores.remove(j);
 	}
 	
-	public List<Jugador> getJugadores() {
+	public List<String> getJugadores() {
 		return jugadores;
 	}
 	
@@ -95,19 +93,6 @@ public class Partida implements Serializable{
 
 	public void setMaster(Master master) {
 		this.master = master;
-	}
-	public List<Personaje> getPersonajesManejables() {
-		return personajesManejables;
-	}
-	public void setPersonajesManejables(List<Personaje> personajesManejables) {
-		this.personajesManejables = personajesManejables;
-	}
-	public void nuevoPersonajeManejables(Personaje personaje) {
-		this.personajesManejables.add(personaje);
-	}
-	
-	public void eliminarPersonajeManejables(Personaje personaje) {
-		this.personajesManejables.remove(personaje);
 	}
 	
 	public List<Personaje> getPersonajes() {
@@ -127,15 +112,6 @@ public class Partida implements Serializable{
 	public boolean existePersonaje(Personaje p) {
 		
 		for(Personaje j:personajes) {
-			if(j.getNombrePersonaje().equals(p.getNombrePersonaje())) {
-				return true;
-			}
-		}
-		return false;
-	}
-public boolean existePersonajeManejable(Personaje p) {
-		
-		for(Personaje j:personajesManejables) {
 			if(j.getNombrePersonaje().equals(p.getNombrePersonaje())) {
 				return true;
 			}

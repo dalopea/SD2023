@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,11 +59,12 @@ public class LNMaster extends LNJugadorBase{
 	 * Todos los hilos comparten el mismo objeto Partida, que es el que tiene toda la información del estado del tablero.
 	 */
 	public void iniciarPartida() {
+		CyclicBarrier barrera = new CyclicBarrier(this.numJugadores);
 		try(ServerSocket ss = new ServerSocket(this.getP().getPuertoPartida())){
 			for (int i = 0; i<this.numJugadores; i++) {
 				try {
 					Socket s = ss.accept();
-					HiloJugadorPartida par=new HiloJugadorPartida(s,this.getP(),this.hilosJugadores,this);
+					HiloJugadorPartida par=new HiloJugadorPartida(s,this.hilosJugadores,this,barrera);
 					par.setTxtArea(txtLeer);
 					Thread thJugador = new Thread(par);
 					thJugador.start();

@@ -15,7 +15,7 @@ import ModeloDominio.Partida;
 //Comentario
 public class LNJugador extends LNJugadorBase {
 
-	private Jugador jugador; //DAVID: Pues lo paso a la clase concreta
+	private Jugador jugador; 
 	private Partida partida;
 	public HiloEscritorJugador hiloEscritorJugador;
 	private HiloLectorJugador hiloLectorJugador;
@@ -42,5 +42,6 @@ public class LNJugador extends LNJugadorBase {
 		this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
 		this.hiloLectorJugador = new HiloLectorJugador(s,this);
 		this.hiloLectorJugador.start();
+		this.hiloEscritorJugador.enviarMensaje(jugador.getNombreUsuario());
 	}
 }

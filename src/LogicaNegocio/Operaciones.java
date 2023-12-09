@@ -27,12 +27,17 @@ public class Operaciones {
 	
 	public boolean moverPersonaje(JugadorBase jugador, Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
 		if (jugador.getPartida().getPersonajesManejables().contains(personaje)) {
-			if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
-				if (casillaOrigen.getPersonaje().equals(personaje)) {
-					casillaOrigen.setPersonaje(null);
-					casillaDestino.setPersonaje(personaje);
-					personaje.setPosicion(casillaDestino);
-					return true;
+			if (casillaDestino.getPersonaje() == null) {
+				if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
+					if (casillaOrigen.getPersonaje().equals(personaje)) {
+						casillaOrigen.setPersonaje(null);
+						casillaDestino.setPersonaje(personaje);
+						personaje.setPosicion(casillaDestino);
+						return true;
+					}
+					else {
+						return false;
+					}
 				}
 				else {
 					return false;
@@ -57,9 +62,15 @@ public class Operaciones {
 	
 	public boolean nuevoPersonaje(JugadorBase jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
 		try{
-			Personaje personaje = new Personaje(jugador.getPartida().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
-			aniadirPersonaje(jugador, personaje);
-			return true;
+			if (!existePersonaje(jugador,nombre)){
+				Personaje personaje = new Personaje(jugador.getPartida().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
+				aniadirPersonaje(jugador, personaje);
+				return true;
+			}
+			else {
+				return false;
+			}
+			
 		}
 		catch(Exception e) {
 			return false;
@@ -117,12 +128,35 @@ public class Operaciones {
 	}
 	
 	
-	public void modificarImagenPersonaje(JugadorBase jugador, int posicionPersonaje, String path) {
-		jugador.getPartida().getPersonajes().get(posicionPersonaje).setImagen(path);
+	public void modificarImagenPersonaje(JugadorBase jugador, String nombrePersonaje, String path) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
+				p.setImagen(path);
+			}
+		}
 	}
 	
-	public void atacarPersonaje(JugadorBase jugador, int personajeAtacante, int personajeDefensor0) {
-		Personaje personajeAtacante = jugador.getPartida().getPersonajes()
+	public void atacarPersonaje(JugadorBase jugador, String nombrePersonajeAtacante, String nombrePersonajeDefensor) {
+		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+		Personaje atacante = null;
+		Personaje defensor = null;
+		for (Personaje p : personajes) {
+			if (p.getNombrePersonaje().equals(nombrePersonajeAtacante)) {
+				atacante = p;
+			}
+			else if (p.getNombrePersonaje().equals(nombrePersonajeDefensor)) {
+				defensor = p;
+			}
+		}
+		
+		if (atacante != null && defensor != null) {
+			if(comprobarAdyacencia(atacante,defensor)) {
+				if (atacante.getPuntosAtaque() >= defensor.getPuntosDefensa()) {
+					modificarVidaPersonaje(jugador,nombrePersonajeDefensor,defensor.getPuntosVidaActuales()-(atacante.getPuntosAtaque() - defensor.getPuntosDefensa()));
+				}
+			}
+		}
 	}
 	
 	public boolean existePersonaje (JugadorBase jugador, String nombrePersonaje) {
@@ -133,5 +167,17 @@ public class Operaciones {
 			}
 		}
 		return false;
+	}
+	
+	public boolean comprobarAdyacencia(Personaje personaje1, Personaje personaje2) {
+		Casilla casilla1 = personaje1.getPosicion();
+		Casilla casilla2 = personaje2.getPosicion();
+		if (casilla1.getCoordenadas()[0] < casilla2.getCoordenadas()[0] - 1 || casilla1.getCoordenadas()[0] > casilla2.getCoordenadas()[0]+1) {
+			return false;
+		}
+		else if (casilla1.getCoordenadas()[1] < casilla2.getCoordenadas()[1] - 1 || casilla1.getCoordenadas()[1] > casilla2.getCoordenadas()[1]+1){
+			return false;
+		}
+		return true;
 	}
 }

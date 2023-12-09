@@ -39,6 +39,7 @@ public class PartidaJugador extends JFrame {
 	
 	
 	public PartidaJugador(Socket s,LNJugadorBase log) {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		this.s=s;
 		this.logica=(LNJugador) log;

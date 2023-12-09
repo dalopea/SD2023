@@ -133,7 +133,7 @@ public class PartidaMaster extends JFrame {
 		ChatLeer.setLineWrap(true);
 		ChatLeer.setBounds(0, 0, 300, 870);
 		Chat.add(ChatLeer);
-//		logica.addTXT(ChatLeer);
+		logica.addTXT(ChatLeer);
 		
 		lblNewLabel = new JLabel("Jugadores");
 		lblNewLabel.setBounds(10, 25, 143, 37);
@@ -164,6 +164,6 @@ public class PartidaMaster extends JFrame {
 		
 		
 		contentPane.add(list);
-//		this.logica.iniciarPartida();
+		this.logica.iniciarPartida();
 	}
 }

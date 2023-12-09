@@ -13,6 +13,8 @@ import java.util.*;
  */
 public class Partida implements Serializable{
 
+	
+	private static final long serialVersionUID = 1L;
 	private String nombrePartida;
 	private int puertoPartida;
 	private Master master;
@@ -79,6 +81,14 @@ public class Partida implements Serializable{
 	
 	public void setNumeroJugadores(int numeroJugadores) {
 		this.numeroJugadores = numeroJugadores;
+	}
+
+	public Master getMaster() {
+		return master;
+	}
+
+	public void setMaster(Master master) {
+		this.master = master;
 	}
 	
 	

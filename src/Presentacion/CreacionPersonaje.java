@@ -111,7 +111,6 @@ public class CreacionPersonaje extends JDialog {
 	public boolean isInt(String n) {
 		try{
 			Integer.parseInt(n);
-			System.out.println("numero ok");
 			return true;
 		}catch(NumberFormatException e) {
 			return false;

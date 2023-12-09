@@ -122,6 +122,24 @@ public class Partida implements Serializable{
 		this.personajes.remove(personaje);
 	}
 	
+	public boolean existePersonaje(Personaje p) {
+		
+		for(Personaje j:personajes) {
+			if(j.getNombrePersonaje().equals(p.getNombrePersonaje())) {
+				return true;
+			}
+		}
+		return false;
+	}
+public boolean existePersonajeManejable(Personaje p) {
+		
+		for(Personaje j:personajesManejables) {
+			if(j.getNombrePersonaje().equals(p.getNombrePersonaje())) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 }

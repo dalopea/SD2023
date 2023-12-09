@@ -4,7 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
@@ -41,10 +46,18 @@ public class Canvas extends JPanel {
 			}
 			
 		}
-		
-		
 	}
 	
+	public int getCellSize() {
+		return this.gridCellSize;
+	}
+	public int getCols() {
+		return this.gridColumns;
+	}
+	public int getRows() {
+		return this.gridRows;
+	}
+
 	
 }
 

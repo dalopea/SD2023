@@ -19,6 +19,7 @@ import java.awt.Image;
 import javax.swing.border.MatteBorder;
 
 import LogicaNegocio.*;
+import ModeloDominio.Casilla;
 import ModeloDominio.Jugador;
 import ModeloDominio.Personaje;
 
@@ -66,15 +67,18 @@ public class PartidaMaster extends JFrame {
 	private DefaultListModel<String> pers=new DefaultListModel<>();
 	private JLabel lblPersonajes;
 	private JList listPersonajes;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtCoordX;
+	private JTextField txtCoordY;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JButton btnMover;
+	private Canvas canvas; 
 
 	
 	
 	Personaje prueba=new Personaje(null,"Ejemplo",5,6,4,3,"\"src/images/Players/Player.png\"");
+	private JButton btnEditarPers;
+	private JLabel lblNewLabel_3;
 
 	
 	
@@ -82,6 +86,9 @@ public class PartidaMaster extends JFrame {
 		this.ChatLeer.append(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText()+"\n");
 		this.logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
 		this.ChatEscribir.setText("");
+	}
+	public void ManejadorEditar() {
+		
 	}
 	
 	public void ManejadorCrearPersonaje() {
@@ -95,7 +102,7 @@ public class PartidaMaster extends JFrame {
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
 	
-	private void ManejadorVer(){
+	public void ManejadorVer(){
 //		List<Personaje> pers=logica.getPartida();
 		
 		CreacionPersonaje crea=new CreacionPersonaje();
@@ -106,6 +113,69 @@ public class PartidaMaster extends JFrame {
 		crea.setMOV(prueba.getMovimiento());
 		crea.setVisible(true);
 	}
+	
+	public void aniadirfichaMons(String img,String nom,int x,int y) {
+//		System.out.println("metodo entra");
+//		JLabel lblIMG=new JLabel("");
+//		lblIMG.setName(nom);
+//		lblIMG.setBounds(500,500,20,20);
+//		setImage(lblIMG,"Mons/"+img);
+//		contentPane.add(lblIMG);
+		lblNewLabel_3 = new JLabel("New label");
+		lblNewLabel_3.setBounds(10, 840, 20, 20);
+		contentPane.add(lblNewLabel_3);
+		contentPane.repaint();
+	}
+	
+	public void setImage(JLabel imgl,String dir) {
+		BufferedImage img=null;
+		try {
+			File f=new File("src/images/"+dir);
+			System.out.println(f.getName());
+		    img = ImageIO.read(f);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(imgl.getWidth(), imgl.getHeight(),Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		imgl.setIcon(imageIcon);
+	}
+	
+	
+	public void ManejadorAniadir() {
+//		if(this.txtCoordX.getText().isBlank()||this.txtCoordX.getText().isEmpty()||
+//				this.txtCoordY.getText().isBlank()||this.txtCoordY.getText().isEmpty() ||
+//			this.listPersonajes.getSelectedIndex()==-1) {
+//			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText()), Integer.parseInt(txtCoordY.getText()));
+//			
+//			if(!c.isDisponible()) {
+//				List<Personaje> lp=logica.getPartida().getPersonajes();
+//				String img=null;
+//				String nombre=null;
+//				for(Personaje p:lp) {
+//					if(p.getNombrePersonaje().equals(this.listPersonajes.getSelectedValue())) {
+//						img=p.getImagen();
+//						nombre=(String) this.listPersonajes.getSelectedValue();
+//					}
+//				}
+//				if(img!=null) {
+//					canvas.aniadirfichaMons(img, nombre, Integer.parseInt(txtCoordX.getText()), Integer.parseInt(txtCoordY.getText()));
+//				}
+//				
+//			}else {
+//				
+//			}
+//			
+//		}else {
+//			
+//		}
+		
+		aniadirfichaMons("Monster.png", "Ejemplo", 6, 5);
+		
+		
+	}
+	
 	
 	
 	public void setFondoMapa(String dir) {
@@ -144,9 +214,10 @@ public class PartidaMaster extends JFrame {
 		Partida.setBackground(UIManager.getColor("Button.disabledShadow"));
 		Partida.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		Partida.setBounds(225, 25, 1200, 900);
+		canvas= new Canvas(Partida,20);
 		contentPane.add(Partida);
 		Partida.setLayout(new GridLayout(1, 0, 0, 0));
-		Canvas canvas = new Canvas(Partida,20);
+
 		canvas.setOpaque(false);
 		getContentPane().add(canvas);
 		
@@ -223,6 +294,11 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(btnCrear);
 		
 		JButton btnAdd = new JButton("Añadir");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorAniadir();
+			}
+		});
 		btnAdd.setBounds(5, 748, 89, 23);
 		contentPane.add(btnAdd);
 		
@@ -235,15 +311,15 @@ public class PartidaMaster extends JFrame {
 		btnVer.setBounds(109, 718, 89, 23);
 		contentPane.add(btnVer);
 		
-		textField = new JTextField();
-		textField.setBounds(150, 749, 50, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtCoordX = new JTextField();
+		txtCoordX.setBounds(150, 749, 50, 20);
+		contentPane.add(txtCoordX);
+		txtCoordX.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(150, 780, 50, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		txtCoordY = new JTextField();
+		txtCoordY.setBounds(150, 780, 50, 20);
+		contentPane.add(txtCoordY);
+		txtCoordY.setColumns(10);
 		
 		lblNewLabel_1 = new JLabel("x:");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -268,6 +344,17 @@ public class PartidaMaster extends JFrame {
 		separator_1.setBackground(UIManager.getColor("Button.focus"));
 		separator_1.setBounds(10, 824, 200, 5);
 		contentPane.add(separator_1);
+		
+		btnEditarPers = new JButton("Editar Jugador");
+		btnEditarPers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorEditar();
+			}
+		});
+		btnEditarPers.setBounds(90, 34, 103, 23);
+		contentPane.add(btnEditarPers);
+		
+		
 		
 		pers.add(pers.size(), prueba.getNombrePersonaje());
 		

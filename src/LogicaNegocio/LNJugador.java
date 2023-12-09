@@ -30,7 +30,7 @@ public class LNJugador extends LNJugadorBase {
 	}
 	
 	public Partida getPartida() {
-		return this.partida;
+		return super.getP();
 	}
 	
 	public void setTxtArea( JTextArea txtLeer) {
@@ -40,7 +40,7 @@ public class LNJugador extends LNJugadorBase {
 	
 	public void unirseAPartida(Socket s) {
 		this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
-		this.hiloLectorJugador = new HiloLectorJugador(s,partida,this);
+		this.hiloLectorJugador = new HiloLectorJugador(s,this);
 		this.hiloLectorJugador.start();
 	}
 }

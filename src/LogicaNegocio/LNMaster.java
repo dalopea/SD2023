@@ -21,18 +21,22 @@ public class LNMaster extends LNJugadorBase{
 
 	private Master master; 
 	private List<HiloJugadorPartida> hilosJugadores;
-	
+	private int numJugadores;
 	private JTextArea txtLeer;
 	
-	public LNMaster(Master m,Partida p) {
+	public LNMaster(Master m,Partida p,int n) {
 		super(p);
 		this.master=m;
 		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
-		
+		this.numJugadores=n;
 	}
 	
 	public Master getMaster() {
 		return this.master;
+	}
+	
+	public Partida getPartida() {
+		return super.getP();
 	}
 	
 	
@@ -55,7 +59,7 @@ public class LNMaster extends LNJugadorBase{
 	 */
 	public void iniciarPartida() {
 		try(ServerSocket ss = new ServerSocket(this.getP().getPuertoPartida())){
-			for (int i = 0; i<1; i++) {
+			for (int i = 0; i<this.numJugadores; i++) {
 				try {
 					Socket s = ss.accept();
 					HiloJugadorPartida par=new HiloJugadorPartida(s,this.getP(),this.hilosJugadores,this);

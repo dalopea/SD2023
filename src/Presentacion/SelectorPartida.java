@@ -35,6 +35,7 @@ public class SelectorPartida extends JFrame {
 	private Socket s;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
+	private JTextField txtNumJugs;
 	
 
 	public void cerrarTodo() {
@@ -82,10 +83,23 @@ public class SelectorPartida extends JFrame {
 		}
 	}
 	
+	public boolean isInt(String n) {
+		try{
+			Integer.parseInt(n);
+			return true;
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		
+	}
+	
+	
 	//Comprueba que la partida a crear es valida
 	public void ManejadorCrear() {
-		if(this.txtNombrePartida.getText().isEmpty() || this.txtNombrePartida.getText().isBlank()) {
-			Inicio.infoBox("Error de Creación", "Nombre de partida no valido");
+		if(this.txtNombrePartida.getText().isEmpty() || this.txtNombrePartida.getText().isBlank()
+			|| this.txtNumJugs.getText().isBlank() || this.txtNumJugs.getText().isEmpty() ||
+			!isInt(this.txtNumJugs.getText())) {
+			Inicio.infoBox("Error de Creación", "No se pudo crear la partida");
 		}else {
 			Partida p=crearPartida();
 			if(p!=null) {
@@ -94,8 +108,9 @@ public class SelectorPartida extends JFrame {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				int x=Integer.parseInt(this.txtNumJugs.getText());
 				Master m=new Master(this.nombre);
-				LNJugadorBase ln=new LNMaster(m,p);
+				LNJugadorBase ln=new LNMaster(m,p,x);
 				PartidaMaster pm=new PartidaMaster(ln);
 				pm.setVisible(true);
 				this.setVisible(false);
@@ -145,7 +160,7 @@ public class SelectorPartida extends JFrame {
 			
 			}
 		});
-		btnCrear.setBounds(109, 232, 89, 32);
+		btnCrear.setBounds(37, 232, 89, 32);
 		contentPane.add(btnCrear);
 		
 		JButton btnUnirse = new JButton("Unirse");
@@ -179,11 +194,11 @@ public class SelectorPartida extends JFrame {
 		contentPane.add(btnActualizar);
 		
 		JLabel lblNewLabel_1 = new JLabel("Nombre:");
-		lblNewLabel_1.setBounds(245, 241, 49, 14);
+		lblNewLabel_1.setBounds(136, 235, 49, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		txtNombrePartida = new JTextField();
-		txtNombrePartida.setBounds(294, 238, 150, 20);
+		txtNombrePartida.setBounds(185, 232, 150, 20);
 		contentPane.add(txtNombrePartida);
 		txtNombrePartida.setColumns(10);
 		
@@ -193,6 +208,15 @@ public class SelectorPartida extends JFrame {
 		lblGreet.setFont(new Font("Malgun Gothic", Font.BOLD, 13));
 		lblGreet.setBounds(54, 11, 418, 44);
 		contentPane.add(lblGreet);
+		
+		JLabel lblNewLabel_2 = new JLabel("Jugadores:");
+		lblNewLabel_2.setBounds(345, 235, 67, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		txtNumJugs = new JTextField();
+		txtNumJugs.setBounds(422, 232, 86, 20);
+		contentPane.add(txtNumJugs);
+		txtNumJugs.setColumns(10);
 		btnActualizar.doClick();
 	}
 	

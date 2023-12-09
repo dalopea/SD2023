@@ -33,6 +33,11 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.JSeparator;
 import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class PartidaJugador extends JFrame {
 
@@ -41,37 +46,38 @@ public class PartidaJugador extends JFrame {
 	private JTextField txtEscribir;
 	private JTextArea txtLeer;
 	private Socket s;
-	private LNJugador logica;
-	private JLabel show_Mapa;
+	private static LNJugador logica;
+	
+	private static JLabel show_Mapa;
 	private JLabel lblNewLabel;
 	private JList listPlayers;
 	private JSeparator separator;
 	private JLabel lblNewLabel_1;
 	private static Canvas canvas;
 	private JLabel lblNewLabel_2;
-	private JTextField textField;
+	private JTextField txtNombre;
 	private JLabel lblNewLabel_3;
-	private JTextField textField_1;
+	private JTextField txtVitalidad;
 	private JLabel lblNewLabel_4;
-	private JTextField textField_2;
+	private JTextField txtAtaque;
 	private JLabel lblNewLabel_5;
-	private JTextField textField_3;
+	private JTextField txtDefensa;
 	private JLabel lblNewLabel_6;
-	private JTextField textField_4;
-	private JLabel lblNewLabel_7;
-	private JComboBox comboBox;
-	private JButton btnNewButton;
+	private JTextField txtMovimientos;
+	private JLabel lblImage;
+	private JButton btnCrear;
+	private JComboBox<String> comboImage = new JComboBox<>();
 	
 	
-	public static  void ColocaFicha(JugadorBase j,Personaje p,Casilla c) {
+	public static  void ColocaFicha(Personaje p,Casilla c) {
 		aniadirfichaMons(p.getImagen(),p.getNombrePersonaje(),c.getCoordenadas()[0] ,c.getCoordenadas()[1]);
-		Operaciones.colocarPersonaje(j, p.getNombrePersonaje(), c);	
+		Operaciones.colocarPersonaje(logica, p.getNombrePersonaje(), c);	
 	}
 	
 	public static void aniadirfichaMons(String img,String nom,int x,int y) {
 		 JLabel lblIMG = new JLabel("");
 		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
-		setImage(lblIMG,"Mons/"+img);
+		setImage(lblIMG,"Personaje/"+img);
 		lblIMG.setName(nom);
 		contentPane.add(lblIMG,0);
 		contentPane.repaint();
@@ -91,6 +97,39 @@ public class PartidaJugador extends JFrame {
 		imgl.setIcon(imageIcon);
 	}
 	
+	public static void CrearFicha(Personaje p) {
+		//operaciones crearpersonaje
+		addPersonaje(p);
+	}
+	
+	
+	
+	
+	private void ManejadorImagen(){
+		setImage(lblImage, "Personaje/"+(String)this.comboImage.getSelectedItem());
+	}
+	
+	
+	public void ManejadorCrearPersonaje() {
+		if( true
+			
+				
+				
+				) {
+			
+		}
+		
+		
+		
+		
+		//enviarmensajecrear
+		
+	}
+	public static void addPersonaje(Personaje p) {
+		logica.getPartida().nuevoPersonaje(p);
+		logica.getPartida().nuevoPersonajeManejables(p);
+	}
+	
 	
 	public void ManejadorChat() {
 		this.txtLeer.append(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText()+"\n");
@@ -98,7 +137,7 @@ public class PartidaJugador extends JFrame {
 		this.txtEscribir.setText("");
 	}
 	
-	public void setFondoMapa(String dir) {
+	public static void setFondoMapa(String dir) {
 		BufferedImage img=null;
 		try {
 		    img = ImageIO.read(new File(dir));
@@ -188,61 +227,88 @@ public class PartidaJugador extends JFrame {
 		lblNewLabel_1.setBounds(10, 271, 89, 34);
 		contentPane.add(lblNewLabel_1);
 		
-		lblNewLabel_2 = new JLabel("Nombre");
-		lblNewLabel_2.setBounds(10, 316, 46, 14);
+		lblNewLabel_2 = new JLabel("Nombre:");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_2.setBounds(10, 316, 104, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		textField = new JTextField();
-		textField.setBounds(66, 313, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtNombre = new JTextField();
+		txtNombre.setBounds(124, 313, 86, 20);
+		contentPane.add(txtNombre);
+		txtNombre.setColumns(10);
 		
-		lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(10, 357, 46, 14);
+		lblNewLabel_3 = new JLabel("Vitalidad:");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_3.setBounds(10, 357, 104, 14);
 		contentPane.add(lblNewLabel_3);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(66, 354, 86, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		txtVitalidad = new JTextField();
+		txtVitalidad.setBounds(124, 354, 86, 20);
+		contentPane.add(txtVitalidad);
+		txtVitalidad.setColumns(10);
 		
-		lblNewLabel_4 = new JLabel("New label");
-		lblNewLabel_4.setBounds(10, 400, 46, 14);
+		lblNewLabel_4 = new JLabel("Ataque:");
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_4.setBounds(10, 400, 104, 14);
 		contentPane.add(lblNewLabel_4);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(66, 397, 86, 20);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		txtAtaque = new JTextField();
+		txtAtaque.setBounds(124, 397, 86, 20);
+		contentPane.add(txtAtaque);
+		txtAtaque.setColumns(10);
 		
-		lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setBounds(10, 439, 46, 14);
+		lblNewLabel_5 = new JLabel("Defensa:");
+		lblNewLabel_5.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_5.setBounds(10, 439, 104, 14);
 		contentPane.add(lblNewLabel_5);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(66, 436, 86, 20);
-		contentPane.add(textField_3);
-		textField_3.setColumns(10);
+		txtDefensa = new JTextField();
+		txtDefensa.setBounds(124, 436, 86, 20);
+		contentPane.add(txtDefensa);
+		txtDefensa.setColumns(10);
 		
-		lblNewLabel_6 = new JLabel("New label");
-		lblNewLabel_6.setBounds(10, 484, 46, 14);
+		lblNewLabel_6 = new JLabel("Movimiento:");
+		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_6.setBounds(8, 484, 106, 14);
 		contentPane.add(lblNewLabel_6);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(66, 481, 86, 20);
-		contentPane.add(textField_4);
-		textField_4.setColumns(10);
+		txtMovimientos = new JTextField();
+		txtMovimientos.setBounds(124, 481, 86, 20);
+		contentPane.add(txtMovimientos);
+		txtMovimientos.setColumns(10);
 		
-		lblNewLabel_7 = new JLabel("");
-		lblNewLabel_7.setBounds(20, 512, 155, 141);
-		contentPane.add(lblNewLabel_7);
+		lblImage = new JLabel("");
+		lblImage.setBounds(20, 512, 155, 141);
+		contentPane.add(lblImage);
 		
-		comboBox = new JComboBox();
-		comboBox.setBounds(30, 664, 122, 22);
-		contentPane.add(comboBox);
 		
-		btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(51, 703, 89, 23);
-		contentPane.add(btnNewButton);
+		
+		comboImage.setBounds(30, 664, 122, 22);
+		
+		File img=new File("src/images/Personaje");
+		File[] imgs=img.listFiles();
+		for(File f:imgs) {
+		String name=f.getName();
+		comboImage.addItem(name);
+		}
+		
+		
+		contentPane.add(comboImage);
+		
+		btnCrear = new JButton("Crear Personaje");
+		btnCrear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorCrearPersonaje();
+			}
+		});
+		btnCrear.setBounds(40, 703, 120, 23);
+		contentPane.add(btnCrear);
+		
+		comboImage.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				ManejadorImagen();
+			}
+		});
+		
 	}
 }

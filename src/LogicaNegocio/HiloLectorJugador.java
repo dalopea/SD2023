@@ -67,7 +67,7 @@ public class HiloLectorJugador extends Thread{
 						
 						
 						
-						PartidaJugador.ColocaFicha(logicaJ.getJugador(), j, logicaJ.getPartida().getTablero().getCasilla(coordenadas[0], coordenadas[1]));
+						PartidaJugador.ColocaFicha(j, logicaJ.getPartida().getTablero().getCasilla(coordenadas[0], coordenadas[1]));
 						//Llamar a método de la gráfica.
 					}
 					else if (partesPeticion[0].equals("Mover")) {

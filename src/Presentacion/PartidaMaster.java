@@ -72,11 +72,6 @@ public class PartidaMaster extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private Canvas canvas; 
-
-	
-	
-	
-	private JButton btnEditarPers;
 	private JButton btnAtacar;
 	private JButton btnEliminar;
 	private JButton btnMover;
@@ -92,20 +87,16 @@ public class PartidaMaster extends JFrame {
 		this.logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
 		this.ChatEscribir.setText("");
 	}
-	public void ManejadorEditar() {
-		
-	}
 	
 	public void ManejadorCrearPersonaje() {
 		CreacionPersonaje crea=new CreacionPersonaje();
 		crea.setVisible(true);
 		
 		
-		Personaje p=new Personaje(null,crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
+		Personaje p=new Personaje(logica.getMaster(),crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
 		
 		this.logica.getPartida().nuevoPersonaje(p);
 		this.logica.getPartida().nuevoPersonajeManejables(p);
-		//if lo añade nice, si no le envia mensaje de error
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
 	
@@ -127,6 +118,7 @@ public class PartidaMaster extends JFrame {
 		crea.settVIT(p.getMovimiento());
 		crea.setMOV(p.getMovimiento());
 		crea.setIMG(p.getImagen());
+		crea.setVitAct(p.getPuntosVidaActuales());
 		crea.setVisible(true);
 		}else {
 			
@@ -137,7 +129,7 @@ public class PartidaMaster extends JFrame {
 	public void aniadirfichaMons(String img,String nom,int x,int y) {
 		 JLabel lblIMG = new JLabel("");
 		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
-		setImage(lblIMG,"Mons/"+img);
+		setImage(lblIMG,"Personaje/"+img);
 		lblIMG.setName(nom);
 		contentPane.add(lblIMG,0);
 		contentPane.repaint();
@@ -167,8 +159,6 @@ public class PartidaMaster extends JFrame {
 			this.listPersonajes.getSelectedIndex()!=-1) {
 			
 			
-			//enviarmensafe /ROL21/Colocar?Personaje=nombre&Coords=[x,y]
-			//invocar
 			String nombre=(String) this.listPersonajes.getSelectedValue();
 			this.logica.broadcast("/ROL21/Colocar?Personaje="+nombre+"&Coords=["+txtCoordX.getText()+","+txtCoordY.getText()+"]");
 			
@@ -184,7 +174,7 @@ public class PartidaMaster extends JFrame {
 			int y=Integer.parseInt(txtCoordY.getText());
 			
 			aniadirfichaMons(j.getImagen(),j.getNombrePersonaje(),x,y);
-			Operaciones.colocarPersonaje(logica.getMaster(), nombre, logica.getPartida().getTablero().getCasilla(x, y));
+			Operaciones.colocarPersonaje(logica, nombre, logica.getPartida().getTablero().getCasilla(x, y));
 		
 		
 		
@@ -209,6 +199,7 @@ public class PartidaMaster extends JFrame {
 				if(p.getNombrePersonaje().equals(nombre)) {
 					 c=p.getPosicion();
 					 p.setPosicion(null);
+					 
 				}
 			}
 			
@@ -227,10 +218,11 @@ public class PartidaMaster extends JFrame {
 	
 	public void ManejadorCambiaMapa() {
 		//enviarmensaje;
+		cambiaMapa((String) this.comboMapas.getSelectedItem());
 	}
 	
-	public  void cambiaMapa() {
-		setFondoMapa((String) this.comboMapas.getSelectedItem());
+	public  void cambiaMapa(String im) {
+		setFondoMapa(im);
 	}
 	
 	
@@ -428,15 +420,6 @@ public class PartidaMaster extends JFrame {
 		separator_1.setBackground(UIManager.getColor("Button.focus"));
 		separator_1.setBounds(10, 810, 200, 5);
 		contentPane.add(separator_1);
-		
-		btnEditarPers = new JButton("Editar Jugador");
-		btnEditarPers.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ManejadorEditar();
-			}
-		});
-		btnEditarPers.setBounds(90, 34, 103, 23);
-		contentPane.add(btnEditarPers);
 		
 		btnAtacar = new JButton("Atacar");
 		btnAtacar.setBounds(5, 750, 89, 23);

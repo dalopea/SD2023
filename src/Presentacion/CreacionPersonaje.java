@@ -38,6 +38,8 @@ public class CreacionPersonaje extends JDialog {
 	private JTextField txtMOV;
 	private JLabel lblImage = new JLabel("");
 	JComboBox<String> comboImage = new JComboBox<>();
+	private JTextField txtVidaActual;
+	private JLabel lblVidaActual;
 	
 	public int getATQ() {
 		return Integer.parseInt(this.txtATQ.getText());
@@ -81,6 +83,11 @@ public class CreacionPersonaje extends JDialog {
 	public void setMOV(int mov) {
 		this.txtMOV.setText(Integer.toString(mov));
 		this.txtMOV.setEditable(false);
+	}
+	public void setVitAct(int vitact) {
+		this.txtVidaActual.setText(Integer.toString(vitact));
+		this.txtVidaActual.enable(true);
+		this.lblVidaActual.enable(true);
 	}
 	
 	
@@ -129,7 +136,7 @@ public class CreacionPersonaje extends JDialog {
 	public void setImage(String dir) {
 		BufferedImage img=null;
 		try {
-		    img = ImageIO.read(new File("src/images/Mons/"+dir));
+		    img = ImageIO.read(new File("src/images/Personaje/"+dir));
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
@@ -145,7 +152,7 @@ public class CreacionPersonaje extends JDialog {
 	public CreacionPersonaje() {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setModal(true);
-		setBounds(100, 100, 482, 310);
+		setBounds(100, 100, 482, 323);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -221,7 +228,7 @@ public class CreacionPersonaje extends JDialog {
 		
 		
 		
-		File img=new File("src/images/Mons");
+		File img=new File("src/images/Personaje");
 		File[] imgs=img.listFiles();
 		for(File f:imgs) {
 		String name=f.getName();
@@ -242,6 +249,21 @@ public class CreacionPersonaje extends JDialog {
 		});
 		setImage((String) comboImage.getSelectedItem());
 		contentPanel.add(lblImage);
+		{
+			 lblVidaActual = new JLabel("Vida Actual:");
+			lblVidaActual.setEnabled(false);
+			lblVidaActual.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblVidaActual.setBounds(30, 222, 109, 14);
+			contentPanel.add(lblVidaActual);
+		}
+		{
+			txtVidaActual = new JTextField();
+			txtVidaActual.setEditable(false);
+			txtVidaActual.setEnabled(false);
+			txtVidaActual.setBounds(149, 219, 86, 20);
+			contentPanel.add(txtVidaActual);
+			txtVidaActual.setColumns(10);
+		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

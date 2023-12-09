@@ -96,7 +96,7 @@ public class PartidaMaster extends JFrame {
 	}
 	
 	private void ManejadorVer(){
-		List<Personaje> pers=logica.getPartida().
+//		List<Personaje> pers=logica.getPartida();
 		
 		CreacionPersonaje crea=new CreacionPersonaje();
 		crea.setATQ(prueba.getPuntosAtaque());

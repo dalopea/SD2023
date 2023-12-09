@@ -23,6 +23,7 @@ public class Partida implements Serializable{
 	private Tablero tablero;
 	private boolean iniciado;
 	private List<Personaje> personajes;
+	private List<Personaje> personajesManejables;
 	
 	public Partida() {
 		
@@ -98,6 +99,19 @@ public class Partida implements Serializable{
 
 	public void setMaster(Master master) {
 		this.master = master;
+	}
+	public List<Personaje> getPersonajesManejables() {
+		return personajesManejables;
+	}
+	public void setPersonajesManejables(List<Personaje> personajesManejables) {
+		this.personajesManejables = personajesManejables;
+	}
+	
+	public List<Personaje> getPersonajes() {
+		return personajes;
+	}
+	public void setPersonajes(List<Personaje> personajes) {
+		this.personajes = personajes;
 	}
 	
 	

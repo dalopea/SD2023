@@ -9,6 +9,7 @@ package ModeloDominio;
  */
 
 public class Personaje {
+	private JugadorBase propietario;
 	private String nombrePersonaje;
 	private int puntosAtaque;
 	private int puntosDefensa;
@@ -16,8 +17,10 @@ public class Personaje {
 	private int puntosVidaActuales;
 	private int movimiento;
 	private String imgPath;
+	private Casilla posicion;
 	
-	public Personaje (String nombrePersonaje, int puntosAtaque, int puntosDefensa, int puntosVida, int movimiento,String img) {
+	public Personaje (JugadorBase propietario,String nombrePersonaje, int puntosAtaque, int puntosDefensa, int puntosVida, int movimiento,String img) {
+		this.propietario = propietario;
 		this.nombrePersonaje = nombrePersonaje;
 		this.puntosAtaque = puntosAtaque;
 		this.puntosDefensa = puntosDefensa;
@@ -25,6 +28,7 @@ public class Personaje {
 		this.puntosVidaMaximos = puntosVida;
 		this.movimiento = movimiento;
 		this.imgPath=img;
+		this.setPosicion(null);
 	}
 	
 	
@@ -63,6 +67,34 @@ public class Personaje {
 	}
 	public void setMovimiento(int movimiento) {
 		this.movimiento = movimiento;
+	}
+
+
+	public JugadorBase getPropietario() {
+		return propietario;
+	}
+
+
+	public void setPropietario(JugadorBase propietario) {
+		this.propietario = propietario;
+	}
+	
+	public String getImagen() {
+		return this.imgPath;
+	}
+	
+	public void setImagen(String imagen) {
+		this.imgPath = imagen;
+	}
+
+
+	public Casilla getPosicion() {
+		return posicion;
+	}
+
+
+	public void setPosicion(Casilla posicion) {
+		this.posicion = posicion;
 	}
 	
 	

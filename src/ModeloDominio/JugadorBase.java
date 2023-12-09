@@ -5,6 +5,7 @@ package ModeloDominio;
 public abstract class JugadorBase {
 
 	String nombreUsuario;
+	Partida partida;
 
 	public JugadorBase(String nombreUsuario) {
 		this.nombreUsuario=nombreUsuario;
@@ -16,6 +17,14 @@ public abstract class JugadorBase {
 	
 	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
+	}
+	
+	public Partida getPartida(){
+		return this.partida;
+	}
+	
+	public void setPartida(Partida partida) {
+		this.partida = partida;
 	}
 	
 }

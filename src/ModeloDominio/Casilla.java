@@ -37,6 +37,10 @@ public class Casilla {
 		this.personaje = personaje;
 	}
 	
+	public synchronized Personaje getPersonaje() {
+		return this.personaje;
+	}
+	
 	
 	
 	

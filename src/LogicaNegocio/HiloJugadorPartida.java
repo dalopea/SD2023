@@ -43,8 +43,9 @@ public class HiloJugadorPartida implements Runnable{
 	}
 	
 	
-	public void enviarAMi(String mensaje) {
+	public void enviarATodos(String mensaje) {
 		try {
+			//check
 			oos.writeBytes(mensaje+"\n");
 			oos.flush();
 		} catch (IOException e) {
@@ -63,6 +64,7 @@ public class HiloJugadorPartida implements Runnable{
 			oos.flush();
 			mensaje = ois.readLine();
 			while (mensaje != null) {
+				//check
 				mensajeBroadcast(mensaje+"\n");
 				mensaje = ois.readLine();
 			}

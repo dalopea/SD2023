@@ -75,12 +75,15 @@ public class PartidaMaster extends JFrame {
 
 	
 	
-	Personaje prueba=new Personaje(null,"Ejemplo",5,6,4,3,"\"src/images/Players/Player.png\"");
+	
 	private JButton btnEditarPers;
 	private JButton btnAtacar;
 	private JButton btnEliminar;
 	private JButton btnMover;
 	private JButton btnAdd;
+	private JButton btnCambiarMapa;
+	private JComboBox comboMapas;
+	private JButton btnDisponibilidad;
 
 	
 	
@@ -164,7 +167,8 @@ public class PartidaMaster extends JFrame {
 			this.listPersonajes.getSelectedIndex()!=-1) {
 			
 			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
-			//enviarmensafe /ROL21/Personaje=nombre&Coords=[x,y]
+			//enviarmensafe /ROL21/Colocar?Personaje=nombre&Coords=[x,y]
+			//invocar
 			if(c.isDisponible()) {
 				List<Personaje> lp=logica.getPartida().getPersonajesManejables();
 				String img=null;
@@ -231,9 +235,13 @@ public class PartidaMaster extends JFrame {
 		}else {
 			System.out.println("Error de seleccion de bicho");
 		}
-//		
-		
-		
+	}
+	
+	public void ManejadorCambiaMapa() {
+		//enviarmensaje;
+	}
+	
+	public static void cambiaMapa() {
 		
 	}
 	
@@ -330,7 +338,7 @@ public class PartidaMaster extends JFrame {
 		
 		lblNewLabel = new JLabel("Jugadores");
 		lblNewLabel.setBounds(10, 25, 143, 37);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		contentPane.add(lblNewLabel);
 		Partida.setBackground("");
 		
@@ -345,26 +353,26 @@ public class PartidaMaster extends JFrame {
 
 		
 		JList listaPlayers = new JList(this.players);
-		listaPlayers.setBounds(20, 73, 178, 153);
+		listaPlayers.setBounds(10, 70, 200, 170);
 //		List<Jugador> jugs= logica.getPartida().getJugadores();
 		List<String> noms=new ArrayList<>();
 //		for(Jugador j:jugs) {
 //			noms.add(j.getNombreUsuario());
 //		}
 //		noms.add(logica.getMaster().getNombreUsuario());
-		noms.add("f");
+
 		
 		this.players.addAll(noms);
 		contentPane.add(listaPlayers);
 		
 		lblPersonajes = new JLabel("Personajes");
-		lblPersonajes.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblPersonajes.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblPersonajes.setBounds(10, 267, 143, 37);
 		contentPane.add(lblPersonajes);
 		
 		listPersonajes = new JList(this.pers);
 		listPersonajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listPersonajes.setBounds(10, 307, 188, 400);
+		listPersonajes.setBounds(10, 300, 200, 350);
 		contentPane.add(listPersonajes);
 		
 		JButton btnCrear = new JButton("Crear");
@@ -373,7 +381,7 @@ public class PartidaMaster extends JFrame {
 				ManejadorCrearPersonaje();
 			}
 		});
-		btnCrear.setBounds(5, 718, 89, 23);
+		btnCrear.setBounds(5, 660, 89, 23);
 		contentPane.add(btnCrear);
 		
 		 btnAdd = new JButton("Añadir");
@@ -382,7 +390,7 @@ public class PartidaMaster extends JFrame {
 				ManejadorAniadir();
 			}
 		});
-		btnAdd.setBounds(5, 748, 89, 23);
+		btnAdd.setBounds(5, 690, 89, 23);
 		contentPane.add(btnAdd);
 		
 		JButton btnVer = new JButton("Ver");
@@ -391,27 +399,27 @@ public class PartidaMaster extends JFrame {
 				ManejadorVer();
 			}
 		});
-		btnVer.setBounds(109, 718, 89, 23);
+		btnVer.setBounds(109, 660, 89, 23);
 		contentPane.add(btnVer);
 		
 		txtCoordX = new JTextField();
-		txtCoordX.setBounds(150, 749, 50, 20);
+		txtCoordX.setBounds(150, 690, 50, 20);
 		contentPane.add(txtCoordX);
 		txtCoordX.setColumns(10);
 		
 		txtCoordY = new JTextField();
-		txtCoordY.setBounds(150, 780, 50, 20);
+		txtCoordY.setBounds(150, 720, 50, 20);
 		contentPane.add(txtCoordY);
 		txtCoordY.setColumns(10);
 		
 		lblNewLabel_1 = new JLabel("x:");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setBounds(104, 752, 46, 14);
+		lblNewLabel_1.setBounds(104, 690, 46, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		lblNewLabel_2 = new JLabel("y:");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_2.setBounds(104, 783, 46, 14);
+		lblNewLabel_2.setBounds(104, 720, 46, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		btnMover = new JButton("Mover");
@@ -420,7 +428,7 @@ public class PartidaMaster extends JFrame {
 				ManejadorMover();
 			}
 		});
-		btnMover.setBounds(5, 779, 89, 23);
+		btnMover.setBounds(5, 720, 89, 23);
 		contentPane.add(btnMover);
 		
 		JSeparator separator = new JSeparator();
@@ -430,7 +438,7 @@ public class PartidaMaster extends JFrame {
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBackground(UIManager.getColor("Button.focus"));
-		separator_1.setBounds(10, 850, 200, 5);
+		separator_1.setBounds(10, 810, 200, 5);
 		contentPane.add(separator_1);
 		
 		btnEditarPers = new JButton("Editar Jugador");
@@ -443,7 +451,7 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(btnEditarPers);
 		
 		btnAtacar = new JButton("Atacar");
-		btnAtacar.setBounds(5, 816, 89, 23);
+		btnAtacar.setBounds(5, 750, 89, 23);
 		contentPane.add(btnAtacar);
 		
 		btnEliminar = new JButton("Eliminar");
@@ -452,12 +460,38 @@ public class PartidaMaster extends JFrame {
 				ManejadorEliminar();
 			}
 		});
-		btnEliminar.setBounds(109, 816, 89, 23);
+		btnEliminar.setBounds(5, 780, 89, 23);
 		contentPane.add(btnEliminar);
 		
+		btnCambiarMapa = new JButton("Cambiar");
+		btnCambiarMapa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorCambiaMapa();
+			}
+		});
+		btnCambiarMapa.setBounds(5, 820, 89, 23);
+		contentPane.add(btnCambiarMapa);
+		
+		comboMapas = new JComboBox();
+		comboMapas.setBounds(109, 820, 89, 22);
+		contentPane.add(comboMapas);
+		
+		File img=new File("src/images/mapas");
+		File[] imgs=img.listFiles();
+		for(File f:imgs) {
+		String name=f.getName();
+		comboMapas.addItem(name);
+		}
 		
 		
-		pers.add(pers.size(), prueba.getNombrePersonaje());
+		
+		
+		
+		btnDisponibilidad = new JButton("<html>Cambiar Disponible</html>");
+		btnDisponibilidad.setVerticalAlignment(SwingConstants.TOP);
+		btnDisponibilidad.setBounds(109, 750, 89, 40);
+		contentPane.add(btnDisponibilidad);
+		
 		
 		
 		this.logica.iniciarPartida();

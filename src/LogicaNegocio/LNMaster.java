@@ -48,7 +48,7 @@ public class LNMaster extends LNJugadorBase{
 	public void broadcast(String mensaje) {
 		System.out.println(hilosJugadores.size());
 		for(HiloJugadorPartida hjp:hilosJugadores) {
-			hjp.enviarAMi(mensaje);
+			hjp.enviarATodos(mensaje);
 		}
 	}
 	

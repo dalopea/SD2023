@@ -26,6 +26,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JList;
+import javax.swing.JSeparator;
 
 public class PartidaJugador extends JFrame {
 
@@ -36,6 +39,10 @@ public class PartidaJugador extends JFrame {
 	private Socket s;
 	private LNJugador logica;
 	private JLabel show_Mapa;
+	private JLabel lblNewLabel;
+	private JList listPlayers;
+	private JSeparator separator;
+	private JLabel lblNewLabel_1;
 	
 	
 	public void ManejadorChat() {
@@ -71,7 +78,7 @@ public class PartidaJugador extends JFrame {
 		setSize(new Dimension(1800, 1000));
 	
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.GRAY);
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -114,5 +121,24 @@ public class PartidaJugador extends JFrame {
 		 show_Mapa = new JLabel("");
 		show_Mapa.setBounds(225, 25, 1200, 900);
 		contentPane.add(show_Mapa);
+		
+		lblNewLabel = new JLabel("Jugadores");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel.setBounds(10, 25, 89, 26);
+		contentPane.add(lblNewLabel);
+		
+		listPlayers = new JList();
+		listPlayers.setBounds(10, 70, 200, 170);
+		contentPane.add(listPlayers);
+		
+		separator = new JSeparator();
+		separator.setBackground(Color.BLACK);
+		separator.setBounds(10, 255, 200, 5);
+		contentPane.add(separator);
+		
+		lblNewLabel_1 = new JLabel("Personaje");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel_1.setBounds(10, 271, 89, 34);
+		contentPane.add(lblNewLabel_1);
 	}
 }

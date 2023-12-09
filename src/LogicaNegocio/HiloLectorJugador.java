@@ -15,13 +15,11 @@ import Presentacion.PartidaMaster;
 public class HiloLectorJugador extends Thread{
 
 	private Socket s;
-	private Partida p;
 	private JTextArea txtLeer;
 	private LNJugador logicaJ;
 	
-	public HiloLectorJugador(Socket s, Partida p,LNJugador l) {
+	public HiloLectorJugador(Socket s,LNJugador l) {
 		this.s = s;
-		this.p = p;
 		this.logicaJ=l;
 	}
 	
@@ -37,8 +35,8 @@ public class HiloLectorJugador extends Thread{
 			while((linea = ois.readLine())!= null) {
 
 				if (linea.startsWith("Partida")) {
-					this.p = (Partida) ois.readObject();
-					System.out.println(this.p.getNombrePartida());
+					this.logicaJ.setP((Partida) ois.readObject());
+					System.out.println(this.logicaJ.getP());
 					continue;
 				}
 				if (linea.startsWith("/ROL21/")){

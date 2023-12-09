@@ -74,7 +74,7 @@ public class PartidaMaster extends JFrame {
 
 	
 	
-	Personaje prueba=new Personaje(logica.getMaster(),"Ejemplo",5,6,4,3,"\"src/images/Players/Player.png\"");
+	Personaje prueba=new Personaje(null,"Ejemplo",5,6,4,3,"\"src/images/Players/Player.png\"");
 
 	
 	
@@ -89,7 +89,7 @@ public class PartidaMaster extends JFrame {
 		crea.setVisible(true);
 		
 		
-		Personaje p=new Personaje(logica.getMaster(),crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),"src/images/Players/Player.png");
+		Personaje p=new Personaje(null,crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),"src/images/Players/Player.png");
 //		this.logica.getPartida().nuevoPersonaje(p);
 		//if lo añade nice, si no le envia mensaje de error
 		pers.add(pers.size(), p.getNombrePersonaje());

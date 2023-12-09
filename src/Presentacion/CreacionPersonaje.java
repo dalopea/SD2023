@@ -3,6 +3,8 @@ package Presentacion;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -10,9 +12,15 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class CreacionPersonaje extends JDialog {
 
@@ -26,7 +34,7 @@ public class CreacionPersonaje extends JDialog {
 	private JTextField txtDEF;
 	private JTextField txtVIT;
 	private JTextField txtMOV;
-	
+	private JLabel lblImage = new JLabel("");
 	
 	public int getATQ() {
 		return Integer.parseInt(this.txtATQ.getText());
@@ -110,21 +118,22 @@ public class CreacionPersonaje extends JDialog {
 		}
 		
 	}
+	public void setImage(String dir) {
+		BufferedImage img=null;
+		try {
+		    img = ImageIO.read(new File("src/images/Mons/"+dir));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(),Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		lblImage.setIcon(imageIcon);
+	}
 	
-	
-//	public static void main(String[] args) {
-//		try {
-//			CreacionPersonaje dialog = new CreacionPersonaje();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 
-	/**
-	 * Create the dialog.
-	 */
+
+	
 	public CreacionPersonaje() {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setModal(true);
@@ -199,6 +208,25 @@ public class CreacionPersonaje extends JDialog {
 			contentPanel.add(txtMOV);
 			txtMOV.setColumns(10);
 		}
+		
+		JComboBox<String> comboImage = new JComboBox<>();
+		comboImage.setBounds(292, 187, 94, 22);
+		
+		File img=new File("src/images/Mons");
+		File[] imgs=img.listFiles();
+		for(File f:imgs) {
+		String name=f.getName();
+		comboImage.addItem(name);
+		}
+		
+		
+		
+		contentPanel.add(comboImage);
+		
+		
+		lblImage.setBounds(265, 25, 150, 150);
+		setImage((String) comboImage.getSelectedItem());
+		contentPanel.add(lblImage);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -216,5 +244,4 @@ public class CreacionPersonaje extends JDialog {
 			}
 		}
 	}
-
 }

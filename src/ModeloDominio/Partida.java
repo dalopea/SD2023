@@ -30,6 +30,8 @@ public class Partida implements Serializable{
 		this.jugadores=new ArrayList<Jugador>();
 		this.iniciado=false;
 		this.personajes = new ArrayList<Personaje>();
+		this.personajesManejables=new ArrayList<>();
+		this.tablero=new Tablero(20, 20);
 		
 		
 	}

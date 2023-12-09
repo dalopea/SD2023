@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class CreacionPersonaje extends JDialog {
 
@@ -35,6 +37,7 @@ public class CreacionPersonaje extends JDialog {
 	private JTextField txtVIT;
 	private JTextField txtMOV;
 	private JLabel lblImage = new JLabel("");
+	JComboBox<String> comboImage = new JComboBox<>();
 	
 	public int getATQ() {
 		return Integer.parseInt(this.txtATQ.getText());
@@ -51,8 +54,14 @@ public class CreacionPersonaje extends JDialog {
 	public int getMOV() {
 		return Integer.parseInt(this.txtMOV.getText());
 	}
+	public String getIMG() {
+		return (String) this.comboImage.getSelectedItem();
+	}
 	
-	
+	public void setIMG(String im) {
+		this.comboImage.setSelectedItem(im);
+		this.comboImage.setEditable(false);
+	}
 	public void setATQ(int atq) {
 		this.txtATQ.setText(Integer.toString(atq));
 		this.txtATQ.setEditable(false);
@@ -94,8 +103,8 @@ public class CreacionPersonaje extends JDialog {
 	}
 	
 	
-	private void ManejadorIMG(){
-		
+	private void ManejadorImagen(){
+		setImage((String)this.comboImage.getSelectedItem());
 	}
 	
 	public boolean PersValido() {
@@ -208,8 +217,9 @@ public class CreacionPersonaje extends JDialog {
 			txtMOV.setColumns(10);
 		}
 		
-		JComboBox<String> comboImage = new JComboBox<>();
-		comboImage.setBounds(292, 187, 94, 22);
+		
+		
+		
 		
 		File img=new File("src/images/Mons");
 		File[] imgs=img.listFiles();
@@ -224,6 +234,12 @@ public class CreacionPersonaje extends JDialog {
 		
 		
 		lblImage.setBounds(265, 25, 150, 150);
+		comboImage.setBounds(292, 187, 94, 22);
+		comboImage.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				ManejadorImagen();
+			}
+		});
 		setImage((String) comboImage.getSelectedItem());
 		contentPanel.add(lblImage);
 		{

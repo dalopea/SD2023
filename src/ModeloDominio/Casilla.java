@@ -1,7 +1,14 @@
 package ModeloDominio;
-//Comentario
-public class Casilla {
 
+import java.io.Serializable;
+
+//Comentario
+public class Casilla implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	

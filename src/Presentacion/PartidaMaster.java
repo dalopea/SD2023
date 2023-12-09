@@ -71,14 +71,16 @@ public class PartidaMaster extends JFrame {
 	private JTextField txtCoordY;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JButton btnMover;
 	private Canvas canvas; 
 
 	
 	
 	Personaje prueba=new Personaje(null,"Ejemplo",5,6,4,3,"\"src/images/Players/Player.png\"");
 	private JButton btnEditarPers;
-	private JLabel lblNewLabel_3;
+	private JButton btnAtacar;
+	private JButton btnEliminar;
+	private JButton btnMover;
+	private JButton btnAdd;
 
 	
 	
@@ -96,34 +98,45 @@ public class PartidaMaster extends JFrame {
 		crea.setVisible(true);
 		
 		
-		Personaje p=new Personaje(null,crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),"src/images/Players/Player.png");
-//		this.logica.getPartida().nuevoPersonaje(p);
+		Personaje p=new Personaje(null,crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
+		
+		this.logica.getPartida().nuevoPersonaje(p);
+		this.logica.getPartida().nuevoPersonajeManejables(p);
 		//if lo añade nice, si no le envia mensaje de error
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
 	
 	public void ManejadorVer(){
-//		List<Personaje> pers=logica.getPartida();
-		
+		if(this.listPersonajes.getSelectedIndex()!=-1) {
+			
+		String nombre=(String) this.listPersonajes.getSelectedValue();
+		List<Personaje> pers=logica.getPartida().getPersonajesManejables();
+		Personaje p = null;
+		for(Personaje j:pers) {
+			if(j.getNombrePersonaje().equals(nombre)) {
+				p=j;
+			}
+		}
 		CreacionPersonaje crea=new CreacionPersonaje();
-		crea.setATQ(prueba.getPuntosAtaque());
-		crea.setNOM(prueba.getNombrePersonaje());
-		crea.setDEF(prueba.getPuntosDefensa());
-		crea.settVIT(prueba.getMovimiento());
-		crea.setMOV(prueba.getMovimiento());
+		crea.setATQ(p.getPuntosAtaque());
+		crea.setNOM(p.getNombrePersonaje());
+		crea.setDEF(p.getPuntosDefensa());
+		crea.settVIT(p.getMovimiento());
+		crea.setMOV(p.getMovimiento());
+		crea.setIMG(p.getImagen());
 		crea.setVisible(true);
+		}else {
+			
+		}
+		
 	}
 	
 	public void aniadirfichaMons(String img,String nom,int x,int y) {
-//		System.out.println("metodo entra");
-//		JLabel lblIMG=new JLabel("");
-//		lblIMG.setName(nom);
-//		lblIMG.setBounds(500,500,20,20);
-//		setImage(lblIMG,"Mons/"+img);
-//		contentPane.add(lblIMG);
-		lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(10, 840, 20, 20);
-		contentPane.add(lblNewLabel_3);
+		 JLabel lblIMG = new JLabel("");
+		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
+		setImage(lblIMG,"Mons/"+img);
+		lblIMG.setName(nom);
+		contentPane.add(lblIMG,0);
 		contentPane.repaint();
 	}
 	
@@ -144,37 +157,105 @@ public class PartidaMaster extends JFrame {
 	
 	
 	public void ManejadorAniadir() {
-//		if(this.txtCoordX.getText().isBlank()||this.txtCoordX.getText().isEmpty()||
-//				this.txtCoordY.getText().isBlank()||this.txtCoordY.getText().isEmpty() ||
-//			this.listPersonajes.getSelectedIndex()==-1) {
-//			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText()), Integer.parseInt(txtCoordY.getText()));
-//			
-//			if(!c.isDisponible()) {
-//				List<Personaje> lp=logica.getPartida().getPersonajes();
-//				String img=null;
-//				String nombre=null;
-//				for(Personaje p:lp) {
-//					if(p.getNombrePersonaje().equals(this.listPersonajes.getSelectedValue())) {
-//						img=p.getImagen();
-//						nombre=(String) this.listPersonajes.getSelectedValue();
-//					}
-//				}
-//				if(img!=null) {
-//					canvas.aniadirfichaMons(img, nombre, Integer.parseInt(txtCoordX.getText()), Integer.parseInt(txtCoordY.getText()));
-//				}
-//				
-//			}else {
-//				
-//			}
-//			
-//		}else {
-//			
-//		}
+		if(!this.txtCoordX.getText().isBlank() &&
+			!this.txtCoordX.getText().isEmpty()&&
+			!this.txtCoordY.getText().isBlank()&&
+			!this.txtCoordY.getText().isEmpty() &&
+			this.listPersonajes.getSelectedIndex()!=-1) {
+			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
+			
+			if(c.isDisponible()) {
+				List<Personaje> lp=logica.getPartida().getPersonajesManejables();
+				String img=null;
+				String nombre=(String) this.listPersonajes.getSelectedValue();
+				for(Personaje p:lp) {
+					if(p.getNombrePersonaje().equals(nombre)) {
+						System.out.println("nombre per: "+p.getNombrePersonaje());
+						img=p.getImagen();
+						c.setPersonaje(p);
+						p.setPosicion(logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1));
+						nombre=(String) this.listPersonajes.getSelectedValue();
+					}
+				}
+				if(img!=null) {
+					System.out.println("Tegno la imagen");
+					System.out.println(img);
+					c.cambiarDisponibilidad();
+					
+					aniadirfichaMons(img, nombre, Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
+				}
+				
+			}else {
+				System.out.println("Casilla no disponible");
+			}
+			
+		}else {
+			System.out.println("Error de seleccion de personaje");
+		}
 		
-		aniadirfichaMons("Monster.png", "Ejemplo", 6, 5);
+		
 		
 		
 	}
+	
+	public void ManejadorMover(){		
+				this.btnEliminar.doClick();
+				this.btnAdd.doClick();
+	}
+	
+	
+	
+	
+	public void ManejadorEliminar() {
+		if(this.listPersonajes.getSelectedIndex()!=-1) {
+			
+			List<Personaje> list=logica.getPartida().getPersonajesManejables();
+			Casilla c=null;
+			String nombre=(String) this.listPersonajes.getSelectedValue();
+			for(Personaje p:list) {
+				if(p.getNombrePersonaje().equals(nombre)) {
+					 c=p.getPosicion();
+					 p.setPosicion(null);
+				}
+			}
+			
+			if(c!=null) {
+				c.cambiarDisponibilidad();
+				eliminarMons(nombre);
+			}else {
+				System.out.println("Casilla no existente");
+			}
+			
+			
+		}else {
+			System.out.println("Error de seleccion de bicho");
+		}
+//		
+		
+		
+		
+	}
+	
+	
+	public void eliminarMons(String nombre) {
+		Component[] componentList = contentPane.getComponents();
+
+		for(Component c : componentList){
+
+		    if(c instanceof JLabel && c.getName()!=null) {
+
+		     if(c.getName().equals(nombre)){
+
+		    	contentPane.remove(c);
+		    }
+		}
+		}
+		contentPane.revalidate();
+		contentPane.repaint();
+		
+		
+	}
+	
 	
 	
 	
@@ -244,7 +325,7 @@ public class PartidaMaster extends JFrame {
 		ChatLeer.setLineWrap(true);
 		ChatLeer.setBounds(0, 0, 300, 870);
 		Chat.add(ChatLeer);
-//		logica.addTXT(ChatLeer);
+		logica.addTXT(ChatLeer);
 		
 		lblNewLabel = new JLabel("Jugadores");
 		lblNewLabel.setBounds(10, 25, 143, 37);
@@ -260,6 +341,7 @@ public class PartidaMaster extends JFrame {
 		
 		
 		contentPane.add(show_Mapa);
+
 		
 		JList listaPlayers = new JList(this.players);
 		listaPlayers.setBounds(20, 73, 178, 153);
@@ -293,7 +375,7 @@ public class PartidaMaster extends JFrame {
 		btnCrear.setBounds(5, 718, 89, 23);
 		contentPane.add(btnCrear);
 		
-		JButton btnAdd = new JButton("Añadir");
+		 btnAdd = new JButton("Añadir");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ManejadorAniadir();
@@ -332,6 +414,11 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(lblNewLabel_2);
 		
 		btnMover = new JButton("Mover");
+		btnMover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorMover();
+			}
+		});
 		btnMover.setBounds(5, 779, 89, 23);
 		contentPane.add(btnMover);
 		
@@ -342,7 +429,7 @@ public class PartidaMaster extends JFrame {
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBackground(UIManager.getColor("Button.focus"));
-		separator_1.setBounds(10, 824, 200, 5);
+		separator_1.setBounds(10, 850, 200, 5);
 		contentPane.add(separator_1);
 		
 		btnEditarPers = new JButton("Editar Jugador");
@@ -354,11 +441,24 @@ public class PartidaMaster extends JFrame {
 		btnEditarPers.setBounds(90, 34, 103, 23);
 		contentPane.add(btnEditarPers);
 		
+		btnAtacar = new JButton("Atacar");
+		btnAtacar.setBounds(5, 816, 89, 23);
+		contentPane.add(btnAtacar);
+		
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorEliminar();
+			}
+		});
+		btnEliminar.setBounds(109, 816, 89, 23);
+		contentPane.add(btnEliminar);
+		
 		
 		
 		pers.add(pers.size(), prueba.getNombrePersonaje());
 		
 		
-//		this.logica.iniciarPartida();
+		this.logica.iniciarPartida();
 	}
 }

@@ -1,9 +1,14 @@
 package ModeloDominio;
 
+import java.io.Serializable;
 import java.util.*;
 //Comentario
-public class Tablero {
+public class Tablero implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Casilla> mapa=new ArrayList<>();
 	private int ancho;
 	private int largo;

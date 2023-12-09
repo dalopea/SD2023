@@ -52,8 +52,10 @@ public class HiloLectorJugador extends Thread{
 								nombrePersonaje = nombreValor[1];
 							}
 							if (nombreValor[0].equals("Coords")) {
-								coordenadas[0] = Integer.valueOf(nombreValor[1].substring(1,2));
-								coordenadas[1] = Integer.valueOf(nombreValor[1].substring(3,4));
+								String coordeanas=nombreValor[1].substring(1,nombreValor[1].length()-1);
+								String[] coordsSeparadas=coordeanas.split(",");
+								coordenadas[0] = Integer.valueOf(coordsSeparadas[0]);
+								coordenadas[1] = Integer.valueOf(coordsSeparadas[1]);
 							}
 						}
 						List<Personaje> personajes=logicaJ.getPartida().getPersonajes();
@@ -163,9 +165,10 @@ public class HiloLectorJugador extends Thread{
 					else if (partesPeticion[0].equals("Vida")){
 						
 					}
-				}
+				}else {
 				this.txtLeer.append(linea+"\n");
-			}
+				}
+				}
 		}
 		catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();

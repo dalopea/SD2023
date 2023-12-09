@@ -72,13 +72,14 @@ public class PartidaMaster extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private Canvas canvas; 
-	private JButton btnAtacar;
+	private JButton btnVida;
 	private JButton btnEliminar;
 	private JButton btnMover;
 	private JButton btnAdd;
 	private JButton btnCambiarMapa;
 	private JComboBox comboMapas;
 	private JButton btnDisponibilidad;
+	private JButton btnTerminar;
 
 	
 	
@@ -93,8 +94,9 @@ public class PartidaMaster extends JFrame {
 		crea.setVisible(true);
 		
 		
-		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
+		this.logica.broadcast("/ROL21/Crear?Nombre="+crea.getNOM()+"&Ataque="+crea.getATQ()+"&Defensa="+crea.getDEF()+"&Movmiento="+crea.getMOV()+"&Vida="+crea.getVIT()+"&Imagen="+crea.getIMG());
 		
+		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
 		this.logica.getPartida().nuevoPersonaje(p);
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
@@ -198,7 +200,7 @@ public class PartidaMaster extends JFrame {
 				if(p.getNombrePersonaje().equals(nombre)) {
 					 c=p.getPosicion();
 					 p.setPosicion(null);
-					 
+					 c.setPersonaje(null);
 				}
 			}
 			
@@ -333,12 +335,12 @@ public class PartidaMaster extends JFrame {
 		
 		JList listaPlayers = new JList(this.players);
 		listaPlayers.setBounds(10, 70, 200, 170);
-//		List<Jugador> jugs= logica.getPartida().getJugadores();
+		List<String> jugs= logica.getPartida().getJugadores();
 		List<String> noms=new ArrayList<>();
-//		for(Jugador j:jugs) {
-//			noms.add(j.getNombreUsuario());
-//		}
-//		noms.add(logica.getMaster().getNombreUsuario());
+		for(String j:jugs) {
+			noms.add(j);
+		}
+		noms.add(logica.getMaster().getNombreUsuario());
 
 		
 		this.players.addAll(noms);
@@ -420,9 +422,9 @@ public class PartidaMaster extends JFrame {
 		separator_1.setBounds(10, 810, 200, 5);
 		contentPane.add(separator_1);
 		
-		btnAtacar = new JButton("Atacar");
-		btnAtacar.setBounds(5, 750, 89, 23);
-		contentPane.add(btnAtacar);
+		btnVida = new JButton("Vida");
+		btnVida.setBounds(5, 750, 89, 23);
+		contentPane.add(btnVida);
 		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
@@ -461,6 +463,10 @@ public class PartidaMaster extends JFrame {
 		btnDisponibilidad.setVerticalAlignment(SwingConstants.TOP);
 		btnDisponibilidad.setBounds(109, 750, 89, 40);
 		contentPane.add(btnDisponibilidad);
+		
+		btnTerminar = new JButton("Finalizar Partida");
+		btnTerminar.setBounds(64, 892, 89, 23);
+		contentPane.add(btnTerminar);
 		
 		
 		

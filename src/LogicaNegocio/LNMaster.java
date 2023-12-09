@@ -36,6 +36,10 @@ public class LNMaster extends LNJugadorBase{
 		return this.master;
 	}
 	
+	public Partida getPartida() {
+		return this.partida;
+	}
+	
 	public void addTXT(JTextArea txtLeer) {
 		this.txtLeer=txtLeer;
 	}

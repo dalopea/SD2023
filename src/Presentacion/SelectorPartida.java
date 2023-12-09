@@ -28,9 +28,9 @@ public class SelectorPartida extends JFrame {
 	private JTextField txtNombrePartida;
 	private String nombre;
 	private JLabel lblGreet;
-	DefaultListModel<String> model=new DefaultListModel<>();
-	JList listPartidas = new JList(model);
-	HashMap<String,Integer> partidas;
+	private DefaultListModel<String> model=new DefaultListModel<>();
+	private JList listPartidas = new JList(model);
+	private HashMap<String,Integer> partidas;
 	
 	private Socket s;
 	private ObjectOutputStream oos;
@@ -148,14 +148,14 @@ public class SelectorPartida extends JFrame {
 		btnCrear.setBounds(109, 232, 89, 32);
 		contentPane.add(btnCrear);
 		
-		JButton btnActualizar = new JButton("Unirse");
-		btnActualizar.addActionListener(new ActionListener() {
+		JButton btnUnirse = new JButton("Unirse");
+		btnUnirse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ManejadorUnirse();
 			}
 		});
-		btnActualizar.setBounds(156, 275, 89, 36);
-		contentPane.add(btnActualizar);
+		btnUnirse.setBounds(156, 275, 89, 36);
+		contentPane.add(btnUnirse);
 		
 		
 		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -169,14 +169,14 @@ public class SelectorPartida extends JFrame {
 		lblNewLabel.setBounds(60, 56, 128, 14);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("Actualizar");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ManejadorActualizar();
 			}
 		});
-		btnNewButton.setBounds(304, 275, 104, 36);
-		contentPane.add(btnNewButton);
+		btnActualizar.setBounds(304, 275, 104, 36);
+		contentPane.add(btnActualizar);
 		
 		JLabel lblNewLabel_1 = new JLabel("Nombre:");
 		lblNewLabel_1.setBounds(245, 241, 49, 14);
@@ -193,6 +193,7 @@ public class SelectorPartida extends JFrame {
 		lblGreet.setFont(new Font("Malgun Gothic", Font.BOLD, 13));
 		lblGreet.setBounds(54, 11, 418, 44);
 		contentPane.add(lblGreet);
+		btnActualizar.doClick();
 	}
 	
 	public HashMap<String,Integer> obtenerPartidas(){

@@ -1,7 +1,9 @@
 package Presentacion;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.*;
 
@@ -15,7 +17,7 @@ public class Canvas extends JPanel {
 	
 	
 	public Canvas(JPanel placeholder,int col) {
-		placeholder.setVisible(false);
+		//placeholder.setVisible(false);
 		this.setBounds(placeholder.getBounds());
 		this.setBackground(placeholder.getBackground());
 		this.setBorder(placeholder.getBorder());
@@ -33,7 +35,9 @@ public class Canvas extends JPanel {
 		for(int y=0;y<gridRows;y++) {
 			
 			for(int x=0;x<gridColumns;x++) {
-				g.drawRect(x*gridCellSize, y*gridCellSize, gridCellSize, gridCellSize);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setStroke(new BasicStroke(5));
+				g2.drawRect(x*gridCellSize, y*gridCellSize, gridCellSize, gridCellSize);
 			}
 			
 		}

@@ -7,6 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import LogicaNegocio.*;
+import ModeloDominio.Casilla;
+import ModeloDominio.JugadorBase;
+import ModeloDominio.Personaje;
 
 import java.awt.Dimension;
 import java.awt.Color;
@@ -33,7 +36,7 @@ import javax.swing.JSeparator;
 public class PartidaJugador extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private static JPanel contentPane;
 	private JTextField txtEscribir;
 	private JTextArea txtLeer;
 	private Socket s;
@@ -43,6 +46,36 @@ public class PartidaJugador extends JFrame {
 	private JList listPlayers;
 	private JSeparator separator;
 	private JLabel lblNewLabel_1;
+	private static Canvas canvas;
+	
+	
+	public static  void ColocaFicha(JugadorBase j,Personaje p,Casilla c) {
+		aniadirfichaMons(p.getImagen(),p.getNombrePersonaje(),c.getCoordenadas()[0] ,c.getCoordenadas()[1]);
+		Operaciones.colocarPersonaje(j, p.getNombrePersonaje(), c);	
+	}
+	
+	public static void aniadirfichaMons(String img,String nom,int x,int y) {
+		 JLabel lblIMG = new JLabel("");
+		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
+		setImage(lblIMG,"Mons/"+img);
+		lblIMG.setName(nom);
+		contentPane.add(lblIMG,0);
+		contentPane.repaint();
+	}
+	public static void setImage(JLabel imgl,String dir) {
+		BufferedImage img=null;
+		try {
+			File f=new File("src/images/"+dir);
+			System.out.println(f.getName());
+		    img = ImageIO.read(f);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(imgl.getWidth(), imgl.getHeight(),Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		imgl.setIcon(imageIcon);
+	}
 	
 	
 	public void ManejadorChat() {
@@ -89,7 +122,7 @@ public class PartidaJugador extends JFrame {
 		Mapa.setBounds(225, 25, 1200, 900);
 		contentPane.add(Mapa);
 		Mapa.setLayout(new GridLayout(1, 0, 0, 0));
-		Canvas canvas = new Canvas(Mapa,20);
+		 canvas = new Canvas(Mapa,20);
 		canvas.setOpaque(false);
 		getContentPane().add(canvas);
 		

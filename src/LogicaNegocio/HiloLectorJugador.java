@@ -3,10 +3,13 @@ package LogicaNegocio;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.List;
 
 import javax.swing.JTextArea;
 
 import ModeloDominio.Partida;
+import ModeloDominio.Personaje;
+import Presentacion.PartidaJugador;
 import Presentacion.PartidaMaster;
 
 public class HiloLectorJugador extends Thread{
@@ -14,10 +17,12 @@ public class HiloLectorJugador extends Thread{
 	private Socket s;
 	private Partida p;
 	private JTextArea txtLeer;
+	private LNJugador logicaJ;
 	
-	public HiloLectorJugador(Socket s, Partida p) {
+	public HiloLectorJugador(Socket s, Partida p,LNJugador l) {
 		this.s = s;
 		this.p = p;
+		this.logicaJ=l;
 	}
 	
 	public void setTextArea( JTextArea txtLeer) {
@@ -53,6 +58,18 @@ public class HiloLectorJugador extends Thread{
 								coordenadas[1] = Integer.valueOf(nombreValor[1].substring(3,4));
 							}
 						}
+						List<Personaje> personajes=logicaJ.getPartida().getPersonajes();
+						Personaje j=null;
+						for(Personaje p:personajes) {
+							if(nombrePersonaje.equals(p.getNombrePersonaje())) {
+								j=p;
+							}
+							
+						}
+						
+						
+						
+						PartidaJugador.ColocaFicha(logicaJ.getJugador(), j, logicaJ.getPartida().getTablero().getCasilla(coordenadas[0], coordenadas[1]));
 						//Llamar a método de la gráfica.
 					}
 					else if (partesPeticion[0].equals("Mover")) {

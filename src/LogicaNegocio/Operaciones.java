@@ -18,7 +18,7 @@ public class Operaciones {
 	 * El método colocarPersonaje coloca un personaje en una casilla, siempre que este personaje esté en la lista de personajes de la partida y la casilla esté desocupada y
 	 * disponible.
 	 */
-	public boolean colocarPersonaje(JugadorBase jugador, String nombrePersonaje, Casilla casilla) {
+	public static boolean colocarPersonaje(JugadorBase jugador, String nombrePersonaje, Casilla casilla) {
 		List<Personaje> personajes = jugador.getPartida().getPersonajes();
 		Personaje personaje = null;
 		for (Personaje p : personajes) {

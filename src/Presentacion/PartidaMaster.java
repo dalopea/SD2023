@@ -166,41 +166,29 @@ public class PartidaMaster extends JFrame {
 			!this.txtCoordY.getText().isEmpty() &&
 			this.listPersonajes.getSelectedIndex()!=-1) {
 			
-			Casilla c=logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
+			
 			//enviarmensafe /ROL21/Colocar?Personaje=nombre&Coords=[x,y]
 			//invocar
-			if(c.isDisponible()) {
-				List<Personaje> lp=logica.getPartida().getPersonajesManejables();
-				String img=null;
-				String nombre=(String) this.listPersonajes.getSelectedValue();
-				for(Personaje p:lp) {
-					if(p.getNombrePersonaje().equals(nombre)) {
-						System.out.println("nombre per: "+p.getNombrePersonaje());
-						img=p.getImagen();
-						c.setPersonaje(p);
-						p.setPosicion(logica.getPartida().getTablero().getCasilla(Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1));
-						nombre=(String) this.listPersonajes.getSelectedValue();
-					}
-				}
-				if(img!=null) {
-					System.out.println("Tegno la imagen");
-					System.out.println(img);
-					c.cambiarDisponibilidad();
-					
-					aniadirfichaMons(img, nombre, Integer.parseInt(txtCoordX.getText())-1, Integer.parseInt(txtCoordY.getText())-1);
+			String nombre=(String) this.listPersonajes.getSelectedValue();
+			this.logica.broadcast("/ROL21/Colocar?Personaje="+nombre+"&Coords=["+txtCoordX.getText()+","+txtCoordY.getText()+"]");
+			
+			List<Personaje> personajes=logica.getPartida().getPersonajes();
+			Personaje j=null;
+			for(Personaje p:personajes) {
+				if(nombre.equals(p.getNombrePersonaje())) {
+					j=p;
 				}
 				
-			}else {
-				System.out.println("Casilla no disponible");
 			}
+			int x=Integer.parseInt(txtCoordX.getText());
+			int y=Integer.parseInt(txtCoordY.getText());
 			
-		}else {
-			System.out.println("Error de seleccion de personaje");
-		}
+			aniadirfichaMons(j.getImagen(),j.getNombrePersonaje(),x,y);
+			Operaciones.colocarPersonaje(logica.getMaster(), nombre, logica.getPartida().getTablero().getCasilla(x, y));
 		
 		
 		
-		
+	}
 	}
 	
 	public void ManejadorMover(){		

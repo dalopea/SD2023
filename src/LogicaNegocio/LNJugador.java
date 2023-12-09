@@ -29,6 +29,10 @@ public class LNJugador extends LNJugadorBase {
 		return this.jugador;
 	}
 	
+	public Partida getPartida() {
+		return this.partida;
+	}
+	
 	public void setTxtArea( JTextArea txtLeer) {
 		this.hiloLectorJugador.setTextArea(txtLeer);
 	}
@@ -36,7 +40,7 @@ public class LNJugador extends LNJugadorBase {
 	
 	public void unirseAPartida(Socket s) {
 		this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
-		this.hiloLectorJugador = new HiloLectorJugador(s,partida);
+		this.hiloLectorJugador = new HiloLectorJugador(s,partida,this);
 		this.hiloLectorJugador.start();
 	}
 }

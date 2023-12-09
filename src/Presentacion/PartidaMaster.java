@@ -45,6 +45,8 @@ import javax.swing.SwingConstants;
 import java.awt.Point;
 import java.awt.Component;
 import javax.swing.JList;
+import javax.swing.JButton;
+import javax.swing.ListSelectionModel;
 
 public class PartidaMaster extends JFrame {
 
@@ -57,6 +59,8 @@ public class PartidaMaster extends JFrame {
 	private JLabel lblNewLabel;
 	private JLabel show_Mapa;
 	private DefaultListModel<String> players=new DefaultListModel<>();
+	private JLabel lblPersonajes;
+	private JList listPersonajes;
 
 
 	
@@ -71,7 +75,7 @@ public class PartidaMaster extends JFrame {
 	public void setFondoMapa(String dir) {
 		BufferedImage img=null;
 		try {
-		    img = ImageIO.read(new File(dir));
+		    img = ImageIO.read(new File("src/images/mapas/"+dir));
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
@@ -133,7 +137,7 @@ public class PartidaMaster extends JFrame {
 		ChatLeer.setLineWrap(true);
 		ChatLeer.setBounds(0, 0, 300, 870);
 		Chat.add(ChatLeer);
-		logica.addTXT(ChatLeer);
+//		logica.addTXT(ChatLeer);
 		
 		lblNewLabel = new JLabel("Jugadores");
 		lblNewLabel.setBounds(10, 25, 143, 37);
@@ -144,26 +148,47 @@ public class PartidaMaster extends JFrame {
 		show_Mapa = new JLabel("");
 		show_Mapa.setBounds(225, 25, 1200, 900);
 		
-		this.setFondoMapa("src/images/mapas/claro_Mapa.jpg");
+		this.setFondoMapa("claro_Mapa.jpg");
 		
 		
 		
 		contentPane.add(show_Mapa);
 		
-		JList list = new JList();
-		list.setBounds(20, 73, 178, 153);
+		JList listaPlayers = new JList(this.players);
+		listaPlayers.setBounds(20, 73, 178, 153);
 //		List<Jugador> jugs= logica.getPartida().getJugadores();
-//		List<String> noms=new ArrayList<>();
+		List<String> noms=new ArrayList<>();
 //		for(Jugador j:jugs) {
 //			noms.add(j.getNombreUsuario());
 //		}
 //		noms.add(logica.getMaster().getNombreUsuario());
-//		noms.add("f");
-//		
-//		this.players.addAll(noms);
+		noms.add("f");
 		
+		this.players.addAll(noms);
+		contentPane.add(listaPlayers);
 		
-		contentPane.add(list);
-		this.logica.iniciarPartida();
+		lblPersonajes = new JLabel("Personajes");
+		lblPersonajes.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblPersonajes.setBounds(10, 267, 143, 37);
+		contentPane.add(lblPersonajes);
+		
+		listPersonajes = new JList();
+		listPersonajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listPersonajes.setBounds(10, 307, 188, 400);
+		contentPane.add(listPersonajes);
+		
+		JButton btnCrear = new JButton("Crear");
+		btnCrear.setBounds(5, 718, 89, 23);
+		contentPane.add(btnCrear);
+		
+		JButton btnAdd = new JButton("Añadir");
+		btnAdd.setBounds(109, 718, 89, 23);
+		contentPane.add(btnAdd);
+		
+		JButton btnVer = new JButton("Ver");
+		btnVer.setBounds(5, 748, 89, 23);
+		contentPane.add(btnVer);
+		
+//		this.logica.iniciarPartida();
 	}
 }

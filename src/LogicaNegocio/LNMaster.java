@@ -22,14 +22,14 @@ public class LNMaster extends LNJugadorBase{
 	private Master master; 
 	private Partida partida;
 	private List<HiloJugadorPartida> hilosJugadores;
-	private List<Personaje> personajes;
+	
 	private JTextArea txtLeer;
 	
 	public LNMaster(Master m,Partida p) {
 		this.master=m;
 		this.partida=p;
 		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
-		this.personajes = new ArrayList<Personaje>();
+		
 	}
 	
 	public Master getMaster() {
@@ -91,11 +91,11 @@ public class LNMaster extends LNJugadorBase{
 	}
 	
 	public void nuevoPersonaje(Personaje personaje) {
-		this.personajes.add(personaje);
+		this.partida.nuevoPersonaje(personaje);
 	}
 	
 	public void eliminarPersonaje(Personaje personaje) {
-		this.personajes.remove(personaje);
+		this.partida.eliminarPersonaje(personaje);
 	}
 	
 	public void personajeACasilla(Personaje personaje, int x, int y) {

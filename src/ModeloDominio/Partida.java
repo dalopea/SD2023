@@ -22,13 +22,22 @@ public class Partida implements Serializable{
 	private List<Jugador> jugadores;
 	private Tablero tablero;
 	private boolean iniciado;
+	private List<Personaje> personajes;
 	
 	public Partida() {
 		
 		this.jugadores=new ArrayList<Jugador>();
 		this.iniciado=false;
+		this.personajes = new ArrayList<Personaje>();
 		
 		
+	}
+	public void nuevoPersonaje(Personaje personaje) {
+		this.personajes.add(personaje);
+	}
+	
+	public void eliminarPersonaje(Personaje personaje) {
+		this.personajes.remove(personaje);
 	}
 	
 	public boolean isIniciada() {

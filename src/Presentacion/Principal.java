@@ -12,7 +12,7 @@ public class Principal {
 
 	public static void main(String[] args) {
 
-		Inicio.main(args);
+//		Inicio.main(args);
 		
 //		Tablero tablero = new Tablero(4,5);
 //		for (Casilla c : tablero.getMapa()) {
@@ -21,8 +21,8 @@ public class Principal {
 //		Casilla c = tablero.getCasilla(3, 4);
 //		System.out.println("[" +c.getCoordenadas()[0] + ","+ c.getCoordenadas()[1]+"]");
 		
-//		PartidaMaster pm=new PartidaMaster(null);
-//		pm.setVisible(true);
+		PartidaMaster pm=new PartidaMaster(null);
+		pm.setVisible(true);
 		
 		
 //		

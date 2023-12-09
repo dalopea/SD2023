@@ -15,15 +15,18 @@ public class Personaje {
 	private int puntosVidaMaximos;
 	private int puntosVidaActuales;
 	private int movimiento;
+	private String imgPath;
 	
-	public Personaje (String nombrePersonaje, int puntosAtaque, int puntosDefensa, int puntosVida, int movimiento) {
+	public Personaje (String nombrePersonaje, int puntosAtaque, int puntosDefensa, int puntosVida, int movimiento,String img) {
 		this.nombrePersonaje = nombrePersonaje;
 		this.puntosAtaque = puntosAtaque;
 		this.puntosDefensa = puntosDefensa;
 		this.puntosVidaActuales = puntosVida;
 		this.puntosVidaMaximos = puntosVida;
 		this.movimiento = movimiento;
+		this.imgPath=img;
 	}
+	
 	
 	public String getNombrePersonaje() {
 		return nombrePersonaje;

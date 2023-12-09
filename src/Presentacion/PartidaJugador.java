@@ -11,13 +11,21 @@ import LogicaNegocio.*;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.net.*;
 
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class PartidaJugador extends JFrame {
 
@@ -27,6 +35,7 @@ public class PartidaJugador extends JFrame {
 	private JTextArea txtLeer;
 	private Socket s;
 	private LNJugador logica;
+	private JLabel show_Mapa;
 	
 	
 	public void ManejadorChat() {
@@ -35,7 +44,18 @@ public class PartidaJugador extends JFrame {
 		this.txtEscribir.setText("");
 	}
 	
-	
+	public void setFondoMapa(String dir) {
+		BufferedImage img=null;
+		try {
+		    img = ImageIO.read(new File(dir));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(show_Mapa.getWidth(), show_Mapa.getHeight(),Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		show_Mapa.setIcon(imageIcon);
+	}
 	
 	
 	public PartidaJugador(Socket s,LNJugadorBase log) {
@@ -58,10 +78,13 @@ public class PartidaJugador extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel Mapa = new JPanel();
+		Mapa.setOpaque(false);
 		Mapa.setBounds(225, 25, 1200, 900);
 		contentPane.add(Mapa);
 		Mapa.setLayout(new GridLayout(1, 0, 0, 0));
-		getContentPane().add(new Canvas(Mapa,20));
+		Canvas canvas = new Canvas(Mapa,20);
+		canvas.setOpaque(false);
+		getContentPane().add(canvas);
 		
 		JPanel Chat = new JPanel();
 		Chat.setBounds(1450, 25, 300, 900);
@@ -87,6 +110,9 @@ public class PartidaJugador extends JFrame {
 		txtEscribir.setBounds(0, 870, 300, 30);
 		Chat.add(txtEscribir);
 		txtEscribir.setColumns(10);
+		
+		 show_Mapa = new JLabel("");
+		show_Mapa.setBounds(225, 25, 1200, 900);
+		contentPane.add(show_Mapa);
 	}
-
 }

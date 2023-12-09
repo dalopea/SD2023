@@ -20,14 +20,13 @@ import ModeloDominio.*;
 public class LNMaster extends LNJugadorBase{
 
 	private Master master; 
-	private Partida partida;
 	private List<HiloJugadorPartida> hilosJugadores;
 	
 	private JTextArea txtLeer;
 	
 	public LNMaster(Master m,Partida p) {
+		super(p);
 		this.master=m;
-		this.partida=p;
 		this.hilosJugadores = new ArrayList<HiloJugadorPartida>();
 		
 	}
@@ -36,9 +35,6 @@ public class LNMaster extends LNJugadorBase{
 		return this.master;
 	}
 	
-	public Partida getPartida() {
-		return this.partida;
-	}
 	
 	public void addTXT(JTextArea txtLeer) {
 		this.txtLeer=txtLeer;
@@ -58,11 +54,11 @@ public class LNMaster extends LNJugadorBase{
 	 * Todos los hilos comparten el mismo objeto Partida, que es el que tiene toda la información del estado del tablero.
 	 */
 	public void iniciarPartida() {
-		try(ServerSocket ss = new ServerSocket(partida.getPuertoPartida())){
+		try(ServerSocket ss = new ServerSocket(this.getP().getPuertoPartida())){
 			for (int i = 0; i<1; i++) {
 				try {
 					Socket s = ss.accept();
-					HiloJugadorPartida par=new HiloJugadorPartida(s,this.partida,this.hilosJugadores,this);
+					HiloJugadorPartida par=new HiloJugadorPartida(s,this.getP(),this.hilosJugadores,this);
 					par.setTxtArea(txtLeer);
 					Thread thJugador = new Thread(par);
 					thJugador.start();
@@ -81,7 +77,7 @@ public class LNMaster extends LNJugadorBase{
 		try (Socket s = new Socket("localhost",55555);
 				ObjectOutputStream oos = new ObjectOutputStream (s.getOutputStream())){
 			oos.writeBytes("Eliminar Partida\n");
-			oos.writeBytes(this.master.getNombreUsuario() + ":" + this.partida.getNombrePartida() + "\n");
+			oos.writeBytes(this.master.getNombreUsuario() + ":" + this.getP().getNombrePartida() + "\n");
 			oos.writeBytes("Desconectar\n");
 			oos.flush();
 		}
@@ -91,15 +87,15 @@ public class LNMaster extends LNJugadorBase{
 	}
 	
 	public void nuevoPersonaje(Personaje personaje) {
-		this.partida.nuevoPersonaje(personaje);
+		this.getP().nuevoPersonaje(personaje);
 	}
 	
 	public void eliminarPersonaje(Personaje personaje) {
-		this.partida.eliminarPersonaje(personaje);
+		this.getP().eliminarPersonaje(personaje);
 	}
 	
 	public void personajeACasilla(Personaje personaje, int x, int y) {
-		this.partida.getTablero().getCasilla(x,y).setPersonaje(personaje);
+		this.getP().getTablero().getCasilla(x,y).setPersonaje(personaje);
 	}
 	
 	

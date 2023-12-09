@@ -43,7 +43,7 @@ public class HiloLectorJugador extends Thread{
 				}
 				if (linea.startsWith("/ROL21/")){
 					String peticion = linea.substring(7);
-					String[] partesPeticion = peticion.split("?");
+					String[] partesPeticion = peticion.split("\\?");
 					if (partesPeticion[0].equals("Colocar")) {
 						String nombrePersonaje = null;
 						int[] coordenadas = new int[2];

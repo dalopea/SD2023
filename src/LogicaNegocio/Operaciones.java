@@ -3,6 +3,7 @@ package LogicaNegocio;
 import java.util.List;
 
 import ModeloDominio.Casilla;
+import ModeloDominio.Jugador;
 import ModeloDominio.JugadorBase;
 import ModeloDominio.Master;
 import ModeloDominio.Personaje;
@@ -18,8 +19,8 @@ public class Operaciones {
 	 * El método colocarPersonaje coloca un personaje en una casilla, siempre que este personaje esté en la lista de personajes de la partida y la casilla esté desocupada y
 	 * disponible.
 	 */
-	public static boolean colocarPersonaje(JugadorBase jugador, String nombrePersonaje, Casilla casilla) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public static boolean colocarPersonaje(LNJugadorBase logica, String nombrePersonaje, Casilla casilla) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		Personaje personaje = null;
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
@@ -53,8 +54,8 @@ public class Operaciones {
 	 * El método mover mueve a un personaje a la casillaDestino desde la casillaOrigen. Esto implica cambiar el personaje de la casilla original a null, cambiar el personaje de
 	 * la casilla destino al personaje en cuestión y cambiar la posición del personaje a la casilla destino.
 	 */
-	public boolean moverPersonaje(JugadorBase jugador, Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
-		if (jugador.getPartida().getPersonajesManejables().contains(personaje)) {
+	public boolean moverPersonaje(LNJugadorBase logica, Personaje personaje, Casilla casillaOrigen, Casilla casillaDestino) {
+		if (logica.getP().getPersonajesManejables().contains(personaje)) {
 			if (casillaDestino.getPersonaje() == null && casillaDestino.isDisponible()) {
 				if (comprobarMovimiento(personaje,casillaOrigen,casillaDestino)) {
 					if (casillaOrigen.getPersonaje().equals(personaje)) {
@@ -85,21 +86,21 @@ public class Operaciones {
 	 * Añade el personaje a la lista de personajes disponibles. Además, si el jugador es el propietario de la criatura o el máster, 
 	 * se le añadirá a la lista de personajes manejables.
 	 */
-	public void aniadirPersonaje(JugadorBase jugador,Personaje personaje) {
-		jugador.getPartida().getPersonajes().add(personaje);
-		if (personaje.getPropietario().equals(jugador) || jugador.getPartida().getMaster().equals(jugador)) {
-			jugador.getPartida().getPersonajesManejables().add(personaje);
+	public void aniadirPersonaje(LNJugadorBase logica,Jugador jugador, Personaje personaje) {
+		logica.getP().getPersonajes().add(personaje);
+		if (personaje.getPropietario().equals(jugador) || logica.getP().getMaster().equals(jugador)) {
+			logica.getP().getPersonajesManejables().add(personaje);
 		}
 	}
 	
 	/*
 	 * 
 	 */
-	public boolean nuevoPersonaje(JugadorBase jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
+	public boolean nuevoPersonaje(LNJugadorBase logica,Jugador jugador, int jugadorEnLista, String nombre, int PA, int PD, int PVM, int mov, String imgPath) {
 		try{
-			if (!existePersonaje(jugador,nombre)){
-				Personaje personaje = new Personaje(jugador.getPartida().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
-				aniadirPersonaje(jugador, personaje);
+			if (!existePersonaje(logica,nombre)){
+				Personaje personaje = new Personaje(logica.getP().getJugadores().get(jugadorEnLista),nombre,PA,PD,PVM,mov,imgPath);
+				aniadirPersonaje(logica, jugador, personaje);
 				return true;
 			}
 			else {
@@ -112,8 +113,8 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarVidaPersonaje(JugadorBase jugador, String nombrePersonaje, int vidaActual) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public void modificarVidaPersonaje(LNJugadorBase logica, String nombrePersonaje, int vidaActual) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
 				p.setPuntosVidaActuales(vidaActual);
@@ -121,8 +122,8 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarAtaquePersonaje(JugadorBase jugador, String nombrePersonaje, int puntosAtaque) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public void modificarAtaquePersonaje(LNJugadorBase logica, String nombrePersonaje, int puntosAtaque) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
 				p.setPuntosAtaque(puntosAtaque);
@@ -130,8 +131,8 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarDefensaPersonaje(JugadorBase jugador, String nombrePersonaje, int puntosDefensa) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public void modificarDefensaPersonaje(LNJugadorBase logica, String nombrePersonaje, int puntosDefensa) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
 				p.setPuntosDefensa(puntosDefensa);
@@ -139,8 +140,8 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarMovimientoPersonaje(JugadorBase jugador, String nombrePersonaje, int movimiento) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public void modificarMovimientoPersonaje(LNJugadorBase logica, String nombrePersonaje, int movimiento) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
 				p.setMovimiento(movimiento);
@@ -148,9 +149,9 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarNombrePersonaje(JugadorBase jugador, String nombrePersonaje, String nombre) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
-		boolean existe = existePersonaje(jugador,nombre);
+	public void modificarNombrePersonaje(LNJugadorBase logica, String nombrePersonaje, String nombre) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
+		boolean existe = existePersonaje(logica,nombre);
 		
 		if (!existe) {
 			for (Personaje p : personajes) {
@@ -163,8 +164,8 @@ public class Operaciones {
 	}
 	
 	
-	public void modificarImagenPersonaje(JugadorBase jugador, String nombrePersonaje, String path) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public void modificarImagenPersonaje(LNJugadorBase logica, String nombrePersonaje, String path) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
 				p.setImagen(path);
@@ -172,8 +173,8 @@ public class Operaciones {
 		}
 	}
 	
-	public void atacarPersonaje(JugadorBase jugador, String nombrePersonajeAtacante, String nombrePersonajeDefensor,int modificador) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public void atacarPersonaje(LNJugadorBase logica, String nombrePersonajeAtacante, String nombrePersonajeDefensor,int modificador) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		Personaje atacante = null;
 		Personaje defensor = null;
 		for (Personaje p : personajes) {
@@ -188,14 +189,14 @@ public class Operaciones {
 		if (atacante != null && defensor != null) {
 			if(comprobarAdyacencia(atacante,defensor)) {
 				if (atacante.getPuntosAtaque() + modificador >= defensor.getPuntosDefensa()) {
-					modificarVidaPersonaje(jugador,nombrePersonajeDefensor,defensor.getPuntosVidaActuales()-(atacante.getPuntosAtaque()+modificador - defensor.getPuntosDefensa()));
+					modificarVidaPersonaje(logica,nombrePersonajeDefensor,defensor.getPuntosVidaActuales()-(atacante.getPuntosAtaque()+modificador - defensor.getPuntosDefensa()));
 				}
 			}
 		}
 	}
 	
-	public boolean existePersonaje (JugadorBase jugador, String nombrePersonaje) {
-		List<Personaje> personajes = jugador.getPartida().getPersonajes();
+	public boolean existePersonaje (LNJugadorBase logica, String nombrePersonaje) {
+		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {
 				return true;

@@ -100,11 +100,11 @@ public class Partida implements Serializable{
 	public void setPersonajesManejables(List<Personaje> personajesManejables) {
 		this.personajesManejables = personajesManejables;
 	}
-	public void nuevoPersonajeJugable(Personaje personaje) {
+	public void nuevoPersonajeManejables(Personaje personaje) {
 		this.personajesManejables.add(personaje);
 	}
 	
-	public void eliminarPersonajeJugable(Personaje personaje) {
+	public void eliminarPersonajeManejables(Personaje personaje) {
 		this.personajesManejables.remove(personaje);
 	}
 	

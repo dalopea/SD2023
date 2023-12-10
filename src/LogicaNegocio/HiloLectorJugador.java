@@ -153,7 +153,7 @@ public class HiloLectorJugador extends Thread{
 						
 					}
 					else if (partesPeticion[0].equals("Eliminar")) {
-						String nombrePersonaje;
+						String nombrePersonaje = "";
 						String[] argumentos = partesPeticion[1].split("&");
 						for (String argumento : argumentos) {
 							String[] nombreValor = argumento.split("=");
@@ -161,6 +161,7 @@ public class HiloLectorJugador extends Thread{
 								nombrePersonaje = nombreValor[1];
 							}
 						}
+						PartidaJugador.eliminarFichaMapa(nombrePersonaje);
 					}
 					else if (partesPeticion[0].equals("Vida")){
 						

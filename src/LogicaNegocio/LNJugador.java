@@ -14,15 +14,15 @@ import ModeloDominio.Partida;
 
 //Comentario
 public class LNJugador extends LNJugadorBase {
-
+	
 	private Jugador jugador; 
-	private Partida partida;
 	public HiloEscritorJugador hiloEscritorJugador;
 	private HiloLectorJugador hiloLectorJugador;
 	
 	public LNJugador (Jugador jugador) {
+		super();
+		this.setP(null);
 		this.jugador = jugador;
-		this.partida = new Partida();
 	}
 	
 	public Jugador getJugador() {
@@ -39,7 +39,7 @@ public class LNJugador extends LNJugadorBase {
 	
 	
 	public void unirseAPartida(Socket s) {
-		this.hiloEscritorJugador = new HiloEscritorJugador(s,partida);
+		this.hiloEscritorJugador = new HiloEscritorJugador(s,this.getPartida());
 		this.hiloLectorJugador = new HiloLectorJugador(s,this);
 		this.hiloLectorJugador.start();
 		this.hiloEscritorJugador.enviarMensaje(jugador.getNombreUsuario());

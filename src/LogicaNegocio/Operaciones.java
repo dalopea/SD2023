@@ -161,6 +161,10 @@ public class Operaciones {
 		}
 	}
 	
+	/*
+	 * Este metodo no se utiliza ya que no puedo llegar a la versión final por tiempo y para evitar demasiada extensión.
+	 * 
+	 * */
 	public void atacarPersonaje(LNJugadorBase logica, String nombrePersonajeAtacante, String nombrePersonajeDefensor,int modificador) {
 		List<Personaje> personajes = logica.getP().getPersonajes();
 		Personaje atacante = null;

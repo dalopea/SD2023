@@ -194,28 +194,14 @@ public class PartidaMaster extends JFrame {
 	
 	public void ManejadorEliminar() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
-			
-			List<Personaje> list=logica.getPartida().getPersonajes();
-			Casilla c=null;
 			String nombre=(String) this.listPersonajes.getSelectedValue();
-			for(Personaje p:list) {
-				if(p.getNombrePersonaje().equals(nombre)) {
-					 c=p.getPosicion();
-					 p.setPosicion(null);
-					 c.setPersonaje(null);
-				}
-			}
+			this.logica.broadcast("/ROL21/");
+			this.eliminarMons(nombre);
 			
-			if(c!=null) {
-				c.cambiarDisponibilidad();
-				eliminarMons(nombre);
-			}else {
-				System.out.println("Casilla no existente");
-			}
 			
 			
 		}else {
-			System.out.println("Error de seleccion de bicho");
+			
 		}
 	}
 	

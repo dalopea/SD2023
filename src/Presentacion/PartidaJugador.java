@@ -13,6 +13,7 @@ import ModeloDominio.Personaje;
 
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.net.*;
@@ -53,7 +54,6 @@ public class PartidaJugador extends JFrame {
 	
 	private static JLabel show_Mapa;
 	private JLabel lblNewLabel;
-	private JList listPlayers;
 	private JSeparator separator;
 	private JLabel lblNewLabel_1;
 	private static Canvas canvas;
@@ -105,11 +105,32 @@ public class PartidaJugador extends JFrame {
 		Operaciones.nuevoPersonaje(logica, p);
 	}
 	
-	
-	
-	
 	private void ManejadorImagen(){
 		setImage(lblImage, "Personaje/"+(String)this.comboImage.getSelectedItem());
+	}
+	
+	public static void eliminarFichaMapa(String nombre) {
+		eliminarMons(nombre);
+		
+	}
+	
+	public static void eliminarMons(String nombre) {
+		Component[] componentList = contentPane.getComponents();
+
+		for(Component c : componentList){
+
+		    if(c instanceof JLabel && c.getName()!=null) {
+
+		     if(c.getName().equals(nombre)){
+
+		    	contentPane.remove(c);
+		    }
+		}
+		}
+		contentPane.revalidate();
+		contentPane.repaint();
+		
+		
 	}
 	
 	
@@ -217,20 +238,19 @@ public class PartidaJugador extends JFrame {
 		lblNewLabel.setBounds(10, 25, 89, 26);
 		contentPane.add(lblNewLabel);
 		
-		listPlayers = new JList();
-		listPlayers.setBounds(10, 70, 200, 170);
 		JList listaPlayers = new JList(this.players);
 		listaPlayers.setBounds(10, 70, 200, 170);
+		
 		List<String> jugs= logica.getPartida().getJugadores();
 		List<String> noms=new ArrayList<>();
 		for(String j:jugs) {
 			noms.add("Jugador: "+j);
 		}
-//		noms.add("Master: "+logica.getP().getMaster().getNombreUsuario());
+		noms.add("Master: "+logica.getP().getMaster().getNombreUsuario());
 
 		
 		this.players.addAll(noms);
-		contentPane.add(listPlayers);
+		contentPane.add(listaPlayers);
 		
 		separator = new JSeparator();
 		separator.setBackground(Color.BLACK);

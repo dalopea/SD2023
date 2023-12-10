@@ -208,4 +208,9 @@ public class Operaciones {
 		}
 		return true;
 	}
+	
+	public void eliminarPersonajeDeCasilla(Personaje personaje) {
+		personaje.getPosicion().setPersonaje(null);
+		personaje.setPosicion(null);
+	}
 }

@@ -1,6 +1,5 @@
 package LogicaNegocio;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,10 +10,28 @@ import java.util.concurrent.CyclicBarrier;
 
 import javax.swing.JTextArea;
 
-import ModeloDominio.Partida;
 import ModeloDominio.Personaje;
 import Presentacion.PartidaMaster;
 
+/*
+ * Este hilo es invocado por la lógica de negocio del máster, siendo el que se encarga de comunicarse con un Jugador en específico.
+ * Entre sus atributos tiene un ObjectInputStream y un ObjectOutputStream, que permiten la comunicación con el jugador, así como una lista de todos los
+ * HiloJugadorPartida creados, para poder recorrerla al hacer broadcast (mensaje a todos los jugadores).
+ * 
+ * El máster puede recibir, y enviar, dos tipos de mensajes:
+ *  1-> Mensajes normales que llegarán a los Jugadores, mostrándose en el chat.
+ *  2 -> Mensajes de gestión o control (aquellos que empiezan por /Rol21/), que se utilizan para sincronizar la partida.
+ * 
+ * Cuando el Máster recibe un mensaje de control de un Jugador, invoca al método correspondiente de la clase PartidaMáster con los datos obtenidos de los parámetros de
+ * la petición.
+ * 
+ * Por ejemplo, una posible petición es:
+ * 
+ * 														/ROL21/Mover?Personaje=nombre&Coords=[x,y]
+ * 
+ * De donde podemos obtener el nombre del personaje que se está moviendo y las coordenadas de la casilla a la que se quiere mover.
+ *
+ */
 public class HiloJugadorPartida implements Runnable{
 
 	private Socket s;

@@ -11,8 +11,11 @@ import ModeloDominio.Casilla;
 import ModeloDominio.Partida;
 import ModeloDominio.Personaje;
 import Presentacion.PartidaJugador;
-import Presentacion.PartidaMaster;
-
+/*
+ * Segundo hilo de la lógica de negocio de todo jugador. Se encarga de leer los mensajes que le envía el máster y analizarlos. En caso de que sea un mensaje de control
+ * (aquellos que empiezan por /Rol21/), llamará a un método de la clase PartidaJugador.
+ * En otro caso, lo escribirá en el chat.
+ */
 public class HiloLectorJugador extends Thread{
 
 	private Socket s;
@@ -72,10 +75,14 @@ public class HiloLectorJugador extends Thread{
 						
 						
 						PartidaJugador.ColocaFicha(j, logicaJ.getPartida().getTablero().getCasilla(coordenadas[0], coordenadas[1]));
-						//Llamar a método de la gráfica.
 					}
+					
 					/*
-					 * Esto no resultaria muy dificil, pero da una complejidad que no merece la pena en un trabajo de estas dimensiones.
+					 * Aunque este método no es complejo (el método atacar), la verdad es que implicaba una cierta complejidad que, por tiempo, no hemos sido
+					 * capaces de abordar. Básicamente, se indicaba el personaje atacante, el personaje defensor y el modificador de ataque para automatizar el proceso de 
+					 * pérdida de vida de una criatura.
+					 * 
+					 * Sin embargo, aunque hubiera sido un plus interesante, hemos creído que perfilar el resto del proyecto era más importante.
 					 * */
 //					else if (partesPeticion[0].equals("Atacar")) {
 //						String nombreAtacante = null;

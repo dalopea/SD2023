@@ -1,14 +1,16 @@
 package LogicaNegocio;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import ModeloDominio.Partida;
 
-public class HiloEscritorJugador extends Thread{
+/*
+ * Esta clase, aunque su nombre indique lo contrario, NO es un hilo. Es la clase que se encarga de enviar los mensajes del jugador al máster.
+ * En el pasado lo hacíamos con un hilo, pero nos dimos cuenta de que no era necesario.
+ */
+public class HiloEscritorJugador{
 
 	private Socket s;
 	private Partida p;

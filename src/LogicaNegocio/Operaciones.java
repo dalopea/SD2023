@@ -3,15 +3,15 @@ package LogicaNegocio;
 import java.util.List;
 
 import ModeloDominio.Casilla;
-import ModeloDominio.Jugador;
-import ModeloDominio.JugadorBase;
-import ModeloDominio.Master;
+
 import ModeloDominio.Personaje;
 
 /*
  * Esta clase sirve de interfaz para las operaciones que pueden realizar los diferentes jugadores (y el máster). Cuando alguien realiza algún cambio en la partida (movimiento,
  * ataque, creación de criatura...) la información se transmite en forma de mensaje a cada participante. Tras esto, en función del tipo de mensaje, se invocará una de estas 
  * operaciones (y posteriormente, si es necesario, una de las operaciones de la capa de presentación).
+ * 
+ * Nota: hay métodos para operaciones descartadas en el producto final.
  */
 public class Operaciones {
 
@@ -162,7 +162,7 @@ public class Operaciones {
 	}
 	
 	/*
-	 * Este metodo no se utiliza ya que no puedo llegar a la versión final por tiempo y para evitar demasiada extensión.
+	 * Este método no se utiliza ya que no puedo llegar a la versión final por tiempo y para evitar demasiada extensión.
 	 * 
 	 * */
 	public void atacarPersonaje(LNJugadorBase logica, String nombrePersonajeAtacante, String nombrePersonajeDefensor,int modificador) {

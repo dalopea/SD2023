@@ -1,10 +1,10 @@
 package LogicaNegocio;
 
-
-
 import ModeloDominio.Partida;
 
-//Comentario
+/*
+ * La lógica de negocio del JugadorBase, común a Máster y a Jugador, tiene el objeto partida.
+ */
 public class LNJugadorBase  {
 
 	

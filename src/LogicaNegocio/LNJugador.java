@@ -1,18 +1,16 @@
 package LogicaNegocio;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
 
 import javax.swing.JTextArea;
 
 import ModeloDominio.Jugador;
-import ModeloDominio.JugadorBase;
 import ModeloDominio.Partida;
 
-//Comentario
+/*
+ * La lógica de negocio del jugador. Se encarga de unirse a la partida creada por el máster, iniciando el hilo lector e instanciando un objeto de la clase HiloEscritor.
+ * También manda un primer mensaje al máster con su nombre de usuario, para añadirlo a la lista de jugadores de la partida.
+ */
 public class LNJugador extends LNJugadorBase {
 	
 	private Jugador jugador; 

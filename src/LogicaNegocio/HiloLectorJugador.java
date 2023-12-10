@@ -72,41 +72,28 @@ public class HiloLectorJugador extends Thread{
 						PartidaJugador.ColocaFicha(j, logicaJ.getPartida().getTablero().getCasilla(coordenadas[0], coordenadas[1]));
 						//Llamar a método de la gráfica.
 					}
-					else if (partesPeticion[0].equals("Mover")) {
-						String nombrePersonaje = null;
-						int[] coordenadas = new int[2];
-						String[] argumentos = partesPeticion[1].split("&");
-						for (String argumento : argumentos) {
-							String[] nombreValor = argumento.split("=");
-							if (nombreValor[0].equals("Personaje")) {
-								nombrePersonaje = nombreValor[1];
-							}
-							if (nombreValor[0].equals("Coords")) {
-								coordenadas[0] = Integer.valueOf(nombreValor[1].substring(1,2));
-								coordenadas[1] = Integer.valueOf(nombreValor[1].substring(3,4));
-							}
-						}
-						//Llamar a método de la gráfica.
-					}
-					else if (partesPeticion[0].equals("Atacar")) {
-						String nombreAtacante = null;
-						String nombreDefensor = null;
-						int modificador = 0;
-						String[] argumentos = partesPeticion[1].split("&");
-						for (String argumento : argumentos) {
-							String[] nombreValor = argumento.split("=");
-							if (nombreValor[0].equals("Atacante")) {
-								nombreAtacante = nombreValor[1];
-							}
-							if (nombreValor[0].equals("Defensor")) {
-								nombreDefensor = nombreValor[1];
-							}
-							if (nombreValor[0].equals("Modificador")) {
-								modificador = Integer.parseInt(nombreValor[1]);
-							}
-						}
-						//Llamar a método correspondiente
-					}
+					/*
+					 * Esto no resultaria muy dificil, pero da una complejidad que no merece la pena en un trabajo de estas dimensiones.
+					 * */
+//					else if (partesPeticion[0].equals("Atacar")) {
+//						String nombreAtacante = null;
+//						String nombreDefensor = null;
+//						int modificador = 0;
+//						String[] argumentos = partesPeticion[1].split("&");
+//						for (String argumento : argumentos) {
+//							String[] nombreValor = argumento.split("=");
+//							if (nombreValor[0].equals("Atacante")) {
+//								nombreAtacante = nombreValor[1];
+//							}
+//							if (nombreValor[0].equals("Defensor")) {
+//								nombreDefensor = nombreValor[1];
+//							}
+//							if (nombreValor[0].equals("Modificador")) {
+//								modificador = Integer.parseInt(nombreValor[1]);
+//							}
+//						}
+//						//
+//					}
 					else if (partesPeticion[0].equals("Map")) {
 						String nombreImagen = null;
 						String[] argumentos = partesPeticion[1].split("&");

@@ -111,7 +111,7 @@ public class PartidaJugador extends JFrame {
 	
 	public static void eliminarFichaMapa(String nombre) {
 		eliminarMons(nombre);
-		
+		//Falta un operacion eliminar,no?
 	}
 	
 	public static void eliminarMons(String nombre) {

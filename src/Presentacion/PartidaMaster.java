@@ -196,9 +196,17 @@ public class PartidaMaster extends JFrame {
 	}
 	}
 	
-	public void ManejadorMover(){		
+	public void ManejadorMover(){
+		if(!this.txtCoordX.getText().isBlank() &&
+				!this.txtCoordX.getText().isEmpty()&&
+				!this.txtCoordY.getText().isBlank()&&
+				!this.txtCoordY.getText().isEmpty() &&
+				this.listPersonajes.getSelectedIndex()!=-1) {
+			
 				this.btnEliminar.doClick();
 				this.btnAdd.doClick();
+				
+		}
 	}
 	
 	
@@ -207,11 +215,9 @@ public class PartidaMaster extends JFrame {
 	public void ManejadorEliminar() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			String nombre=(String) this.listPersonajes.getSelectedValue();
-			logica.broadcast("/ROL21/");
+			logica.broadcast("/ROL21/Eliminar?Nombre="+this.listPersonajes.getSelectedValue());
 			this.eliminarMons(nombre);
-			
-			
-			
+			//operacion eliminar
 		}else {
 			
 		}

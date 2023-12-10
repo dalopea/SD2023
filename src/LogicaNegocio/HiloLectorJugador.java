@@ -32,6 +32,7 @@ public class HiloLectorJugador extends Thread{
 		try(ObjectInputStream ois = new ObjectInputStream(s.getInputStream())){
 			String linea;
 			Partida partida;
+			boolean desconectar = false;
 			while((linea = ois.readLine())!= null) {
 
 				if (linea.startsWith("Partida")) {
@@ -151,12 +152,44 @@ public class HiloLectorJugador extends Thread{
 						PartidaJugador.eliminarFichaMapa(nombrePersonaje);
 					}
 					else if (partesPeticion[0].equals("Vida")){
-						
+						String nombrePersonaje = "";
+						int pv = 0;
+						String[] argumentos = partesPeticion[1].split("&");
+						for (String argumento : argumentos) {
+							String[] nombreValor = argumento.split("=");
+							if (nombreValor[0].equals("Nombre")) {
+								nombrePersonaje = nombreValor[1];
+							}
+							if (nombreValor[0].equals("Vida")) {
+								pv = Integer.parseInt(nombreValor[1]);
+							}
+						}
+						PartidaJugador.cambiarVida(nombrePersonaje,pv);
+					}
+					else if (partesPeticion[0].equals("AlterarDisponible")) {
+						int[] coordenadas = new int[2];
+						String[] argumentos = partesPeticion[1].split("&");
+						for (String argumento : argumentos) {
+							String[] nombreValor = argumento.split("=");
+							if (nombreValor[0].equals("Coords")) {
+								String coordeanas=nombreValor[1].substring(1,nombreValor[1].length()-1);
+								String[] coordsSeparadas=coordeanas.split(",");
+								coordenadas[0] = Integer.valueOf(coordsSeparadas[0]);
+								coordenadas[1] = Integer.valueOf(coordsSeparadas[1]);
+							}
+						}
+						PartidaJugador.alterarDisponible(coordenadas);
+					}
+					else if (partesPeticion[0].equals("Desconectar")) {
+						desconectar = true;
 					}
 				}else {
 				this.txtLeer.append(linea+"\n");
 				}
+				if (desconectar) {
+					break;
 				}
+			}
 		}
 		catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();

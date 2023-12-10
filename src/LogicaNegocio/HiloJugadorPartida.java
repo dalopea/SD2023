@@ -12,6 +12,7 @@ import java.util.concurrent.CyclicBarrier;
 import javax.swing.JTextArea;
 
 import ModeloDominio.Partida;
+import Presentacion.PartidaMaster;
 
 public class HiloJugadorPartida implements Runnable{
 
@@ -72,7 +73,48 @@ public class HiloJugadorPartida implements Runnable{
 			mensaje = ois.readLine();
 			while (mensaje != null) {
 				//TODO: check
+				if (mensaje.startsWith("/ROL21/")){
+					String peticion = mensaje.substring(7);
+					String[] partesPeticion = peticion.split("\\?");
+					if (partesPeticion[0].equals("Crear")) {
+						String nombrePersonaje = null;
+						int puntosAtaque = 0;
+						int puntosDefensa = 0;
+						int movimiento = 0;
+						int puntosVida = 0;
+						String imagen = null;
+						String[] argumentos = partesPeticion[1].split("&");
+						for (String argumento : argumentos) {
+							String[] nombreValor = argumento.split("=");
+							if (nombreValor[0].equals("Nombre")) {
+								nombrePersonaje = nombreValor[1];
+							}
+							if (nombreValor[0].equals("Ataque")) {
+								puntosAtaque = Integer.parseInt(nombreValor[1]);
+							}
+							if (nombreValor[0].equals("Defensa")) {
+								puntosDefensa = Integer.parseInt(nombreValor[1]);
+							}
+							if (nombreValor[0].equals("Movimiento")) {
+								movimiento = Integer.parseInt(nombreValor[1]);
+							}
+							if (nombreValor[0].equals("Vida")) {
+								puntosVida = Integer.parseInt(nombreValor[1]);
+							}
+							if (nombreValor[0].equals("Imagen")) {
+								imagen = nombreValor[1];
+							}
+						}
+						
+						PartidaMaster.addPersonajeJugador(nombrePersonaje, puntosAtaque, puntosDefensa, puntosVida, movimiento, imagen);
+						
+					}
+					
+					
+					
+				}else {
 				mensajeBroadcast(mensaje+"\n");
+				}
 				mensaje = ois.readLine();
 			}
 		}

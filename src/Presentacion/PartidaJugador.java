@@ -135,26 +135,33 @@ public class PartidaJugador extends JFrame {
 	
 	
 	public void ManejadorCrearPersonaje() {
-		if( true
-			
-				
-				
-				) {
-			
+		if( this.txtAtaque.getText().isBlank() || this.txtAtaque.getText().isEmpty() || !isInt(this.txtAtaque.getText()) ||
+			this.txtDefensa.getText().isBlank() || this.txtDefensa.getText().isEmpty() || !isInt(this.txtDefensa.getText()) ||
+			this.txtMovimientos.getText().isBlank() || this.txtMovimientos.getText().isEmpty() || !isInt(this.txtMovimientos.getText()) ||
+			this.txtVitalidad.getText().isBlank() || this.txtVitalidad.getText().isEmpty() || !isInt(this.txtVitalidad.getText()) ||
+			this.txtNombre.getText().isBlank() || this.txtNombre.getText().isEmpty() 
+			) {
+			Inicio.infoBox("Error de creacion", "error");
+		}else {
+			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Crear?Nombre="+this.txtNombre.getText()+"&Ataque="+ this.txtAtaque.getText()+"&Defensa="+this.txtDefensa.getText()+"&Movimiento="+  this.txtMovimientos.getText()+"&Vida="+this.txtVitalidad.getText()+"&Imagen="+this.comboImage.getSelectedItem());
+			this.btnCrear.setVisible(false);
 		}
 		
-		
-		
-		
-		//enviarmensajecrear
+	}
+	public boolean isInt(String n) {
+		try{
+			Integer.parseInt(n);
+			return true;
+		}catch(NumberFormatException e) {
+			return false;
+		}
 		
 	}
 	
 	
-	
 	public void ManejadorChat() {
 		this.txtLeer.append(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText()+"\n");
-		this.logica.hiloEscritorJugador.enviarMensaje(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText());
+		logica.hiloEscritorJugador.enviarMensaje(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText());
 		this.txtEscribir.setText("");
 	}
 	
@@ -176,7 +183,7 @@ public class PartidaJugador extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		this.s=s;
-		this.logica=(LNJugador) log;
+		logica=(LNJugador) log;
 		logica.unirseAPartida(s);
 		while(logica.getP()==null) {
 			Thread.onSpinWait();
@@ -214,7 +221,7 @@ public class PartidaJugador extends JFrame {
 		txtLeer.setEditable(false);
 		txtLeer.setBounds(0, 0, 300, 870);
 		Chat.add(txtLeer);
-		this.logica.setTxtArea(txtLeer);
+		logica.setTxtArea(txtLeer);
 		
 		txtEscribir = new JTextField();
 		txtEscribir.addKeyListener(new KeyAdapter() {

@@ -61,12 +61,12 @@ public class PartidaMaster extends JFrame {
 	private  JPanel contentPane;
 	private  JTextField ChatEscribir;
 	private  JTextArea ChatLeer;
-	private  LNMaster logica;
+	private static  LNMaster logica;
 	private JPanelBackGround Partida;
 	private JLabel lblNewLabel;
 	private JLabel show_Mapa;
 	private DefaultListModel<String> players=new DefaultListModel<>();
-	private DefaultListModel<String> pers=new DefaultListModel<>();
+	private static DefaultListModel<String> pers=new DefaultListModel<>();
 	private JLabel lblPersonajes;
 	private JList listPersonajes;
 	private JTextField txtCoordX;
@@ -87,21 +87,33 @@ public class PartidaMaster extends JFrame {
 	
 	public void ManejadorChat() {
 		this.ChatLeer.append(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText()+"\n");
-		this.logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
+		logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
 		this.ChatEscribir.setText("");
 	}
+	
+	
+	public static void addPersonajeJugador(String nombre,int atq,int def,int vit,int mov,String img) {
+		logica.broadcast("/ROL21/Crear?Nombre="+nombre+"&Ataque="+atq+"&Defensa="+def+"&Movimiento="+mov+"&Vida="+vit+"&Imagen="+img);
+		
+		Personaje p=new Personaje(nombre,atq,def, vit,mov,img);
+		logica.getPartida().nuevoPersonaje(p);
+		pers.add(pers.size(), p.getNombrePersonaje());
+	}
+	
+	
 	
 	public void ManejadorCrearPersonaje() {
 		CreacionPersonaje crea=new CreacionPersonaje();
 		crea.setVisible(true);
 		
 		
-		this.logica.broadcast("/ROL21/Crear?Nombre="+crea.getNOM()+"&Ataque="+crea.getATQ()+"&Defensa="+crea.getDEF()+"&Movmiento="+crea.getMOV()+"&Vida="+crea.getVIT()+"&Imagen="+crea.getIMG());
+		logica.broadcast("/ROL21/Crear?Nombre="+crea.getNOM()+"&Ataque="+crea.getATQ()+"&Defensa="+crea.getDEF()+"&Movimiento="+crea.getMOV()+"&Vida="+crea.getVIT()+"&Imagen="+crea.getIMG());
 		
 		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
-		this.logica.getPartida().nuevoPersonaje(p);
+		logica.getPartida().nuevoPersonaje(p);
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
+	
 	
 	public void ManejadorVer(){
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
@@ -118,7 +130,7 @@ public class PartidaMaster extends JFrame {
 		crea.setATQ(p.getPuntosAtaque());
 		crea.setNOM(p.getNombrePersonaje());
 		crea.setDEF(p.getPuntosDefensa());
-		crea.settVIT(p.getMovimiento());
+		crea.settVIT(p.getPuntosVidaMaximos());
 		crea.setMOV(p.getMovimiento());
 		crea.setIMG(p.getImagen());
 		crea.setVitAct(p.getPuntosVidaActuales());
@@ -163,7 +175,7 @@ public class PartidaMaster extends JFrame {
 			
 			
 			String nombre=(String) this.listPersonajes.getSelectedValue();
-			this.logica.broadcast("/ROL21/Colocar?Personaje="+nombre+"&Coords=["+txtCoordX.getText()+","+txtCoordY.getText()+"]");
+			logica.broadcast("/ROL21/Colocar?Personaje="+nombre+"&Coords=["+txtCoordX.getText()+","+txtCoordY.getText()+"]");
 			
 			List<Personaje> personajes=logica.getPartida().getPersonajes();
 			Personaje j=null;
@@ -195,7 +207,7 @@ public class PartidaMaster extends JFrame {
 	public void ManejadorEliminar() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			String nombre=(String) this.listPersonajes.getSelectedValue();
-			this.logica.broadcast("/ROL21/");
+			logica.broadcast("/ROL21/");
 			this.eliminarMons(nombre);
 			
 			
@@ -258,7 +270,7 @@ public class PartidaMaster extends JFrame {
 		setResizable(false);
 		setSize(new Dimension(1800, 1000));
 		
-		this.logica=(LNMaster) ln;
+		logica=(LNMaster) ln;
 		
 		
 		contentPane = new JPanel();
@@ -447,7 +459,7 @@ public class PartidaMaster extends JFrame {
 		
 		
 		CyclicBarrier barrera=new CyclicBarrier(logica.getnumJugadores()+1);
-		this.logica.iniciarPartida(barrera);
+		logica.iniciarPartida(barrera);
 		try {
 			barrera.await();
 		} catch (InterruptedException e1) {

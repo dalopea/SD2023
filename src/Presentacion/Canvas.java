@@ -1,18 +1,14 @@
 package Presentacion;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
-
+/*
+ * Esta clase hace de canvas para poder dibujar la malla del mapa de la partida, de tal forma que podamos tener la cantidad de casillas y su tamaño.
+ * */
 
 public class Canvas extends JPanel {
 	
@@ -22,7 +18,7 @@ public class Canvas extends JPanel {
 	
 	
 	public Canvas(JPanel placeholder,int col) {
-		//placeholder.setVisible(false);
+
 		this.setBounds(placeholder.getBounds());
 		this.setBackground(placeholder.getBackground());
 		this.setBorder(placeholder.getBorder());

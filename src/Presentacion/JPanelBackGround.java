@@ -7,7 +7,9 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-
+/*
+ * Clase utilizada para colocar imagenes en el fondo del JPanel.
+ * */
 public class JPanelBackGround extends JPanel {
 
 	private Image background;

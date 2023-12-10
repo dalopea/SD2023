@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
@@ -12,15 +11,17 @@ import java.net.UnknownHostException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
-import java.awt.GridLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.BevelBorder;
 
+
+
+/*
+ * Pantalla de seleccion de nombres
+ * */
 public class Inicio {
 
 	private JFrame frmRol;
@@ -64,7 +65,7 @@ public class Inicio {
 		frmRol.setResizable(false);
 		frmRol.setBounds(100, 100, 385, 203);
 		
-		JButton btnNewButton = new JButton("Seleccionar");
+		JButton btnNewButton = new JButton("Confirmar Nombre");
 		btnNewButton.setBounds(32, 97, 131, 37);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

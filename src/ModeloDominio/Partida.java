@@ -7,9 +7,10 @@ import java.util.*;
  * La clase partida guarda la información relativa a la partida en curso:
  * 	- Nombre de partida
  * 	- Puerto de la partida
- *  - Lista de jugadores
+ *  - Lista de jugadores(nombres)
  *  - Estado del tablero (y, por tanto, de cada una de las casillas)
  *  - Iniciada o no iniciada
+ *  -Lista de los personajes de la partida
  */
 public class Partida implements Serializable{
 

@@ -96,13 +96,22 @@ public class PartidaMaster extends JFrame {
 	public void ManejadorCrearPersonaje() {
 		CreacionPersonaje crea=new CreacionPersonaje();
 		crea.setVisible(true);
+		boolean existe=false;
+		List<Personaje> personajes=logica.getPartida().getPersonajes();
 		
-		
+		for(Personaje p:personajes) {
+			if(p.getNombrePersonaje().equals(crea.getNOM())) {
+				existe=true;
+			}
+		}
+		if(!existe) {
 		logica.broadcast("/ROL21/Crear?Nombre="+crea.getNOM()+"&Ataque="+crea.getATQ()+"&Defensa="+crea.getDEF()+"&Movimiento="+crea.getMOV()+"&Vida="+crea.getVIT()+"&Imagen="+crea.getIMG());
-		
 		Personaje p=new Personaje(crea.getNOM(),crea.getATQ(),crea.getDEF(),crea.getVIT(),crea.getMOV(),crea.getIMG());
 		logica.getPartida().nuevoPersonaje(p);
 		pers.add(pers.size(), p.getNombrePersonaje());
+		}else {
+			Inicio.infoBox("El personaje ya existe", "Error");
+		}
 	}
 	
 	
@@ -317,7 +326,6 @@ public class PartidaMaster extends JFrame {
 	
 	public static void addPersonajeJugador(String nombre,int atq,int def,int vit,int mov,String img) {
 		logica.broadcast("/ROL21/Crear?Nombre="+nombre+"&Ataque="+atq+"&Defensa="+def+"&Movimiento="+mov+"&Vida="+vit+"&Imagen="+img);
-		
 		Personaje p=new Personaje(nombre,atq,def, vit,mov,img);
 		logica.getPartida().nuevoPersonaje(p);
 		pers.add(pers.size(), p.getNombrePersonaje());

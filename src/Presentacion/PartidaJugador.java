@@ -102,11 +102,23 @@ public class PartidaJugador extends JFrame {
 			this.txtDefensa.getText().isBlank() || this.txtDefensa.getText().isEmpty() || !isInt(this.txtDefensa.getText()) ||
 			this.txtMovimientos.getText().isBlank() || this.txtMovimientos.getText().isEmpty() || !isInt(this.txtMovimientos.getText()) ||
 			this.txtVitalidad.getText().isBlank() || this.txtVitalidad.getText().isEmpty() || !isInt(this.txtVitalidad.getText()) ||
-			this.txtNombre.getText().isBlank() || this.txtNombre.getText().isEmpty() 
+			txtNombre.getText().isBlank() || txtNombre.getText().isEmpty() 
 			) {
 			Inicio.infoBox("Error de creacion", "Error");
 		}else {
-			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Crear?Nombre="+this.txtNombre.getText()+"&Ataque="+ this.txtAtaque.getText()+"&Defensa="+this.txtDefensa.getText()+"&Movimiento="+  this.txtMovimientos.getText()+"&Vida="+this.txtVitalidad.getText()+"&Imagen="+this.comboImage.getSelectedItem());
+			boolean existe=false;
+			List<Personaje> personajes=logica.getPartida().getPersonajes();
+			
+			for(Personaje p:personajes) {
+				if(p.getNombrePersonaje().equals(txtNombre.getText())) {
+					existe=true;
+				}
+			}
+			if(!existe) {
+			
+			
+			
+			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Crear?Nombre="+txtNombre.getText()+"&Ataque="+ this.txtAtaque.getText()+"&Defensa="+this.txtDefensa.getText()+"&Movimiento="+  this.txtMovimientos.getText()+"&Vida="+this.txtVitalidad.getText()+"&Imagen="+this.comboImage.getSelectedItem());
 			this.btnCrear.setVisible(false);
 			this.lblVitAct.enable(true);
 			txtVitAct.enable(true);
@@ -124,7 +136,9 @@ public class PartidaJugador extends JFrame {
 			this.lblY.setVisible(true);
 			this.btnAdd.setVisible(true);
 			this.btnMover.setVisible(true);
-			
+			}else {
+				Inicio.infoBox("El personaje ya existe", "Error");
+			}
 		}
 		
 	}

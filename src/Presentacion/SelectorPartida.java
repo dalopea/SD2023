@@ -3,24 +3,22 @@ package Presentacion;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
-
 import ModeloDominio.*;
-
 import LogicaNegocio.*;
-
 import javax.swing.border.CompoundBorder;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-
 import java.net.*;
 import java.util.*;
-
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/*
+ * Clase que nos muestra las partidas disponibles y nos permite crearlas.
+ * */
 public class SelectorPartida extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -68,14 +66,17 @@ public class SelectorPartida extends JFrame {
 		}else {
 			try {
 				Socket socket=new Socket("localhost",partidas.get(this.listPartidas.getSelectedValue().toString()));
-				Inicio.infoBox("Se esperará al resto de jugadores para dar comienzo, pulse aceptar para continuar.", "INFO");
+				
 				oos.writeBytes("Desconectar\n");
 				oos.flush();
 				Jugador j=new Jugador(this.nombre);
 				LNJugadorBase ln=new LNJugador(j);
-				PartidaJugador pj=new PartidaJugador(socket,ln);
-				pj.setVisible(true);
 				this.setVisible(false);
+				Inicio.infoBox("Se ha unido a la partida, esperando al resto de jugadores, se inicara de forma automatica.", "INFO");
+				PartidaJugador pj=new PartidaJugador(socket,ln);
+				
+				pj.setVisible(true);
+				
 				
 			
 			} catch (IOException e) {
@@ -113,9 +114,11 @@ public class SelectorPartida extends JFrame {
 				int x=Integer.parseInt(this.txtNumJugs.getText());
 				Master m=new Master(this.nombre);
 				LNJugadorBase ln=new LNMaster(m,p,x);
+				this.setVisible(false);
+				Inicio.infoBox("Su partida se inicará cuando todos los jugadores se conecten.", "Info");
 				PartidaMaster pm=new PartidaMaster(ln);
 				pm.setVisible(true);
-				this.setVisible(false);
+				
 			}
 		}
 	}
@@ -131,7 +134,16 @@ public class SelectorPartida extends JFrame {
 	public SelectorPartida(String nombre,Socket s) {
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
+				try {
+					oos.writeBytes("Desconectar\n");
+					oos.flush();
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				System.exit(0);
 			}
 		});
@@ -177,7 +189,6 @@ public class SelectorPartida extends JFrame {
 		
 		listPartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listPartidas.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
 		
 		listPartidas.setBounds(80, 81, 364, 140);
 		contentPane.add(listPartidas);

@@ -24,6 +24,11 @@ import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
+
+
+/*
+ * JDialog que nos permite la introduccion de datos para la creacion de un nuevo personaje por parte del master
+ * */
 public class CreacionPersonaje extends JDialog {
 
 	private static final long serialVersionUID = 1L;

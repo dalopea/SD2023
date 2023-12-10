@@ -2,12 +2,14 @@ package ModeloDominio;
 
 import java.io.Serializable;
 import java.util.*;
-//Comentario
+
+
+/*
+ * La clase tablero contendrá una lista de casillas, además del largo y ancho que se usan para crearlo.
+ * */
 public class Tablero implements Serializable {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private List<Casilla> mapa=new ArrayList<>();
 	private int ancho;

@@ -1,4 +1,4 @@
-## SD2023
+# SD2023
 #Trabajo de Sistemas distribuidos 2023-2024
 #Creado por David López Antón y Víctor Manuel López Antón
 

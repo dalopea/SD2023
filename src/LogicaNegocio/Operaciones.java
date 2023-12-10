@@ -209,7 +209,7 @@ public class Operaciones {
 		return true;
 	}
 	
-	public void eliminarPersonajeDeCasilla(Personaje personaje) {
+	public static void eliminarPersonajeDeCasilla(Personaje personaje) {
 		personaje.getPosicion().setPersonaje(null);
 		personaje.setPosicion(null);
 	}

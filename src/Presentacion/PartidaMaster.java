@@ -217,7 +217,14 @@ public class PartidaMaster extends JFrame {
 			String nombre=(String) this.listPersonajes.getSelectedValue();
 			logica.broadcast("/ROL21/Eliminar?Nombre="+this.listPersonajes.getSelectedValue());
 			this.eliminarMons(nombre);
-			//operacion eliminar
+			List<Personaje> personajes=logica.getPartida().getPersonajes();
+			Personaje j=null;
+			for(Personaje p:personajes) {
+				if(p.getNombrePersonaje().equals(nombre)) {
+					j=p;
+				}
+			}
+			Operaciones.eliminarPersonajeDeCasilla(j);
 		}else {
 			
 		}

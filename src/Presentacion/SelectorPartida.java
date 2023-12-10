@@ -66,6 +66,8 @@ public class SelectorPartida extends JFrame {
 			Inicio.infoBox("No se pudo unir a ninguna partida ya que no se ha seleccionado ninguna", "Error de Selección");
 		}else {
 			try {
+				oos.writeBytes("Desconectar\n");
+				oos.flush();
 				Socket s=new Socket("localhost",partidas.get(this.listPartidas.getSelectedValue().toString()));
 				Jugador j=new Jugador(this.nombre);
 				LNJugadorBase ln=new LNJugador(j);

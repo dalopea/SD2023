@@ -101,7 +101,7 @@ public class Operaciones {
 		}
 	}
 	
-	public void modificarVidaPersonaje(LNJugadorBase logica, String nombrePersonaje, int vidaActual) {
+	public static void modificarVidaPersonaje(LNJugadorBase logica, String nombrePersonaje, int vidaActual) {
 		List<Personaje> personajes = logica.getP().getPersonajes();
 		for (Personaje p : personajes) {
 			if (p.getNombrePersonaje().equals(nombrePersonaje)) {

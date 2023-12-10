@@ -157,7 +157,7 @@ public class HiloLectorJugador extends Thread{
 						String[] argumentos = partesPeticion[1].split("&");
 						for (String argumento : argumentos) {
 							String[] nombreValor = argumento.split("=");
-							if (nombreValor[0].equals("Nombre")) {
+							if (nombreValor[0].equals("Personaje")) {
 								nombrePersonaje = nombreValor[1];
 							}
 							if (nombreValor[0].equals("Vida")) {
@@ -178,10 +178,11 @@ public class HiloLectorJugador extends Thread{
 								coordenadas[1] = Integer.valueOf(coordsSeparadas[1]);
 							}
 						}
-						PartidaJugador.alterarDisponible(coordenadas);
+						//PartidaJugador.alterarDisponible(coordenadas);
 					}
 					else if (partesPeticion[0].equals("Desconectar")) {
 						desconectar = true;
+						PartidaJugador.cerrar();
 					}
 				}else {
 				this.txtLeer.append(linea+"\n");

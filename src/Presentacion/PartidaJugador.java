@@ -58,7 +58,7 @@ public class PartidaJugador extends JFrame {
 	private JLabel lblNewLabel_1;
 	private static Canvas canvas;
 	private JLabel lblNewLabel_2;
-	private JTextField txtNombre;
+	private static JTextField txtNombre;
 	private JLabel lblNewLabel_3;
 	private JTextField txtVitalidad;
 	private JLabel lblNewLabel_4;
@@ -71,7 +71,13 @@ public class PartidaJugador extends JFrame {
 	private JButton btnCrear;
 	private DefaultListModel<String> players=new DefaultListModel<>();
 	private JComboBox<String> comboImage = new JComboBox<>();
+	private JLabel lblVitAct;
+	private static JTextField txtVitAct;
 	
+	
+	public static void cerrar() {
+		System.exit(0);
+	}
 	
 	public static  void ColocaFicha(Personaje p,Casilla c) {
 		aniadirfichaMons(p.getImagen(),p.getNombrePersonaje(),c.getCoordenadas()[0] ,c.getCoordenadas()[1]);
@@ -99,6 +105,14 @@ public class PartidaJugador extends JFrame {
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		
 		imgl.setIcon(imageIcon);
+	}
+	
+	public static void cambiarVida(String nombre,int vida) {
+		Operaciones.modificarVidaPersonaje(logica, nombre, vida);
+		if(nombre.equals(txtNombre.getText())) {
+			System.out.println("Lo suponia");
+			txtVitAct.setText(Integer.toString(vida));
+		}
 	}
 	
 	public static void CrearFicha(Personaje p) {
@@ -152,6 +166,17 @@ public class PartidaJugador extends JFrame {
 		}else {
 			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Crear?Nombre="+this.txtNombre.getText()+"&Ataque="+ this.txtAtaque.getText()+"&Defensa="+this.txtDefensa.getText()+"&Movimiento="+  this.txtMovimientos.getText()+"&Vida="+this.txtVitalidad.getText()+"&Imagen="+this.comboImage.getSelectedItem());
 			this.btnCrear.setVisible(false);
+			this.lblVitAct.enable(true);
+			txtVitAct.enable(true);
+			txtVitAct.setEditable(false);
+			txtVitAct.setText(this.txtVitalidad.getText());
+			txtNombre.setEditable(false);
+			this.txtAtaque.setEditable(false);
+			this.txtDefensa.setEditable(false);
+			this.txtMovimientos.setEditable(false);
+			this.txtVitalidad.setEditable(false);
+			this.comboImage.setEditable(false);
+			
 		}
 		
 	}
@@ -291,31 +316,31 @@ public class PartidaJugador extends JFrame {
 		
 		lblNewLabel_3 = new JLabel("Vitalidad:");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_3.setBounds(10, 357, 104, 14);
+		lblNewLabel_3.setBounds(10, 439, 104, 14);
 		contentPane.add(lblNewLabel_3);
 		
 		txtVitalidad = new JTextField();
-		txtVitalidad.setBounds(124, 354, 86, 20);
+		txtVitalidad.setBounds(124, 436, 86, 20);
 		contentPane.add(txtVitalidad);
 		txtVitalidad.setColumns(10);
 		
 		lblNewLabel_4 = new JLabel("Ataque:");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4.setBounds(10, 400, 104, 14);
+		lblNewLabel_4.setBounds(10, 357, 104, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		txtAtaque = new JTextField();
-		txtAtaque.setBounds(124, 397, 86, 20);
+		txtAtaque.setBounds(124, 354, 86, 20);
 		contentPane.add(txtAtaque);
 		txtAtaque.setColumns(10);
 		
 		lblNewLabel_5 = new JLabel("Defensa:");
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_5.setBounds(10, 439, 104, 14);
+		lblNewLabel_5.setBounds(10, 397, 104, 14);
 		contentPane.add(lblNewLabel_5);
 		
 		txtDefensa = new JTextField();
-		txtDefensa.setBounds(124, 436, 86, 20);
+		txtDefensa.setBounds(124, 397, 86, 20);
 		contentPane.add(txtDefensa);
 		txtDefensa.setColumns(10);
 		
@@ -330,12 +355,12 @@ public class PartidaJugador extends JFrame {
 		txtMovimientos.setColumns(10);
 		
 		lblImage = new JLabel("");
-		lblImage.setBounds(20, 512, 155, 141);
+		lblImage.setBounds(20, 542, 155, 141);
 		contentPane.add(lblImage);
 		
 		
 		
-		comboImage.setBounds(30, 664, 122, 22);
+		comboImage.setBounds(30, 694, 122, 22);
 		
 		File img=new File("src/images/Personaje");
 		File[] imgs=img.listFiles();
@@ -353,8 +378,20 @@ public class PartidaJugador extends JFrame {
 				ManejadorCrearPersonaje();
 			}
 		});
-		btnCrear.setBounds(40, 703, 120, 23);
+		btnCrear.setBounds(40, 733, 120, 23);
 		contentPane.add(btnCrear);
+		
+		lblVitAct = new JLabel("Vitalidad Actual:");
+		lblVitAct.setEnabled(false);
+		lblVitAct.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblVitAct.setBounds(10, 517, 104, 14);
+		contentPane.add(lblVitAct);
+		
+		txtVitAct = new JTextField();
+		txtVitAct.setEnabled(false);
+		txtVitAct.setBounds(124, 512, 86, 20);
+		contentPane.add(txtVitAct);
+		txtVitAct.setColumns(10);
 		
 		comboImage.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {

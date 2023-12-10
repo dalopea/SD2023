@@ -59,6 +59,13 @@ public class CreacionPersonaje extends JDialog {
 	public String getIMG() {
 		return (String) this.comboImage.getSelectedItem();
 	}
+	public int getVitAct() {
+		return Integer.parseInt(this.txtVidaActual.getText());
+	}
+	
+	public void setVidaEditable() {
+		this.txtVidaActual.setEditable(true);
+	}
 	
 	public void setIMG(String im) {
 		this.comboImage.setSelectedItem(im);
@@ -88,6 +95,7 @@ public class CreacionPersonaje extends JDialog {
 		this.txtVidaActual.setText(Integer.toString(vitact));
 		this.txtVidaActual.enable(true);
 		this.lblVidaActual.enable(true);
+		this.txtVidaActual.setEditable(false);
 	}
 	
 	

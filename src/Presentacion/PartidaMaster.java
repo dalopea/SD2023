@@ -141,6 +141,43 @@ public class PartidaMaster extends JFrame {
 		
 	}
 	
+	
+	public void ManejadorVida() {
+		if(this.listPersonajes.getSelectedIndex()!=-1) {
+			
+			String nombre=(String) this.listPersonajes.getSelectedValue();
+			List<Personaje> pers=logica.getPartida().getPersonajes();
+			Personaje p = null;
+			for(Personaje j:pers) {
+				if(j.getNombrePersonaje().equals(nombre)) {
+					p=j;
+				}
+			}
+			CreacionPersonaje crea=new CreacionPersonaje();
+			crea.setATQ(p.getPuntosAtaque());
+			crea.setNOM(p.getNombrePersonaje());
+			crea.setDEF(p.getPuntosDefensa());
+			crea.settVIT(p.getPuntosVidaMaximos());
+			crea.setMOV(p.getMovimiento());
+			crea.setIMG(p.getImagen());
+			crea.setVitAct(p.getPuntosVidaActuales());
+			crea.setVidaEditable();
+			crea.setVisible(true);
+			
+			int nuevaVida=crea.getVitAct();
+			logica.broadcast("/ROL21/Vida?Personaje="+crea.getNOM()+"&Vida="+nuevaVida);
+			Operaciones.modificarVidaPersonaje(logica, nombre, nuevaVida);
+			}else {
+				
+			}
+	}
+	
+	public void ManejadorFinalizar() {
+		logica.broadcast("/ROL21/Desconectar");
+		System.exit(0);
+	}
+	
+	
 	public void aniadirfichaMons(String img,String nom,int x,int y) {
 		 JLabel lblIMG = new JLabel("");
 		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
@@ -430,6 +467,11 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(separator_1);
 		
 		btnVida = new JButton("Vida");
+		btnVida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorVida();
+			}
+		});
 		btnVida.setBounds(5, 750, 89, 23);
 		contentPane.add(btnVida);
 		
@@ -477,7 +519,12 @@ public class PartidaMaster extends JFrame {
 		contentPane.add(btnDisponibilidad);
 		
 		btnTerminar = new JButton("Finalizar Partida");
-		btnTerminar.setBounds(64, 892, 89, 23);
+		btnTerminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorFinalizar();
+			}
+		});
+		btnTerminar.setBounds(25, 892, 150, 23);
 		contentPane.add(btnTerminar);
 		
 		

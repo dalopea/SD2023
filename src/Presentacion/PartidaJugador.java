@@ -172,6 +172,9 @@ public class PartidaJugador extends JFrame {
 		this.txtEscribir.setText("");
 	}
 	
+	
+	
+	
 	public static void setFondoMapa(String dir) {
 		BufferedImage img=null;
 		try {

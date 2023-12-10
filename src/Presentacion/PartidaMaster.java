@@ -196,6 +196,10 @@ public class PartidaMaster extends JFrame {
 	}
 	}
 	
+	public void ManejadorCambioCasilla() {
+		
+	}
+	
 	public void ManejadorMover(){
 		if(!this.txtCoordX.getText().isBlank() &&
 				!this.txtCoordX.getText().isEmpty()&&
@@ -231,8 +235,9 @@ public class PartidaMaster extends JFrame {
 	}
 	
 	public void ManejadorCambiaMapa() {
-		//enviarmensaje;
-		cambiaMapa((String) this.comboMapas.getSelectedItem());
+		String mapa=(String)this.comboMapas.getSelectedItem();
+		logica.broadcast("/ROL21/Map?Imagen="+mapa);
+		cambiaMapa(mapa);
 	}
 	
 	public  void cambiaMapa(String im) {
@@ -462,6 +467,11 @@ public class PartidaMaster extends JFrame {
 		
 		
 		btnDisponibilidad = new JButton("<html>Cambiar Disponible</html>");
+		btnDisponibilidad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorCambioCasilla();
+			}
+		});
 		btnDisponibilidad.setVerticalAlignment(SwingConstants.TOP);
 		btnDisponibilidad.setBounds(109, 750, 89, 40);
 		contentPane.add(btnDisponibilidad);

@@ -103,7 +103,7 @@ public class HiloLectorJugador extends Thread{
 								nombreImagen = nombreValor[1];
 							}
 						}
-						//Llamar a método correspondiente
+						PartidaJugador.setFondoMapa("src/images/mapas/"+nombreImagen);
 					}
 					else if (partesPeticion[0].equals("Crear")) {
 						String nombrePersonaje = null;

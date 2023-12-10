@@ -135,6 +135,32 @@ public class HiloJugadorPartida implements Runnable{
 						}
 						PartidaMaster.colocaPersonajeJugador(j, coordenadas[0], coordenadas[1]);
 					}
+					else if (partesPeticion[0].equals("Mover")) {
+						String nombrePersonaje = null;
+						int[] coordenadas = new int[2];
+						String[] argumentos = partesPeticion[1].split("&");
+						for (String argumento : argumentos) {
+							String[] nombreValor = argumento.split("=");
+							if (nombreValor[0].equals("Personaje")) {
+								nombrePersonaje = nombreValor[1];
+							}
+							if (nombreValor[0].equals("Coords")) {
+								String coordeanas=nombreValor[1].substring(1,nombreValor[1].length()-1);
+								String[] coordsSeparadas=coordeanas.split(",");
+								coordenadas[0] = Integer.valueOf(coordsSeparadas[0]);
+								coordenadas[1] = Integer.valueOf(coordsSeparadas[1]);
+							}
+						}
+						List<Personaje> personajes=logicaM.getPartida().getPersonajes();
+						Personaje j=null;
+						for(Personaje p:personajes) {
+							if(nombrePersonaje.equals(p.getNombrePersonaje())) {
+								j=p;
+							}
+							
+						}
+						PartidaMaster.moverPersonajeJugador(j, coordenadas[0], coordenadas[1]);
+					}
 					
 					
 				}else {

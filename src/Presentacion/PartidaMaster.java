@@ -58,7 +58,7 @@ import javax.swing.JSeparator;
 public class PartidaMaster extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private  JPanel contentPane;
+	private static  JPanel contentPane;
 	private  JTextField ChatEscribir;
 	private  JTextArea ChatLeer;
 	private static  LNMaster logica;
@@ -73,7 +73,7 @@ public class PartidaMaster extends JFrame {
 	private JTextField txtCoordY;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private Canvas canvas; 
+	private static Canvas canvas; 
 	private JButton btnVida;
 	private JButton btnEliminar;
 	private JButton btnMover;
@@ -84,7 +84,7 @@ public class PartidaMaster extends JFrame {
 	private JButton btnTerminar;
 
 	
-	
+	//---------------Manejadores----------
 	public void ManejadorChat() {
 		this.ChatLeer.append(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText()+"\n");
 		logica.broadcast(logica.getMaster().getNombreUsuario()+": "+this.ChatEscribir.getText());
@@ -132,7 +132,7 @@ public class PartidaMaster extends JFrame {
 		
 	}
 	
-	//---------------Manejadores----------
+	
 	public void ManejadorVida() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			
@@ -213,9 +213,25 @@ public class PartidaMaster extends JFrame {
 				!this.txtCoordY.getText().isBlank()&&
 				!this.txtCoordY.getText().isEmpty() &&
 				this.listPersonajes.getSelectedIndex()!=-1) {
-			
-				if(this.ManejadorEliminar()) {
-					this.btnAdd.doClick();
+				Personaje j=null;
+				List<Personaje> personajes =logica.getPartida().getPersonajes();
+				for(Personaje p:personajes) {
+					if(p.getNombrePersonaje().equals((String)this.listPersonajes.getSelectedValue())) {
+						j=p;
+					}
+				}
+				int x=Integer.parseInt(this.txtCoordX.getText());
+				int y=Integer.parseInt(this.txtCoordY.getText());
+				Casilla c=j.getPosicion();
+				int actx=c.getCoordenadas()[0];
+				int acty=c.getCoordenadas()[1];
+				if(Math.abs(actx-x)>j.getMovimiento() ||Math.abs(acty-y)>j.getMovimiento()
+						) {
+					Inicio.infoBox("No se puede mover hasta allí.", "Error");
+				}else {
+					if(this.ManejadorEliminar()) {
+						this.btnAdd.doClick();
+					}
 				}
 				
 				
@@ -269,7 +285,15 @@ public class PartidaMaster extends JFrame {
 		logica.getPartida().nuevoPersonaje(p);
 		pers.add(pers.size(), p.getNombrePersonaje());
 	}
-	public void aniadirfichaMons(String img,String nom,int x,int y) {
+	
+	public static void colocaPersonajeJugador(Personaje j,int x,int y) {
+		logica.broadcast("/ROL21/Colocar?Personaje="+j.getNombrePersonaje()+"&Coords=["+x+","+y+"]");
+		
+		aniadirfichaMons(j.getImagen(),j.getNombrePersonaje(),x,y);
+		Operaciones.colocarPersonaje(logica, j.getNombrePersonaje(), logica.getPartida().getTablero().getCasilla(x, y));
+	}
+	
+	public static void aniadirfichaMons(String img,String nom,int x,int y) {
 		 JLabel lblIMG = new JLabel("");
 		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
 		setImage(lblIMG,"Personaje/"+img);
@@ -278,7 +302,7 @@ public class PartidaMaster extends JFrame {
 		contentPane.repaint();
 	}
 	
-	public void setImage(JLabel imgl,String dir) {
+	public static void setImage(JLabel imgl,String dir) {
 		BufferedImage img=null;
 		try {
 			File f=new File("src/images/"+dir);

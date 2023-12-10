@@ -73,6 +73,12 @@ public class PartidaJugador extends JFrame {
 	private JComboBox<String> comboImage = new JComboBox<>();
 	private JLabel lblVitAct;
 	private static JTextField txtVitAct;
+	private JTextField txtCoordX;
+	private JTextField txtCoordY;
+	private JButton btnAdd;
+	private JButton btnMover;
+	private JLabel lblX;
+	private JLabel lblY;
 	
 	//---------Manejadores----------
 	
@@ -112,9 +118,67 @@ public class PartidaJugador extends JFrame {
 			this.txtMovimientos.setEditable(false);
 			this.txtVitalidad.setEditable(false);
 			this.comboImage.setEditable(false);
+			this.txtCoordX.setVisible(true);
+			this.txtCoordY.setVisible(true);
+			this.lblX.setVisible(true);
+			this.lblY.setVisible(true);
+			this.btnAdd.setVisible(true);
+			this.btnMover.setVisible(true);
 			
 		}
 		
+	}
+	
+	public void Manejadoraniadirse() {
+		if(!this.txtCoordX.getText().isBlank() &&
+		!this.txtCoordX.getText().isEmpty()&&
+		!this.txtCoordY.getText().isBlank()&&
+		!this.txtCoordY.getText().isEmpty()){
+			
+			int x=Integer.parseInt(this.txtCoordX.getText());
+			int y=Integer.parseInt(this.txtCoordY.getText());
+			
+			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Colocar?Personaje="+this.txtNombre.getText()+"&Coords=["+x+","+y+"]");
+			this.btnAdd.setVisible(false);
+			
+		}else {
+			Inicio.infoBox("No se pudo añadir", "Error");
+		}
+	}
+	
+	public void ManejadorMoverse() {
+		if(!this.txtCoordX.getText().isBlank() &&
+				!this.txtCoordX.getText().isEmpty()&&
+				!this.txtCoordY.getText().isBlank()&&
+				!this.txtCoordY.getText().isEmpty()){
+			
+			Personaje j=null;
+			List<Personaje> personajes =logica.getPartida().getPersonajes();
+			for(Personaje p:personajes) {
+				if(p.getNombrePersonaje().equals(this.txtNombre)) { 
+					j=p;
+				}
+			}
+			int x=Integer.parseInt(this.txtCoordX.getText());
+			int y=Integer.parseInt(this.txtCoordY.getText());
+			Casilla c=j.getPosicion();
+			int actx=c.getCoordenadas()[0];
+			int acty=c.getCoordenadas()[1];
+			if(Math.abs(actx-x)>j.getMovimiento() ||Math.abs(acty-y)>j.getMovimiento()
+					) {
+				Inicio.infoBox("No se puede mover hasta allí.", "Error");
+			}else {
+				logica.hiloEscritorJugador.enviarMensaje("/ROL21/Mover?Personaje="+this.txtNombre.getText()+"&Coords=["+x+","+y+"]");
+			}
+			
+			
+			
+			
+			
+			
+		}else {
+			Inicio.infoBox("No se pudo mover", "Error");
+		}
 	}
 	
 	
@@ -403,6 +467,50 @@ public class PartidaJugador extends JFrame {
 		txtVitAct.setBounds(124, 512, 86, 20);
 		contentPane.add(txtVitAct);
 		txtVitAct.setColumns(10);
+		
+		 btnAdd = new JButton("Añadirse");
+		 btnAdd.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		Manejadoraniadirse();
+		 	}
+		 });
+		btnAdd.setBounds(10, 803, 89, 23);
+		btnAdd.setVisible(false);
+		contentPane.add(btnAdd);
+		
+		 btnMover = new JButton("Moverse");
+		 btnMover.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		ManejadorMoverse();
+		 	}
+		 });
+		btnMover.setBounds(10, 837, 89, 23);
+		btnMover.setVisible(false);
+		contentPane.add(btnMover);
+		
+		txtCoordX = new JTextField();
+		txtCoordX.setBounds(160, 804, 50, 20);
+		contentPane.add(txtCoordX);
+		txtCoordX.setVisible(false);
+		txtCoordX.setColumns(10);
+		
+		txtCoordY = new JTextField();
+		txtCoordY.setBounds(160, 838, 50, 20);
+		contentPane.add(txtCoordY);
+		txtCoordY.setVisible(false);
+		txtCoordY.setColumns(10);
+		
+		 lblX = new JLabel("x:");
+		lblX.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblX.setBounds(109, 807, 46, 14);
+		lblX.setVisible(false);
+		contentPane.add(lblX);
+		
+		 lblY = new JLabel("y:");
+		lblY.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblY.setBounds(109, 841, 46, 14);
+		lblX.setVisible(false);
+		contentPane.add(lblY);
 		
 		comboImage.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {

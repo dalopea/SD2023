@@ -49,8 +49,8 @@ public class HiloServerPartidas extends Thread {
 						oos.reset();
 					}
 					else if (peticion.startsWith("Eliminar")) {
-						String partidaAEliminar = ois.readLine();
-						this.manejadorPartidas.eliminarPartida(partidaAEliminar);
+						String partida = ois.readLine();
+						this.manejadorPartidas.eliminarPartida(partida);
 					}
 					peticion = ois.readLine();
 				}

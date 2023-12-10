@@ -77,10 +77,8 @@ public class SelectorPartida extends JFrame {
 				this.setVisible(false);
 				
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

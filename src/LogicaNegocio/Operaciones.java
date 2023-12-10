@@ -214,4 +214,8 @@ public class Operaciones {
 		personaje.setPosicion(null);
 	}
 	
+	public static void cambiarDisponibilidad(Casilla c) {
+		c.cambiarDisponibilidad();
+	}
+	
 }

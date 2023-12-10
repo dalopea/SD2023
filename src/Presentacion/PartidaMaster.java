@@ -173,12 +173,15 @@ public class PartidaMaster extends JFrame {
 	
 	
 	public void ManejadorAniadir() {
-		if(!this.txtCoordX.getText().isBlank() &&
-			!this.txtCoordX.getText().isEmpty()&&
-			!this.txtCoordY.getText().isBlank()&&
-			!this.txtCoordY.getText().isEmpty() &&
+		if(comprobanteCasilla() &&
 			this.listPersonajes.getSelectedIndex()!=-1) {
 			
+			int x=Integer.parseInt(txtCoordX.getText());
+			int y=Integer.parseInt(txtCoordY.getText());
+			Casilla c=logica.getPartida().getTablero().getCasilla(x, y);
+			
+			if(c.isDisponible() && c.getPersonaje()==null) {
+				
 			
 			String nombre=(String) this.listPersonajes.getSelectedValue();
 			logica.broadcast("/ROL21/Colocar?Personaje="+nombre+"&Coords=["+txtCoordX.getText()+","+txtCoordY.getText()+"]");
@@ -191,11 +194,14 @@ public class PartidaMaster extends JFrame {
 				}
 				
 			}
-			int x=Integer.parseInt(txtCoordX.getText());
-			int y=Integer.parseInt(txtCoordY.getText());
+			
 			
 			aniadirfichaMons(j.getImagen(),j.getNombrePersonaje(),x,y);
 			Operaciones.colocarPersonaje(logica, nombre, logica.getPartida().getTablero().getCasilla(x, y));
+			}else {
+				Inicio.infoBox("Casilla ocupada", "Error");
+			}
+			
 	}else {
 		Inicio.infoBox("El personaje no se pudo añadir", "Error");
 	}
@@ -203,17 +209,31 @@ public class PartidaMaster extends JFrame {
 	
 	
 	public void ManejadorCambioCasilla() {
-		if(!this.txtCoordX.getText().isBlank() &&
-				!this.txtCoordX.getText().isEmpty()&&
-				!this.txtCoordY.getText().isBlank()&&
-				!this.txtCoordY.getText().isEmpty()) {
+		if(comprobanteCasilla()) {
 			
+			int x=Integer.parseInt(this.txtCoordX.getText());
+			int y=Integer.parseInt(this.txtCoordY.getText());
+			Casilla c=logica.getPartida().getTablero().getCasilla(x, y);
 			
-			
-			
-			
+			if(c.isDisponible() && c.getPersonaje()==null) {
+				JLabel lblIMG = new JLabel("");
+				 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
+				setImage(lblIMG,"placeholder/placeholder_x.png");
+				lblIMG.setName("Casilla"+x+y);
+				contentPane.add(lblIMG,0);
+				contentPane.repaint();
+				
+				logica.broadcast("/ROL21/AlterarDisponible?Coords=["+x+","+y+"]");
+				Operaciones.cambiarDisponibilidad(c);
+			}else if(!c.isDisponible()){
+				eliminarMons("Casilla"+x+y);
+				logica.broadcast("/ROL21/AlterarDisponible?Coords=["+x+","+y+"]");
+				Operaciones.cambiarDisponibilidad(c);
+			}else {
+				Inicio.infoBox("Casilla ocupada", "Error");
+			}
 		}else {
-			
+			Inicio.infoBox("Casilla no seleccionada", "Error");
 		}
 		
 		
@@ -222,11 +242,13 @@ public class PartidaMaster extends JFrame {
 	
 	
 	public void ManejadorMover(){
-		if(!this.txtCoordX.getText().isBlank() &&
-				!this.txtCoordX.getText().isEmpty()&&
-				!this.txtCoordY.getText().isBlank()&&
-				!this.txtCoordY.getText().isEmpty() &&
+		if(comprobanteCasilla() &&
 				this.listPersonajes.getSelectedIndex()!=-1) {
+				int x=Integer.parseInt(this.txtCoordX.getText());
+				int y=Integer.parseInt(this.txtCoordY.getText());
+				Casilla ca=logica.getPartida().getTablero().getCasilla(x, y);
+				
+				if(ca.isDisponible() && ca.getPersonaje()==null) {
 				Personaje j=null;
 				List<Personaje> personajes =logica.getPartida().getPersonajes();
 				for(Personaje p:personajes) {
@@ -234,8 +256,7 @@ public class PartidaMaster extends JFrame {
 						j=p;
 					}
 				}
-				int x=Integer.parseInt(this.txtCoordX.getText());
-				int y=Integer.parseInt(this.txtCoordY.getText());
+				
 				Casilla c=j.getPosicion();
 				int actx=c.getCoordenadas()[0];
 				int acty=c.getCoordenadas()[1];
@@ -247,7 +268,9 @@ public class PartidaMaster extends JFrame {
 						this.btnAdd.doClick();
 					}
 				}
-				
+				}else {
+					Inicio.infoBox("Casilla Ocupada.", "Error");
+				}
 				
 		}else {
 			Inicio.infoBox("El personaje no se pudo mover", "Error");
@@ -259,7 +282,7 @@ public class PartidaMaster extends JFrame {
 	public boolean ManejadorEliminar() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			String nombre=(String) this.listPersonajes.getSelectedValue();
-			if(this.eliminarMons(nombre)) {
+			if(eliminarMons(nombre)) {
 				logica.broadcast("/ROL21/Eliminar?Nombre="+this.listPersonajes.getSelectedValue());
 				
 				List<Personaje> personajes=logica.getPartida().getPersonajes();
@@ -342,6 +365,25 @@ public class PartidaMaster extends JFrame {
 	}
 	
 	
+	public boolean comprobanteCasilla() {
+		if( !this.txtCoordX.getText().isBlank() && !this.txtCoordX.getText().isEmpty()&&
+			!this.txtCoordY.getText().isBlank()&& !this.txtCoordY.getText().isEmpty()  
+			&& isInt(this.txtCoordX.getText()) && isInt(this.txtCoordY.getText())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean isInt(String n) {
+		try{
+			Integer.parseInt(n);
+			return true;
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		
+	}
 	
 	public  void cambiaMapa(String im) {
 		setFondoMapa(im);
@@ -449,7 +491,7 @@ public class PartidaMaster extends JFrame {
 		show_Mapa = new JLabel("");
 		show_Mapa.setBounds(225, 25, 1200, 900);
 		
-		this.setFondoMapa("claro_Mapa.jpg");
+		this.setFondoMapa("game_initialise.jpg");
 		
 		
 		

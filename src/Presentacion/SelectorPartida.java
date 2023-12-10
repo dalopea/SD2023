@@ -31,6 +31,7 @@ public class SelectorPartida extends JFrame {
 	private DefaultListModel<String> model=new DefaultListModel<>();
 	private JList listPartidas = new JList(model);
 	private HashMap<String,Integer> partidas;
+	private JButton btnActualizar;
 	
 	private Socket s;
 	private ObjectOutputStream oos;
@@ -66,20 +67,20 @@ public class SelectorPartida extends JFrame {
 			Inicio.infoBox("No se pudo unir a ninguna partida ya que no se ha seleccionado ninguna", "Error de Selección");
 		}else {
 			try {
+				Socket socket=new Socket("localhost",partidas.get(this.listPartidas.getSelectedValue().toString()));
+				Inicio.infoBox("Se esperará al resto de jugadores para dar comienzo, pulse aceptar para continuar.", "INFO");
 				oos.writeBytes("Desconectar\n");
 				oos.flush();
-				Inicio.infoBox("Se esperará al resto de jugadores para dar comienzo, pulse aceptar para continuar.", "INFO");
-				Socket s=new Socket("localhost",partidas.get(this.listPartidas.getSelectedValue().toString()));
 				Jugador j=new Jugador(this.nombre);
 				LNJugadorBase ln=new LNJugador(j);
-				PartidaJugador pj=new PartidaJugador(s,ln);
+				PartidaJugador pj=new PartidaJugador(socket,ln);
 				pj.setVisible(true);
 				this.setVisible(false);
 				
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
+			
 			} catch (IOException e) {
-				e.printStackTrace();
+				Inicio.infoBox("Partida en curso", "ERROR");
+				this.btnActualizar.doClick();
 			}
 		}
 	}
@@ -185,7 +186,7 @@ public class SelectorPartida extends JFrame {
 		lblNewLabel.setBounds(60, 56, 128, 14);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnActualizar = new JButton("Actualizar");
+		 btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ManejadorActualizar();

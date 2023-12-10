@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JTextArea;
 
+import ModeloDominio.Casilla;
 import ModeloDominio.Partida;
 import ModeloDominio.Personaje;
 import Presentacion.PartidaJugador;
@@ -178,7 +179,9 @@ public class HiloLectorJugador extends Thread{
 								coordenadas[1] = Integer.valueOf(coordsSeparadas[1]);
 							}
 						}
-						//PartidaJugador.alterarDisponible(coordenadas);
+						Casilla c=logicaJ.getPartida().getTablero().getCasilla(coordenadas[0], coordenadas[1]);
+						
+						PartidaJugador.alterarDisponible(c);
 					}
 					else if (partesPeticion[0].equals("Desconectar")) {
 						desconectar = true;

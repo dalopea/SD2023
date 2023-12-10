@@ -43,7 +43,6 @@ public class HiloEscritorJugador extends Thread{
 				oos.writeBytes(mensaje+"\n");
 				oos.flush();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

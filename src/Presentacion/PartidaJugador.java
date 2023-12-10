@@ -130,28 +130,33 @@ public class PartidaJugador extends JFrame {
 	}
 	
 	public void Manejadoraniadirse() {
-		if(!this.txtCoordX.getText().isBlank() &&
-		!this.txtCoordX.getText().isEmpty()&&
-		!this.txtCoordY.getText().isBlank()&&
-		!this.txtCoordY.getText().isEmpty()){
+		if(comprobanteCasilla()){
 			
 			int x=Integer.parseInt(this.txtCoordX.getText());
 			int y=Integer.parseInt(this.txtCoordY.getText());
 			
+			Casilla c=logica.getPartida().getTablero().getCasilla(x, y);
+			
+			if(c.isDisponible() && c.getPersonaje()==null) {
+			
+			
 			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Colocar?Personaje="+this.txtNombre.getText()+"&Coords=["+x+","+y+"]");
 			this.btnAdd.setVisible(false);
-			
+			}else {
+				Inicio.infoBox("Casilla ocupada", "Error");
+			}
 		}else {
 			Inicio.infoBox("No se pudo añadir", "Error");
 		}
 	}
 	
 	public void ManejadorMoverse() {
-		if(!this.txtCoordX.getText().isBlank() &&
-				!this.txtCoordX.getText().isEmpty()&&
-				!this.txtCoordY.getText().isBlank()&&
-				!this.txtCoordY.getText().isEmpty()){
+		if(comprobanteCasilla()){
+			int x=Integer.parseInt(this.txtCoordX.getText());
+			int y=Integer.parseInt(this.txtCoordY.getText());
+			Casilla ca=logica.getPartida().getTablero().getCasilla(x, y);
 			
+			if(ca.isDisponible() && ca.getPersonaje()==null) {
 			Personaje j=null;
 			List<Personaje> personajes =logica.getPartida().getPersonajes();
 			for(Personaje p:personajes) {
@@ -159,8 +164,7 @@ public class PartidaJugador extends JFrame {
 					j=p;
 				}
 			}
-			int x=Integer.parseInt(this.txtCoordX.getText());
-			int y=Integer.parseInt(this.txtCoordY.getText());
+			
 			Casilla c=j.getPosicion();
 			int actx=c.getCoordenadas()[0];
 			int acty=c.getCoordenadas()[1];
@@ -170,12 +174,9 @@ public class PartidaJugador extends JFrame {
 			}else {
 				logica.hiloEscritorJugador.enviarMensaje("/ROL21/Mover?Personaje="+this.txtNombre.getText()+"&Coords=["+x+","+y+"]");
 			}
-			
-			
-			
-			
-			
-			
+			}else {
+				Inicio.infoBox("Casilla Ocupada.", "Error");
+			}
 		}else {
 			Inicio.infoBox("No se pudo mover", "Error");
 		}
@@ -183,6 +184,18 @@ public class PartidaJugador extends JFrame {
 	
 	
 	//--------Metodos-----------
+	public boolean comprobanteCasilla() {
+		if( !this.txtCoordX.getText().isBlank() && !this.txtCoordX.getText().isEmpty()&&
+			!this.txtCoordY.getText().isBlank()&& !this.txtCoordY.getText().isEmpty()  
+			&& isInt(this.txtCoordX.getText()) && isInt(this.txtCoordY.getText())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	
 	public static void eliminarFichaMapa(String nombre) {
 		eliminarMons(nombre);
 		List<Personaje> personajes=logica.getPartida().getPersonajes();
@@ -194,6 +207,27 @@ public class PartidaJugador extends JFrame {
 		}
 		Operaciones.eliminarPersonajeDeCasilla(j);
 	}
+	
+	public static void alterarDisponible(Casilla c) {
+		
+		if(c.isDisponible() && c.getPersonaje()==null) {
+			JLabel lblIMG = new JLabel("");
+			 lblIMG.setBounds(225+(c.getCoordenadas()[0]*canvas.getCellSize()),25+(c.getCoordenadas()[1]*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
+			setImage(lblIMG,"placeholder/placeholder_x.png");
+			lblIMG.setName("Casilla"+c.getCoordenadas()[0]+c.getCoordenadas()[1]);
+			contentPane.add(lblIMG,0);
+			contentPane.repaint();
+			Operaciones.cambiarDisponibilidad(c);
+		}else if(!c.isDisponible()){
+			eliminarMons("Casilla"+c.getCoordenadas()[0]+c.getCoordenadas()[1]);
+			Operaciones.cambiarDisponibilidad(c);
+		}else {
+			Inicio.infoBox("Casilla ocupada", "Error");
+		}
+		
+		
+	}
+	
 	
 	
 	public boolean isInt(String n) {
@@ -349,6 +383,7 @@ public class PartidaJugador extends JFrame {
 		 show_Mapa = new JLabel("");
 		show_Mapa.setBounds(225, 25, 1200, 900);
 		contentPane.add(show_Mapa);
+		setFondoMapa("src/images/mapas/game_initialise.jpg");
 		
 		lblNewLabel = new JLabel("Jugadores");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -509,7 +544,7 @@ public class PartidaJugador extends JFrame {
 		 lblY = new JLabel("y:");
 		lblY.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblY.setBounds(109, 841, 46, 14);
-		lblX.setVisible(false);
+		lblY.setVisible(false);
 		contentPane.add(lblY);
 		
 		comboImage.addItemListener(new ItemListener() {

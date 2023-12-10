@@ -74,6 +74,109 @@ public class PartidaJugador extends JFrame {
 	private JLabel lblVitAct;
 	private static JTextField txtVitAct;
 	
+	//---------Manejadores----------
+	
+	
+	private void ManejadorImagen(){
+		setImage(lblImage, "Personaje/"+(String)this.comboImage.getSelectedItem());
+	}
+	
+	
+	public void ManejadorChat() {
+		this.txtLeer.append(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText()+"\n");
+		logica.hiloEscritorJugador.enviarMensaje(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText());
+		this.txtEscribir.setText("");
+	}
+	
+	
+	
+	
+	public void ManejadorCrearPersonaje() {
+		if( this.txtAtaque.getText().isBlank() || this.txtAtaque.getText().isEmpty() || !isInt(this.txtAtaque.getText()) ||
+			this.txtDefensa.getText().isBlank() || this.txtDefensa.getText().isEmpty() || !isInt(this.txtDefensa.getText()) ||
+			this.txtMovimientos.getText().isBlank() || this.txtMovimientos.getText().isEmpty() || !isInt(this.txtMovimientos.getText()) ||
+			this.txtVitalidad.getText().isBlank() || this.txtVitalidad.getText().isEmpty() || !isInt(this.txtVitalidad.getText()) ||
+			this.txtNombre.getText().isBlank() || this.txtNombre.getText().isEmpty() 
+			) {
+			Inicio.infoBox("Error de creacion", "Error");
+		}else {
+			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Crear?Nombre="+this.txtNombre.getText()+"&Ataque="+ this.txtAtaque.getText()+"&Defensa="+this.txtDefensa.getText()+"&Movimiento="+  this.txtMovimientos.getText()+"&Vida="+this.txtVitalidad.getText()+"&Imagen="+this.comboImage.getSelectedItem());
+			this.btnCrear.setVisible(false);
+			this.lblVitAct.enable(true);
+			txtVitAct.enable(true);
+			txtVitAct.setEditable(false);
+			txtVitAct.setText(this.txtVitalidad.getText());
+			txtNombre.setEditable(false);
+			this.txtAtaque.setEditable(false);
+			this.txtDefensa.setEditable(false);
+			this.txtMovimientos.setEditable(false);
+			this.txtVitalidad.setEditable(false);
+			this.comboImage.setEditable(false);
+			
+		}
+		
+	}
+	
+	
+	//--------Metodos-----------
+	public static void eliminarFichaMapa(String nombre) {
+		eliminarMons(nombre);
+		List<Personaje> personajes=logica.getPartida().getPersonajes();
+		Personaje j=null;
+		for(Personaje p:personajes) {
+			if(p.getNombrePersonaje().equals(nombre)) {
+				j=p;
+			}
+		}
+		Operaciones.eliminarPersonajeDeCasilla(j);
+	}
+	
+	
+	public boolean isInt(String n) {
+		try{
+			Integer.parseInt(n);
+			return true;
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		
+	}
+	
+	
+	public static void eliminarMons(String nombre) {
+		Component[] componentList = contentPane.getComponents();
+
+		for(Component c : componentList){
+
+		    if(c instanceof JLabel && c.getName()!=null) {
+
+		     if(c.getName().equals(nombre)){
+
+		    	contentPane.remove(c);
+		    }
+		}
+		}
+		contentPane.revalidate();
+		contentPane.repaint();
+		
+		
+	}
+	
+	
+	
+	
+	public static void setFondoMapa(String dir) {
+		BufferedImage img=null;
+		try {
+		    img = ImageIO.read(new File(dir));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(show_Mapa.getWidth(), show_Mapa.getHeight(),Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		show_Mapa.setIcon(imageIcon);
+	}
 	
 	public static void cerrar() {
 		System.exit(0);
@@ -119,99 +222,7 @@ public class PartidaJugador extends JFrame {
 		Operaciones.nuevoPersonaje(logica, p);
 	}
 	
-	private void ManejadorImagen(){
-		setImage(lblImage, "Personaje/"+(String)this.comboImage.getSelectedItem());
-	}
 	
-	public static void eliminarFichaMapa(String nombre) {
-		eliminarMons(nombre);
-		List<Personaje> personajes=logica.getPartida().getPersonajes();
-		Personaje j=null;
-		for(Personaje p:personajes) {
-			if(p.getNombrePersonaje().equals(nombre)) {
-				j=p;
-			}
-		}
-		Operaciones.eliminarPersonajeDeCasilla(j);
-	}
-	
-	public static void eliminarMons(String nombre) {
-		Component[] componentList = contentPane.getComponents();
-
-		for(Component c : componentList){
-
-		    if(c instanceof JLabel && c.getName()!=null) {
-
-		     if(c.getName().equals(nombre)){
-
-		    	contentPane.remove(c);
-		    }
-		}
-		}
-		contentPane.revalidate();
-		contentPane.repaint();
-		
-		
-	}
-	
-	
-	public void ManejadorCrearPersonaje() {
-		if( this.txtAtaque.getText().isBlank() || this.txtAtaque.getText().isEmpty() || !isInt(this.txtAtaque.getText()) ||
-			this.txtDefensa.getText().isBlank() || this.txtDefensa.getText().isEmpty() || !isInt(this.txtDefensa.getText()) ||
-			this.txtMovimientos.getText().isBlank() || this.txtMovimientos.getText().isEmpty() || !isInt(this.txtMovimientos.getText()) ||
-			this.txtVitalidad.getText().isBlank() || this.txtVitalidad.getText().isEmpty() || !isInt(this.txtVitalidad.getText()) ||
-			this.txtNombre.getText().isBlank() || this.txtNombre.getText().isEmpty() 
-			) {
-			Inicio.infoBox("Error de creacion", "error");
-		}else {
-			logica.hiloEscritorJugador.enviarMensaje("/ROL21/Crear?Nombre="+this.txtNombre.getText()+"&Ataque="+ this.txtAtaque.getText()+"&Defensa="+this.txtDefensa.getText()+"&Movimiento="+  this.txtMovimientos.getText()+"&Vida="+this.txtVitalidad.getText()+"&Imagen="+this.comboImage.getSelectedItem());
-			this.btnCrear.setVisible(false);
-			this.lblVitAct.enable(true);
-			txtVitAct.enable(true);
-			txtVitAct.setEditable(false);
-			txtVitAct.setText(this.txtVitalidad.getText());
-			txtNombre.setEditable(false);
-			this.txtAtaque.setEditable(false);
-			this.txtDefensa.setEditable(false);
-			this.txtMovimientos.setEditable(false);
-			this.txtVitalidad.setEditable(false);
-			this.comboImage.setEditable(false);
-			
-		}
-		
-	}
-	public boolean isInt(String n) {
-		try{
-			Integer.parseInt(n);
-			return true;
-		}catch(NumberFormatException e) {
-			return false;
-		}
-		
-	}
-	
-	
-	public void ManejadorChat() {
-		this.txtLeer.append(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText()+"\n");
-		logica.hiloEscritorJugador.enviarMensaje(logica.getJugador().getNombreUsuario()+": "+this.txtEscribir.getText());
-		this.txtEscribir.setText("");
-	}
-	
-	
-	
-	
-	public static void setFondoMapa(String dir) {
-		BufferedImage img=null;
-		try {
-		    img = ImageIO.read(new File(dir));
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(show_Mapa.getWidth(), show_Mapa.getHeight(),Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		
-		show_Mapa.setIcon(imageIcon);
-	}
 	
 	
 	public PartidaJugador(Socket s,LNJugadorBase log) {

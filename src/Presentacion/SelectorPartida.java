@@ -68,6 +68,7 @@ public class SelectorPartida extends JFrame {
 			try {
 				oos.writeBytes("Desconectar\n");
 				oos.flush();
+				Inicio.infoBox("Se esperará al resto de jugadores para dar comienzo, pulse aceptar para continuar.", "INFO");
 				Socket s=new Socket("localhost",partidas.get(this.listPartidas.getSelectedValue().toString()));
 				Jugador j=new Jugador(this.nombre);
 				LNJugadorBase ln=new LNJugador(j);
@@ -268,7 +269,7 @@ public class SelectorPartida extends JFrame {
 						oos.flush();
 						
 					}
-					Inicio.infoBox(respuesta,"INFO");
+					Inicio.infoBox(respuesta+". Se procederá a esperar a los jugadores,pongase comodo","INFO");
 				
 
 		} catch (IOException e) {

@@ -91,16 +91,7 @@ public class PartidaMaster extends JFrame {
 		this.ChatEscribir.setText("");
 	}
 	
-	
-	public static void addPersonajeJugador(String nombre,int atq,int def,int vit,int mov,String img) {
-		logica.broadcast("/ROL21/Crear?Nombre="+nombre+"&Ataque="+atq+"&Defensa="+def+"&Movimiento="+mov+"&Vida="+vit+"&Imagen="+img);
-		
-		Personaje p=new Personaje(nombre,atq,def, vit,mov,img);
-		logica.getPartida().nuevoPersonaje(p);
-		pers.add(pers.size(), p.getNombrePersonaje());
-	}
-	
-	
+
 	
 	public void ManejadorCrearPersonaje() {
 		CreacionPersonaje crea=new CreacionPersonaje();
@@ -141,7 +132,7 @@ public class PartidaMaster extends JFrame {
 		
 	}
 	
-	
+	//---------------Manejadores----------
 	public void ManejadorVida() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			
@@ -168,9 +159,10 @@ public class PartidaMaster extends JFrame {
 			logica.broadcast("/ROL21/Vida?Personaje="+crea.getNOM()+"&Vida="+nuevaVida);
 			Operaciones.modificarVidaPersonaje(logica, nombre, nuevaVida);
 			}else {
-				
+				Inicio.infoBox("Personaje no seleccionado", "Error");
 			}
 	}
+	
 	
 	public void ManejadorFinalizar() {
 		logica.broadcast("/ROL21/Desconectar");
@@ -178,29 +170,6 @@ public class PartidaMaster extends JFrame {
 	}
 	
 	
-	public void aniadirfichaMons(String img,String nom,int x,int y) {
-		 JLabel lblIMG = new JLabel("");
-		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
-		setImage(lblIMG,"Personaje/"+img);
-		lblIMG.setName(nom);
-		contentPane.add(lblIMG,0);
-		contentPane.repaint();
-	}
-	
-	public void setImage(JLabel imgl,String dir) {
-		BufferedImage img=null;
-		try {
-			File f=new File("src/images/"+dir);
-			System.out.println(f.getName());
-		    img = ImageIO.read(f);
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(imgl.getWidth(), imgl.getHeight(),Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		
-		imgl.setIcon(imageIcon);
-	}
 	
 	
 	public void ManejadorAniadir() {
@@ -227,15 +196,16 @@ public class PartidaMaster extends JFrame {
 			
 			aniadirfichaMons(j.getImagen(),j.getNombrePersonaje(),x,y);
 			Operaciones.colocarPersonaje(logica, nombre, logica.getPartida().getTablero().getCasilla(x, y));
-		
-		
-		
+	}else {
+		Inicio.infoBox("El personaje no se pudo añadir", "Error");
 	}
 	}
+	
 	
 	public void ManejadorCambioCasilla() {
 		
 	}
+	
 	
 	public void ManejadorMover(){
 		if(!this.txtCoordX.getText().isBlank() &&
@@ -244,32 +214,45 @@ public class PartidaMaster extends JFrame {
 				!this.txtCoordY.getText().isEmpty() &&
 				this.listPersonajes.getSelectedIndex()!=-1) {
 			
-				this.btnEliminar.doClick();
-				this.btnAdd.doClick();
+				if(this.ManejadorEliminar()) {
+					this.btnAdd.doClick();
+				}
 				
+				
+		}else {
+			Inicio.infoBox("El personaje no se pudo mover", "Error");
 		}
 	}
 	
 	
-	
-	
-	public void ManejadorEliminar() {
+
+	public boolean ManejadorEliminar() {
 		if(this.listPersonajes.getSelectedIndex()!=-1) {
 			String nombre=(String) this.listPersonajes.getSelectedValue();
-			logica.broadcast("/ROL21/Eliminar?Nombre="+this.listPersonajes.getSelectedValue());
-			this.eliminarMons(nombre);
-			List<Personaje> personajes=logica.getPartida().getPersonajes();
-			Personaje j=null;
-			for(Personaje p:personajes) {
-				if(p.getNombrePersonaje().equals(nombre)) {
-					j=p;
+			if(this.eliminarMons(nombre)) {
+				logica.broadcast("/ROL21/Eliminar?Nombre="+this.listPersonajes.getSelectedValue());
+				
+				List<Personaje> personajes=logica.getPartida().getPersonajes();
+				Personaje j=null;
+				for(Personaje p:personajes) {
+					if(p.getNombrePersonaje().equals(nombre)) {
+						j=p;
+					}
 				}
+				Operaciones.eliminarPersonajeDeCasilla(j);
+				return true;
+			}else {
+				Inicio.infoBox("La ficha no está en el tablero", "Error");
+				return false;
 			}
-			Operaciones.eliminarPersonajeDeCasilla(j);
-		}else {
 			
+			
+		}else {
+			Inicio.infoBox("El personaje no se puso quitar del mapa", "Error");
+			return false;
 		}
 	}
+	
 	
 	public void ManejadorCambiaMapa() {
 		String mapa=(String)this.comboMapas.getSelectedItem();
@@ -277,14 +260,49 @@ public class PartidaMaster extends JFrame {
 		cambiaMapa(mapa);
 	}
 	
+	//-------Metodos-----------
+	
+	public static void addPersonajeJugador(String nombre,int atq,int def,int vit,int mov,String img) {
+		logica.broadcast("/ROL21/Crear?Nombre="+nombre+"&Ataque="+atq+"&Defensa="+def+"&Movimiento="+mov+"&Vida="+vit+"&Imagen="+img);
+		
+		Personaje p=new Personaje(nombre,atq,def, vit,mov,img);
+		logica.getPartida().nuevoPersonaje(p);
+		pers.add(pers.size(), p.getNombrePersonaje());
+	}
+	public void aniadirfichaMons(String img,String nom,int x,int y) {
+		 JLabel lblIMG = new JLabel("");
+		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
+		setImage(lblIMG,"Personaje/"+img);
+		lblIMG.setName(nom);
+		contentPane.add(lblIMG,0);
+		contentPane.repaint();
+	}
+	
+	public void setImage(JLabel imgl,String dir) {
+		BufferedImage img=null;
+		try {
+			File f=new File("src/images/"+dir);
+			System.out.println(f.getName());
+		    img = ImageIO.read(f);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(imgl.getWidth(), imgl.getHeight(),Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		imgl.setIcon(imageIcon);
+	}
+	
+	
+	
 	public  void cambiaMapa(String im) {
 		setFondoMapa(im);
 	}
 	
 	
-	public void eliminarMons(String nombre) {
+	public boolean eliminarMons(String nombre) {
 		Component[] componentList = contentPane.getComponents();
-
+		boolean borr=false;
 		for(Component c : componentList){
 
 		    if(c instanceof JLabel && c.getName()!=null) {
@@ -292,11 +310,13 @@ public class PartidaMaster extends JFrame {
 		     if(c.getName().equals(nombre)){
 
 		    	contentPane.remove(c);
+		    	borr=true;
 		    }
 		}
 		}
 		contentPane.revalidate();
 		contentPane.repaint();
+		return borr;
 		
 		
 	}

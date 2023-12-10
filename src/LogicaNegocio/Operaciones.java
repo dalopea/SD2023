@@ -213,4 +213,5 @@ public class Operaciones {
 		personaje.getPosicion().setPersonaje(null);
 		personaje.setPosicion(null);
 	}
+	
 }

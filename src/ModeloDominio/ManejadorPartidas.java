@@ -2,15 +2,15 @@ package ModeloDominio;
 /*
  * El manejador de partidas se encarga de gestionar la lista de partidas abiertas que tiene el servidor: añadir, eliminar y retornar partidas.
  * Los métodos son synchronized para evitar conflictos.
+ * 
+ * Tiene un HashMap en el que almacena todas las partidas. El identificador (String), es de la siguiente estructura:  nombreMaster:nombrePartida.
+ * Por lo tanto, puede haber varias partidas con el mismo nombre, siempre que el máster sea distinto.
  */
 import java.util.HashMap;
 
 public class ManejadorPartidas {
 
-	HashMap<String,Integer> partidas;//VICTOR: al final no haremos una lista de objetos partida? Lo digo por que puede ser mejor, ya que la partida guarda el puerto y así
-									//puedo usarla para mostrarla en la interfaz gráfica.
-									//Respuesta: Por ahora voy a hacer lo que dije, voy a añadir el nombre de máster tmb en el String.
-									//El orden será nombreMaster:nombrePartida.
+	HashMap<String,Integer> partidas;
 	
 	public ManejadorPartidas() {
 		this.partidas = new HashMap<String,Integer>();

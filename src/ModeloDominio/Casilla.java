@@ -2,18 +2,17 @@ package ModeloDominio;
 
 import java.io.Serializable;
 
-//Comentario
+/*
+ * La clase Casilla representa una casilla del tablero. Es serializable por la sincronización inicial de la partida.
+ * Tiene unas coordenadas, un atributo Personaje, que indica el personaje que está en la casilla, y un atributo disponible, que indica si se puede colocar algo en la casilla.
+ */
 public class Casilla implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	
 	private Personaje personaje;
-	private boolean disponible;//disponible hace referencia a si se puede poner cualquier cosa
+	private boolean disponible;
 	
 	
 	public Casilla(int x,int y) {

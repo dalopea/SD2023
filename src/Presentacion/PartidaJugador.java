@@ -155,7 +155,7 @@ public class PartidaJugador extends JFrame {
 			Personaje j=null;
 			List<Personaje> personajes =logica.getPartida().getPersonajes();
 			for(Personaje p:personajes) {
-				if(p.getNombrePersonaje().equals(this.txtNombre)) { 
+				if(p.getNombrePersonaje().equals(this.txtNombre.getText())) { 
 					j=p;
 				}
 			}

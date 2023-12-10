@@ -293,6 +293,16 @@ public class PartidaMaster extends JFrame {
 		Operaciones.colocarPersonaje(logica, j.getNombrePersonaje(), logica.getPartida().getTablero().getCasilla(x, y));
 	}
 	
+	public static void moverPersonajeJugador(Personaje j,int x,int y) {
+		logica.broadcast("/ROL21/Eliminar?Nombre="+j.getNombrePersonaje());
+		eliminarMons(j.getNombrePersonaje());
+		Operaciones.eliminarPersonajeDeCasilla(j);
+		
+		logica.broadcast("/ROL21/Colocar?Personaje="+j.getNombrePersonaje()+"&Coords=["+x+","+y+"]");
+		aniadirfichaMons(j.getImagen(),j.getNombrePersonaje(),x,y);
+		Operaciones.colocarPersonaje(logica, j.getNombrePersonaje(), logica.getPartida().getTablero().getCasilla(x, y));
+	}
+	
 	public static void aniadirfichaMons(String img,String nom,int x,int y) {
 		 JLabel lblIMG = new JLabel("");
 		 lblIMG.setBounds(225+(x*canvas.getCellSize()),25+(y*canvas.getCellSize()), canvas.getCellSize(), canvas.getCellSize());
@@ -324,7 +334,7 @@ public class PartidaMaster extends JFrame {
 	}
 	
 	
-	public boolean eliminarMons(String nombre) {
+	public static boolean eliminarMons(String nombre) {
 		Component[] componentList = contentPane.getComponents();
 		boolean borr=false;
 		for(Component c : componentList){

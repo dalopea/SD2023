@@ -203,6 +203,20 @@ public class PartidaMaster extends JFrame {
 	
 	
 	public void ManejadorCambioCasilla() {
+		if(!this.txtCoordX.getText().isBlank() &&
+				!this.txtCoordX.getText().isEmpty()&&
+				!this.txtCoordY.getText().isBlank()&&
+				!this.txtCoordY.getText().isEmpty()) {
+			
+			
+			
+			
+			
+		}else {
+			
+		}
+		
+		
 		
 	}
 	
